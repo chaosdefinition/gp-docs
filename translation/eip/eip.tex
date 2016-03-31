@@ -1,0 +1,309 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% document preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[UTF8]{ctex}			% for Chinese environment
+\usepackage[svgpath=./images/]{svg}	% for svg images
+\usepackage{enumerate}			% for customized list style
+\usepackage{hyperref}			% for bookmarks
+\usepackage{amsmath}			% for mathematical features
+\usepackage{amssymb}			% for mathematical symbols
+\usepackage{amsthm}			% for theorems
+
+
+\author{L. H. Harper}
+\date{2016 年 3 月 11 日}
+
+% hyperref options
+\hypersetup{
+	hidelinks,			% hide links
+	pdfstartview={FitH},		% fit width
+	pdftitle={Chinese Translation	% PDF title
+		of Chapter 1 of Global Methods for Combinatorial Isoperimetric
+		Problems},
+	pdfauthor={Zhuojia Shen}	% PDF althor
+}
+
+% theorems
+\newtheorem{theorem}{定理}
+\newtheorem{lemma}{引理}
+\newtheorem{corollary}{推论}
+\newtheorem{exercise}{练习}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% document body %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\title{边等周问题}
+\maketitle
+
+\section{基本定义}
+\label{Section 1}
+
+一个图（Graph）$G = (V, E, \partial)$ 由顶点集 $V$、边集 $E$ 和标识每一条边对应一对顶点
+（可以相同）的边界函数 $\partial \colon E \rightarrow (_1^v) \cup (_2^v)$ 构成。
+图经常用图表（Diagram）来表示，其中顶点对应图表中的点，边对应图表中连接一对点的曲线。
+对任意的图 $G$ 和 $S \subseteq V$，我们定义：
+$$\Theta(S) = \{e \in E \mid \partial(e) = \{v, w\}, v \in S, w \notin S\}，$$
+并称之为 $S$ 的边界（Edge-boundary）。那么对于一个给定的图 $G$ 和 $k \in \mathbb{Z}^+$，
+边等周问题（Edge-Isoperimetric Problem, EIP）是对于所有的 $S \in V$ 并且 $|S| = k$，
+找出最小的 $|\Theta(S)|$。注意 $|\Theta(S)|$ 是不变量（Invariant），即如果
+$\phi \colon G \rightarrow H$ 表示一个图同构，那么对于 $\forall S \in V_G$，都有
+$|\Theta(\phi(S))| = |\Theta(S)|$。因此，在一个自同构下等价的顶点子集有相同的边界。
+
+自环，即只对应一个顶点的边，与 EIP 无关，因此我们将忽略它们。我们大多数的图（但并非全部）
+是简单图（Ordinary Graph），即不含自环和多重边。一个简单图的表示可以缩短至 $(V, E)$，
+其中 $E \in (_2^v)$，$\partial$ 则是隐含的。
+
+\section{例子}
+\label{Section 2}
+
+\subsection{$K_n$，$n$-完全图}
+\label{Subsection 2.1}
+
+$K_n$ 有 $n$ 个顶点且 $E = (_2^v)$，即每一对不同顶点之间都有一条边。对于每一个 $S \in V$
+且 $|S| = k$，$|\Theta(S)| = |S \times (V − S)| = k(n − k)$。因此 $K_n$ 的 EIP
+很简单：任意一个 $k$-集都是解。
+
+\subsection{$\mathbb{Z}_n$，$n$-环}
+\label{Subsection 2.2}
+
+对于 $\mathbb{Z}_n$，有 $V = \{0, 1, \dots, n − 1\}$ 和
+$E = \{\{i, j\} \mid i − j \equiv  \pm 1(\models n)\}$。因此，$\mathbb{Z}_3 = K_3$，
+$\mathbb{Z}_4$ 的图表见图 \ref{Figure 1}。
+
+\begin{figure}
+	\centering
+	% \includesvg{figure-1}
+	\caption{$\mathbb{Z}_4$ 的图表}
+	\label{Figure 1}
+\end{figure}
+
+现在我们从下面的一般性说明（这些说明在后面也会有用），来推导 $\mathbb{Z}_4$ 以及
+$\mathbb{Z}_n$ 上 EIP 的解：
+
+\begin{enumerate}[(1)]
+	\item 对于 $|S| = k = 0$，在任意的图里都只有一个子集，即空集 $\emptyset$。
+		因此 $\min_{|S| = 0}|\Theta(S)| = |\Theta(\emptyset)| = 0$。
+	\item 对于 $k = |V| = n$，也只有一个子集，即 $V$。
+		因此 $\min_{|S| = n}|\Theta(S)| = |\Theta(V)| = 0$。
+	\item 一个图被称为 $\delta$ 度正则图 (Regular of Degree $\delta$)，
+		当它的每个顶点都正好对应 $\delta$ 条边。在一个正则图中，
+		如果 $|S| = k = 1$ 那么 $\Theta(S) = \delta$，
+		因此任意单点集都是一个解集。$\mathbb{Z}_n$ 是 $2$ 度正则图；
+		然而对于 $n = 4$ 且 $k = 2$ 的情况，有两个集合并不在 $\mathbb{Z}_n$
+		的对称性下等价：$\{0, 1\}$ 和 $\{0, 2\}$。
+		所有其他的 $2$-集都与这两者中的一个等价。$|\Theta(\{0, 1\})| = 2$，
+		$|\Theta(\{0, 2\})| = 4$，因此 $\min_{|S| = 2}|\Theta(S)| = 2$。
+	\item 对于 $\forall G$ 和 $\forall S \subseteq V$，有
+		$$\Theta(V − S) = \Theta(S)，$$
+		因此对于 $k > \frac{1}{2}|V|$，
+		$\min_{|S| = k}|\Theta(S)| = \min_{|S| = n − k}|\Theta(S)|$，
+		其中 $n = |V|$。这样我们就完成了 $\mathbb{Z}_4$ 上 EIP 的解，
+		见下表总结。
+		\begin{center}
+			\begin{tabular}{ c | c c c c c }
+			$k$                         & 0 & 1 & 2 & 3 & 4 \\
+			\hline
+			$\min_{|S| = k}|\Theta(S)|$ & 0 & 2 & 2 & 2 & 0 \\
+			\end{tabular}
+		\end{center}
+	\item 令
+		$$E(S) = \{e \in E \mid \partial(e) = \{v, w\}, v \in S, w \in S\}。$$
+		$E(S)$ 被称为 $S$ 的导出边（Induced Edges）。
+		对于一个图，导出边问题（Induced Edge Problem）是对于所有的
+		$S \subseteq V$ 并且 $|S| = k$，找出最大的 $|E(S)|$。
+\end{enumerate}
+
+\begin{lemma}
+\label{Lemma 1}
+如果图 $G = (V, E, \partial)$ 是一个 $\delta$ 度正则图，
+那么对于 $\forall S \subseteq V$，都有
+$$|\Theta(S)| + 2|E(S)| = \delta|S|。$$
+\end{lemma}
+
+\begin{proof}
+$\delta|S|$ 表示 $S$ 对应的边数，然而出现在 $E(S)$ 中的边被计算了两次。
+\end{proof}
+
+\begin{corollary}
+\label{Corollary 1}
+如果 $G$ 是一个正则图，
+那么 $S \subseteq V$ 是导出边问题的一个解当且仅当它同时也是 EIP 的解。
+而且，对于 $\forall k$，$\min_{|S| = k}|\Theta(S)| = \delta k − 2\max_{|S| = k}|E(S)|$。
+\end{corollary}
+
+那么对于正则图，EIP 和导出边问题是等价的，我们将视它们为可等价互换的问题。
+通常 EIP 出现在实际应用中，而导出边问题则更易证明。EIP 还存在第三种自然变体：
+对于 $S \subseteq V$，令
+$$\partial^\star(S) = \{e \in E \mid \partial(e) \cap S \neq \emptyset\}，$$
+即 $S$ 中的点对应的边的集合。
+
+\begin{exercise}
+\label{Exercise 1}
+对于正则图，证明计算
+$$\min_{\substack{
+	S \subseteq V \\
+	|S| = k \\
+}}|\partial^\star(S)|$$
+与 EIP 等价。
+\end{exercise}
+
+回想一下，一棵树（Tree）是连通无环图。一个无环图也被称为森林（Forest），因为它是
+树——其连通分支的并集。
+
+\begin{lemma}
+\label{Lemma 2}
+有 $n$ 个顶点的树的边数为 $n − 1$。有 $n$ 个顶点的森林的导出边数则是 $n - t$，
+其中 $t$ 为其连通分支数。
+\end{lemma}
+
+$\mathbb{Z}_n$ 的任意适当的子集 $S$ 都可以导出一个无环图，
+因此 $max_{|S| = k|}\Theta(S)|$ 会出现于当 $S$ 是一个连通的集合，即区间时。
+因而，如果 $0 < k < n$，$\min_{|S| = k}|\Theta(S)| = 2k − 2(k − 1) = 2$。
+
+\subsection{$Q_d$，$d$ 阶立方}
+\label{Subsection 2.3}
+
+$d$ 阶立方 $Q_d$ 有顶点集 $\{0, 1\}^d$，即 $\{0, 1\}$ 的 $d$ 倍笛卡尔积。
+因此 $n = |V_{Q_d}| = 2^d$。$Q_d$ 中的两个顶点（$0$ 和 $1$ 构成的 $d$ 元组）对应一条边，
+当且仅当它们正好有一位不相同。
+
+\begin{exercise}
+\label{Exercise 2}
+找出 $m = |E_{Q_d}|$ 对应的公式。
+\end{exercise}
+
+$Q_1$ 和 $K_2$ 同构，$Q_2$ 和 $\mathbb{Z}_4$ 同构，这些都已经可以通过 EIP 得到解决。
+一个 $3$ 阶立方有 $8$ 个顶点，$12$ 条边，以及 $6$ 个平面。
+$Q_3$ 的图表事实上是一个 $3$ 阶立方的投影，见图 \ref{Figure 2}。
+
+\begin{figure}
+	\centering
+	% \includesvg{figure-2}
+	\caption{$Q_3$ 的图表}
+	\label{Figure 2}
+\end{figure}
+
+我们可以用在前两个例子中发展出来的简便工具来解决 $Q_3$ 上的 EIP。
+首先观察到 $Q_3$ 有围长（最短回路的长度）为 $4$：
+因为 $3$ 阶立方的对称群是传递的，所以任意顶点都和其他顶点一样。
+从一个顶点出发勾勒出路径，我们可以看到不存在长度为 $3$ 的闭合回路。因此对于
+$1 \le k \le 3$，根据引理 \ref{Lemma 1} 和引理 \ref{Lemma 2}，我们有
+$$\begin{array}{ r l }
+\min\limits_{|S| = k}|\Theta(S)| & = 3k - 2\max\limits_{|S| = k}|E(S)| \\
+                                 & = 3k - 2(k - 1) = k + 2
+\end{array}。$$
+对于 $k = 4$，要么 $S$ 导出一个回路，在这种情况下是一个 $4$-环，并且 $|\Theta(S)| = 4$；
+要么 $S$ 导出一个无环图，并且根据上述可以得到 $|\Theta(S)| \ge 6$。
+对于 $k > 4 = \frac{8}{2}$，我们根据下面这个式子得到解
+$$\min\limits_{|S| = k}|\Theta(S)| = \min\limits_{|S| = 8 - k}|\Theta(S)|。$$
+最后的解见下表总结。
+\begin{center}
+	\begin{tabular}{ c | c c c c c c c c c }
+	$k$                         & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
+	\hline
+	$\min_{|S| = k}|\Theta(S)|$ & 0 & 3 & 4 & 5 & 4 & 5 & 4 & 3 & 0 \\
+	\end{tabular}
+\end{center}
+
+为了将这个 EIP 的解推广到 $Q_d$（$d > 3$），我们需要利用一些关于立方的简单结论，
+这些结论的证明将被留作练习。
+一个 $d$ 阶立方的 $c$ 阶子立方（$c$-subcube of the $d$-cube）是 $Q_d$ 的子图，
+导出自一个包含所有在 $d − c$ 个坐标下有相同（固定）值的顶点的集合。
+
+\begin{exercise}
+\label{Exercise 3}
+证明 $d$ 阶立方的任意 $c$ 阶子立方与 $c$ 阶立方同构。
+\end{exercise}
+
+\begin{exercise}
+\label{Exercise 4}
+计算 $d$ 阶立方有多少个 $c$ 阶子立方？
+\end{exercise}
+
+一个 $d$ 阶立方的 $c$ 阶子立方的邻居（Neighbor）是在 $d − c$
+个固定坐标下有正好一个坐标不同的任意 $c$ 阶子立方。
+
+\begin{exercise}
+\label{Exercise 5}
+证明一个 $c$ 阶子立方的所有邻居都互不相交。
+\end{exercise}
+
+\begin{exercise}
+\label{Exercise 6}
+证明一个 $c$ 阶子立方的两个不同邻居（的顶点）之间没有边相连。
+\end{exercise}
+
+\begin{exercise}
+\label{Exercise 7}
+计算一个 $d$ 阶立方的 $c$ 阶子立方有多少个邻居？
+\end{exercise}
+
+$Q_d$ 上的 EIP 最初由数据传输上的问题推动。
+W. H. Kautz \cite{Kautz}、E. C. Posner 和本书作者的研究引发了一种猜测：
+字典序编号方式（Lexicographic Numbering）的起始部分，即
+$$lex(x) = 1 + \sum_{i = 1}^dx_i2^{i - 1}, x \in V_{Q_d}$$
+是解集，然而这要如何证明？一个显而易见的尝试方法是对维度 $d$ 使用归纳法。
+数学归纳法有一个看似自相矛盾的属性，它往往更容易证明一个更强的定理，
+因为一旦最初的情况得到验证，人们就可以假设该定理对归纳参数的较低值为真，
+以便建立下一次归纳。因此一个较强的假设可以产生一个更简单的证明。
+在本例中，该策略引发了这种推测——以下归纳步骤会生成 \emph{所有} 解集：
+
+\begin{enumerate}[(1)]
+	\item 首先从空集 $\emptyset$ 开始。
+	\item 对于已经构建好的集合 $S \subset V_{Q_d}$，
+		选择任意一个 $x \in V_{Q_d} − S$ 来扩充 $S$，使得导出边数的增量最大，即
+		$$|E(S \cup \{x\})| − |E(S)|。$$
+\end{enumerate}
+
+添加任意 $x \in V_{Q_d}$ 都可使 $\emptyset$ 的增量最大，
+因为 $|E(\{x\})| − |E(\emptyset)| = 0$。$\{x\}$ 的增量则必须是 $x$ 的相邻顶点。
+那么对于 $k > 2$ 的 $k$-集，情况又该如何呢？答案是如果 $k = 2^c$，
+那么该集合必然是 $c$ 阶子立方。我们刚刚已经验证了 $c = 0$ 和 $1$ 的情况。
+假设这对 $0, 1, \dots, c − 1$ 都成立，为了扩充一个 $2^{c−1}$-集，
+即一个 $(c − 1)$ 阶子立方，我们只能选择一个使 $|E(S)|$ 增量为 $1 $的顶点，
+即一个相邻的 $(c − 1)$ 阶子立方中的任意顶点。从一个相邻的子立方中选出一个顶点后，
+我们必须继续从同一个子立方中选顶点，直到用尽它所有的顶点，
+这是因为所选择的子立方中总会存在一个顶点使得 $|E(S \cup {x})| − |E(S)| \ge 2$，
+而其他子立方中的任意顶点都有 $|E(S \cup {x})| − |E(S)| \le 2$。
+当我们用尽所有相邻的 $(c − 1)$ 阶子立方时，我们就得到了一个 $c$ 阶子立方。
+
+\begin{thebibliography}{99}
+
+\bibitem{Kautz}
+	W. H. Kautz,
+	\emph{Optimized data encoding for digital computers},
+	Convention Record I. R. E., 1954, pp. 47-57
+
+\bibitem{Bernstein}
+	A. J. Bernstein,
+	\emph{Maximally connected arrays on the n-cube},
+	SIAM J. Appl. Math., vol. 15, no. 6, pp. 1485–1489, 1967
+
+\bibitem{Steiglitz}
+	K. Steiglitz, A. J. Bernstein,
+	\emph{Optimal binary coding of ordered numbers},
+	J. SIAM, vol. 13, no. 2, pp. 441-443, 1965
+
+\bibitem{Golomb}
+	S. W. Golomb,
+	\emph{Shift Register Sequences},
+	Aegean Park Press, 1982
+
+\bibitem{Harper}
+	L. H. Harper,
+	\emph{Optimal assignments of numbers to vertices},
+	J. SIAM, vol. 12, no. 1, pp. 131-135, 1964
+
+\bibitem{Bezrukov}
+	S. L. Bezrukov,
+	\emph{On k-partitioning the n-cube},
+	Proc. International Conference on Graph Theory Concepts in Computer Science, Como, Italy, 1997
+
+\end{thebibliography}
+
+\end{document}
