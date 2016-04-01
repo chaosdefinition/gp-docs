@@ -34,6 +34,7 @@
 \newtheorem{lemma}{引理}
 \newtheorem{corollary}{推论}
 \newtheorem{exercise}{练习}
+\newtheorem{definition}{定义}
 
 % svg options
 \setsvg{
@@ -268,9 +269,9 @@ $1 \le k \le 3$，根据引理 \ref{Lemma 1} 和引理 \ref{Lemma 2}，我们有
 
 $Q_d$ 上的 EIP 最初由数据传输上的问题推动。
 W. H. Kautz \cite{Kautz}、E. C. Posner 和本书作者的研究引发了一种猜测：
-字典序编号方式（Lexicographic Numbering）的起始部分，即
+字典序编号方式（Lexicographic Numbering）的起始部分，即对于 $x \in V_{Q_d}$，
 \begin{equation*}
-lex(x) = 1 + \sum_{i = 1}^dx_i2^{i - 1}, \qquad x \in V_{Q_d}
+lex(x) = 1 + \sum_{i = 1}^dx_i2^{i - 1}
 \end{equation*}
 是解集，然而这要如何证明？一个显而易见的尝试方法是对维度 $d$ 使用归纳法。
 数学归纳法有一个看似自相矛盾的属性，它往往更容易证明一个更强的定理，
@@ -301,7 +302,7 @@ lex(x) = 1 + \sum_{i = 1}^dx_i2^{i - 1}, \qquad x \in V_{Q_d}
 
 总体而言，令
 \begin{equation*}
-k = \sum_{i = 1}^K2^{c_i}, \qquad 0 \le c_1 < c_2 < \cdots < c_K \le \lfloor \log_2k \rfloor
+k = \sum_{i = 1}^K2^{c_i}, 0 \le c_1 < c_2 < \cdots < c_K \le \lfloor \log_2k \rfloor
 \end{equation*}
 为 $k$ 的二进制表示形式（注意 $K \le \lceil \log_2k \rceil$）。
 如果 $S \subseteq V_{Q_d}$ 是一个互不相交的子立方的并集，
@@ -452,7 +453,7 @@ $k_1$ 与其类似。因为 $k_0 + k_1 = k$，所以只有三种可能的情况�
 每一个都与先前的那个元件相距一个单位，以这样的方式来最小化连接它们的线的总长度。
 精确地来说，我们将 $G$ 的一种顶点编号方式（Vertex-numbering）定义为一个一对一的函数
 \begin{equation*}
-\eta \colon E \rightarrow \{1, 2, \dots, n\}, \qquad n = |V|
+\eta \colon E \rightarrow \{1, 2, \dots, n\},\ \text{其中}\ n = |V|
 \end{equation*}
 $\eta$ 的值域中的整数可根据线形机箱上的位置来区分。
 那么 $\eta$ 的总线长（Wirelength）则是
@@ -462,6 +463,123 @@ wl(\eta) = \sum_{\substack{
 	\partial(e) = \{v, w\} \\
 }}|\eta(v) - \eta(w)|
 \end{equation*}
+
+对于一个图 $G = (V, E, \partial)$ 来说，
+\begin{equation*}
+wl(G) = \min\{wl(\eta) \mid \eta\ \text{是}\ G\ \text{的一种顶点编号方式}\}
+\end{equation*}
+记住，一个有 $n$ 个顶点的图有 $n!$ 种顶点编号方式。
+
+\subsubsection{例子}
+\label{Subsubsection 3.1.1}
+
+平方的图有 $4! = 24$ 种顶点编号方式，但它同时还有 $8$ 种对称情况。
+任意两种对称的编号方式都有相同的线长。
+图 \ref{Figure 3} 的三种编号方式代表了 $24 / 8 = 3$ 种编号方式的等价类。
+前两种编号方式有最小的线长 $wl$，第三种则有最大的。因此 $wl(Q_2) = 6$。
+然而 $wl(Q_3)$ 就没有那么容易得出了，
+因为 $Q_3$ 有 $8! = 40320$ 种编号方式以及 $48$ 种对称情况。
+虽然 $40320 / 48 = 840$ 也并不是那么大，
+但是要如何才能系统地生成这 $840$ 种编号方式等价类的代表呢？
+我们现在来看看如何解决这些明显的困难。
+
+\begin{figure}[h!]
+	\centering
+	\includesvg[width = 1.0\textwidth]{figure-3}
+	\caption{$Q_2$ 的编号方式}
+	\label{Figure 3}
+\end{figure}
+
+为了最小化一个和，譬如 $wl$，一个显而易见的策略是分别最小化每一个加数。
+这些最小值的和就成了和的最小值的下界，并且我们可以期望这会是一个不错的下界，甚至是精确的。
+然而这并不适用于 $wl(\eta)$ 的定义，因为对于每一条边 $e \in E $，$\partial(e) = \{v, w\}$，都有
+\begin{equation*}
+\min_{\substack{\eta}}|\eta(v) - \eta(w)| = 1
+\end{equation*}
+
+\subsubsection{$wl$ 的另一种表示形式}
+\label{Subsubsection 3.1.2}
+
+对于给定的一个编号方式 $\eta$ 和一个整数 $k$，$0 \le k \le n$，令
+\begin{equation*}
+S_k(\eta) = \eta^{-1}(\{1, 2, \dots, k\}) = \{v \in V \mid \eta(v) \le k\}
+\end{equation*}
+即编号方式 $\eta$ 下的前 $k$ 个顶点的集合。
+那么下面我们就得到了线长的另一种表示形式。
+
+\begin{lemma}
+\label{Lemma 4}
+\begin{equation*}
+wl(\eta) = \sum_{k = 0}^n|\Theta(S_k(\eta))|
+\end{equation*}
+\end{lemma}
+
+\begin{proof}[证明]
+注意 $S_0(\eta) = \eta^{−1}(\emptyset) = \emptyset$。令
+\begin{equation*}
+\chi(e, k) = \begin{cases}
+	1 & \text{如果}\ \partial(e) = \{v, w\}, \eta(v) \le k < \eta(w) \\
+	0 & \text{其他情况} \\
+\end{cases}
+\end{equation*}
+那么
+\begin{align*}
+wl(\eta) & = \sum_{\substack{
+	e \in E \\
+	\partial(e) = \{v, w\} \\
+}}|\eta(v) - \eta(w)| = \sum_{e \in E}\sum_{k = 0}^n\chi(e, k) \\
+         & = \sum_{k = 0}^n\sum_{e \in E}\chi(e, k) = \sum_{k = 0}^n|\Theta(S_k(\eta))| \\
+\end{align*}
+\end{proof}
+
+\begin{exercise}
+\label{Exercise 11}
+（Steiglitz–Bernstein \cite{Steiglitz}）
+假设线形机箱实际上是一条实线，上面有 $n$ 个位置 $s_1 < s_2 < \cdots < s_n$ 用来放置元件。
+布局 $\eta$ 将顶点 $v \in V$ 放置在位置 $s_{\eta(v)}$ 上，证明 $\eta$ 有总线长为
+\begin{equation*}
+wl(\eta) = \sum_{k = 0}^n(s_{k + 1} - s_k)|\Theta(S_k(\eta))|
+\end{equation*}
+\end{exercise}
+
+线长的这种作为一个和的新表示形式给了我们它的另一个下界。
+
+\begin{corollary}
+\label{Corollary 2}
+对于任意的图 $G$，
+\begin{align*}
+wl(G) & = \min_{\eta}wl(\eta) = \min_{\eta}\sum_{k = 0}^n|\Theta(S_k(\eta))| \\
+      & \ge \sum_{k = 0}^n\min_{\eta}|\Theta(S_k(\eta))| = \sum_{k = 0}^n\min_{|S| = k}|\Theta(S)| \\
+\end{align*}
+\end{corollary}
+
+\begin{theorem}
+\label{Theorem 2}
+对于 $G = (V, E, \partial)$ 的任意顶点编号方式 $\eta_0$，
+如果它的所有初始段 $S_k(\eta_0)$（$0 \le k \le n$）都是 $G$ 上 EIP 的解，
+那么它本身就是 $G$ 上线长问题的一个解。
+\end{theorem}
+
+\begin{corollary}
+\label{Corollary 3}
+$\mathbb{Z}_n$ 的编号方式 $\eta_0(i) = 1 + i$ 是 $\mathbb{Z}_n$ 上线长问题的一个解，并且
+\begin{align*}
+wl(\mathbb{Z}_n) & = \sum_{k = 0}^n\min_{|S| = k}|\Theta(S)| \\
+                   & = \sum_{k = 1}^{n - 1}2 = 2(n - 1) \\
+\end{align*}
+\end{corollary}
+
+\begin{definition}
+如果 $\{T_i\}_{i = 1}^n$ 是一个完全有序集合的序列，
+那么它们乘积的字典序 $T_1 \times T_2 \times \cdots \times T_n$ 是一个由 $x < y$ 定义的全序，
+$x < y$ 成立当 $\exists m$ 使得 $x_1 = y_1$，$x_2 = y_2$，……，
+$x_{m - 1} = y_{m - 1}$ 且 $x_m < y_m$。
+一个集合的任意全序都对应一个编号方式，其中集合的第一个（最小的）元素编号为 $1$，
+第二个编号为 $2$，以此类推。
+$0$ 和 $1$ 构成的 $d$ 元组（$Q_d$ 的顶点）上的字典序对应的编号方式是
+$lex(x) = 1 + \sum_{i = 1}^dx_i2^{i - 1}$
+\end{definition}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % document bibliography %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
