@@ -11,7 +11,6 @@
 \usepackage{amsthm}	% for theorems
 \usepackage{svg}	% for svg images
 
-
 \author{L. H. Harper}
 \date{2016 年 3 月 11 日}
 
@@ -41,6 +40,8 @@
 	svgpath = {./images/},		% svg directory
 	inkscape = {inkscape -z -D}	% Inkscape command
 }
+
+\setlength{\tabcolsep}{4pt}	% space between tabular columns
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % document body %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -84,10 +85,10 @@ $K_n$ 有 $n$ 个顶点且 $E = (_2^v)$，即每一对不同顶点之间都有�
 \label{Subsection 2.2}
 
 对于 $\mathbb{Z}_n$，有 $V = \{0, 1, \dots, n − 1\}$ 和
-$E = \{\{i, j\} \mid i − j \equiv  \pm 1(\models n)\}$。因此，$\mathbb{Z}_3 = K_3$，
+$E = \{\{i, j\} \mid i − j \equiv  \pm 1 \pmod n\}$。因此，$\mathbb{Z}_3 = K_3$，
 $\mathbb{Z}_4$ 的图表见图 \ref{Figure 1}。
 
-\begin{figure}[h!]
+\begin{figure}
 	\centering
 	\includesvg{figure-1}
 	\caption{$\mathbb{Z}_4$ 的图表}
@@ -122,7 +123,7 @@ $\mathbb{Z}_n$ 上 EIP 的解：
 			\begin{tabular}{ c | c c c c c }
 			$k$                         & 0 & 1 & 2 & 3 & 4 \\
 			\hline
-			$\min_{|S| = k}|\Theta(S)|$ & 0 & 2 & 2 & 2 & 0 \\
+			$\min_{|S| = k}|\Theta(S)|$ & 0 & 2 & 2 & 2 & 0
 			\end{tabular}
 		\end{center}
 	\item 令
@@ -158,7 +159,7 @@ $\delta|S|$ 表示 $S$ 对应的边数，然而出现在 $E(S)$ 中的边被计�
 通常 EIP 出现在实际应用中，而导出边问题则更易证明。EIP 还存在第三种自然变体：
 对于 $S \subseteq V$，令
 \begin{equation*}
-\partial^\star(S) = \{e \in E \mid \partial(e) \cap S \neq \emptyset\}
+\partial^\ast(S) = \{e \in E \mid \partial(e) \cap S \neq \emptyset\}
 \end{equation*}
 即 $S$ 中的点对应的边的集合。
 
@@ -168,8 +169,8 @@ $\delta|S|$ 表示 $S$ 对应的边数，然而出现在 $E(S)$ 中的边被计�
 \begin{equation*}
 \min_{\substack{
 	S \subseteq V \\
-	|S| = k \\
-}}|\partial^\star(S)|
+	|S| = k
+}}|\partial^\ast(S)|
 \end{equation*}
 与 EIP 等价。
 \end{exercise}
@@ -203,7 +204,7 @@ $Q_1$ 和 $K_2$ 同构，$Q_2$ 和 $\mathbb{Z}_4$ 同构，这些都已经可以
 一个 $3$ 阶立方有 $8$ 个顶点，$12$ 条边，以及 $6$ 个平面。
 $Q_3$ 的图表事实上是一个 $3$ 阶立方的投影，见图 \ref{Figure 2}。
 
-\begin{figure}[h!]
+\begin{figure}
 	\centering
 	\includesvg{figure-2}
 	\caption{$Q_3$ 的图表}
@@ -217,7 +218,7 @@ $Q_3$ 的图表事实上是一个 $3$ 阶立方的投影，见图 \ref{Figure 2}
 $1 \le k \le 3$，根据引理 \ref{Lemma 1} 和引理 \ref{Lemma 2}，我们有
 \begin{align*}
 \min\limits_{|S| = k}|\Theta(S)| & = 3k - 2\max\limits_{|S| = k}|E(S)| \\
-                                 & = 3k - 2(k - 1) = k + 2 \\
+				 & = 3k - 2(k - 1) = k + 2
 \end{align*}
 对于 $k = 4$，要么 $S$ 导出一个回路，在这种情况下是一个 $4$-环，并且 $|\Theta(S)| = 4$；
 要么 $S$ 导出一个无环图，并且根据上述可以得到 $|\Theta(S)| \ge 6$。
@@ -230,7 +231,7 @@ $1 \le k \le 3$，根据引理 \ref{Lemma 1} 和引理 \ref{Lemma 2}，我们有
 	\begin{tabular}{ c | c c c c c c c c c }
 	$k$                         & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
 	\hline
-	$\min_{|S| = k}|\Theta(S)|$ & 0 & 3 & 4 & 5 & 4 & 5 & 4 & 3 & 0 \\
+	$\min_{|S| = k}|\Theta(S)|$ & 0 & 3 & 4 & 5 & 4 & 5 & 4 & 3 & 0
 	\end{tabular}
 \end{center}
 
@@ -352,9 +353,9 @@ E(t) < E(k + t) − E(k) < E(2^d ) − E(2^d − t)
 	\item 如果 $k \ge 2^{d − 1}$，那么有
 		\begin{align*}
 		E(k + t) − E(k) & = \sum_{i = 1}^tE(k + i) − E(k + i − 1) \\
-		                & = \sum_{i = 1}^t\left[E(k + i − 2^{d − 1}) −
-		                    E(k + i − 2^{d − 1} − 1) + 1\right] \\
-		                & = E(k + t − 2^{d − 1}) − E(k − 2^{d − 1}) + t \\
+				& = \sum_{i = 1}^t\left[E(k + i − 2^{d − 1}) −
+				    E(k + i − 2^{d − 1} − 1) + 1\right] \\
+				& = E(k + t − 2^{d − 1}) − E(k − 2^{d − 1}) + t
 		\end{align*}
 		并且两个不等式都遵循归纳假设。
 	\item 如果 $k + t \le 2^{d − 1}$，那么左边的不等式遵循归纳假设；
@@ -362,10 +363,11 @@ E(t) < E(k + t) − E(k) < E(2^d ) − E(2^d − t)
 	\item 如果 $k < 2_{d − 1} < k + t$，那么
 		\begin{align*}
 		E(k + t) − E(k) & = \left[E(k + t) − E(2^{d − 1})\right] +
-		                    \left[E(2^{d − 1}) − E(k)\right] \\
-		                & > \left[E(k + t − 2^{d − 1})\right] +
-		                    \left[E(t) − E(t − (2^{d − 1} − k))\right] \\
-		                & = E(t)
+				    \left[E(2^{d − 1}) − E(k)\right] \\
+				& > \left[E(k + t − 2^{d − 1})\right] +
+				    \left[E(t) − E(t − (2^{d − 1} − k))\right] \\
+		\intertext{\hfill 分别根据情况 1 和 2}
+				& = E(t)
 		\end{align*}
 \end{enumerate}
 \begin{exercise}
@@ -424,9 +426,9 @@ $k_1$ 与其类似。因为 $k_0 + k_1 = k$，所以只有三种可能的情况�
 		令 $k_0^{'} = k_0 - 2^{c_{K_0}} > 0$，我们有
 		\begin{align*}
 		k_0^{'} + k_1 & = k_0 - 2^{c_{K_0}} + k_1 \\
-		              & = k - 2^{c_K - 1} \\
-		              & \ge 2^{c_K} - 2^{c_K - 1} \\
-		              & = 2^{c_K - 1} \\
+			      & = k - 2^{c_K - 1} \\
+			      & \ge 2^{c_K} - 2^{c_K - 1} \\
+			      & = 2^{c_K - 1}
 		\end{align*}
 		如果我们从 $S_1$ 中去掉 $2^{c_{K_0}} − k_0^′$ 个顶点
 		并把它们补充到包含 $S_0 - Q_{c_{K_0, 0}}$ 的那个集合中，
@@ -460,7 +462,7 @@ $\eta$ 的值域中的整数可根据线形机箱上的位置来区分。
 \begin{equation*}
 wl(\eta) = \sum_{\substack{
 	e \in E \\
-	\partial(e) = \{v, w\} \\
+	\partial(e) = \{v, w\}
 }}|\eta(v) - \eta(w)|
 \end{equation*}
 
@@ -483,7 +485,7 @@ wl(G) = \min\{wl(\eta) \mid \eta\ \text{是}\ G\ \text{的一种顶点编号方�
 但是要如何才能系统地生成这 $840$ 种编号方式等价类的代表呢？
 我们现在来看看如何解决这些明显的困难。
 
-\begin{figure}[h!]
+\begin{figure}
 	\centering
 	\includesvg[width = 1.0\textwidth]{figure-3}
 	\caption{$Q_2$ 的编号方式}
@@ -519,16 +521,16 @@ wl(\eta) = \sum_{k = 0}^n|\Theta(S_k(\eta))|
 \begin{equation*}
 \chi(e, k) = \begin{cases}
 	1 & \text{如果}\ \partial(e) = \{v, w\}, \eta(v) \le k < \eta(w) \\
-	0 & \text{其他情况} \\
+	0 & \text{其他情况}
 \end{cases}
 \end{equation*}
 那么
 \begin{align*}
 wl(\eta) & = \sum_{\substack{
 	e \in E \\
-	\partial(e) = \{v, w\} \\
+	\partial(e) = \{v, w\}
 }}|\eta(v) - \eta(w)| = \sum_{e \in E}\sum_{k = 0}^n\chi(e, k) \\
-         & = \sum_{k = 0}^n\sum_{e \in E}\chi(e, k) = \sum_{k = 0}^n|\Theta(S_k(\eta))| \\
+	 & = \sum_{k = 0}^n\sum_{e \in E}\chi(e, k) = \sum_{k = 0}^n|\Theta(S_k(\eta))|
 \end{align*}
 \end{proof}
 
@@ -549,7 +551,7 @@ wl(\eta) = \sum_{k = 0}^n(s_{k + 1} - s_k)|\Theta(S_k(\eta))|
 对于任意的图 $G$，
 \begin{align*}
 wl(G) & = \min_{\eta}wl(\eta) = \min_{\eta}\sum_{k = 0}^n|\Theta(S_k(\eta))| \\
-      & \ge \sum_{k = 0}^n\min_{\eta}|\Theta(S_k(\eta))| = \sum_{k = 0}^n\min_{|S| = k}|\Theta(S)| \\
+      & \ge \sum_{k = 0}^n\min_{\eta}|\Theta(S_k(\eta))| = \sum_{k = 0}^n\min_{|S| = k}|\Theta(S)|
 \end{align*}
 \end{corollary}
 
@@ -565,7 +567,7 @@ wl(G) & = \min_{\eta}wl(\eta) = \min_{\eta}\sum_{k = 0}^n|\Theta(S_k(\eta))| \\
 $\mathbb{Z}_n$ 的编号方式 $\eta_0(i) = 1 + i$ 是 $\mathbb{Z}_n$ 上线长问题的一个解，并且
 \begin{align*}
 wl(\mathbb{Z}_n) & = \sum_{k = 0}^n\min_{|S| = k}|\Theta(S)| \\
-                   & = \sum_{k = 1}^{n - 1}2 = 2(n - 1) \\
+		 & = \sum_{k = 1}^{n - 1}2 = 2(n - 1)
 \end{align*}
 \end{corollary}
 
@@ -580,6 +582,177 @@ $0$ 和 $1$ 构成的 $d$ 元组（$Q_d$ 的顶点）上的字典序对应的编
 $lex(x) = 1 + \sum_{i = 1}^dx_i2^{i - 1}$
 \end{definition}
 
+\begin{corollary}
+\label{Corollary 4}
+$Q_d$ 的字典序编号方式是 $Q_d$ 上线长问题的一个解。
+\end{corollary}
+
+\begin{exercise}
+\label{Exercise 12}
+证明 $wl(Q_d) = 2^{d - 1}(2^d - 1)$。
+\end{exercise}
+
+\begin{exercise}
+\label{Exercise 13}
+对于练习 \ref{Exercise 11} 中的更一般的线形机箱，
+证明 $lex$ 同时也是它的 $Q_d$ 上线长问题的一个解。
+\end{exercise}
+
+\subsection{$4$ 阶德布鲁因图}
+\label{Subsection 3.2}
+
+德布鲁因图是一个有向图（Directed Graph, Digraph），即存在两个边界函数
+$\partial_\pm \colon E \rightarrow V$ 分别标识每一条边的头和尾。
+有向图的图表中的每条边一般都有一个箭头指向它的头。
+$d$ 阶德布鲁因图（the deBruijn Graph of Order $d$）$DB_d$ 有与 $Q_d$ 相同的顶点集
+（$0$ 和 $1$ 构成的所有 $d$ 元组的集合），而它的边集则完全不同。
+$E_{DB_d}$是 $0$ 和 $1$ 构成的所有 $(d + 1)$ 元组的集合，并且
+\begin{align*}
+\partial_{-}(x_1, x_2, \dots, x_d, x_{d + 1}) & = (x_1, x_2, \dots, x_d) \\
+\partial_{+}(x_1, x_2, \dots, x_d, x_{d + 1}) & = (x_2, \dots, x_d, x_{d + 1})
+\end{align*}
+关于德布鲁因图的更多信息，请参考 \cite{Golomb}。$DB_4$ 的图表见图 \ref{Figure 4}。
+
+\begin{figure}
+	\centering
+	\includesvg{figure-4}
+	\caption{$4$ 阶德布鲁因图}
+	\label{Figure 4}
+\end{figure}
+
+对于一个编号方式 $\eta$，它的作为边界的和的线长表示形式，
+及其在求解 $\mathbb{Z}_n$ 和 $Q_d$ 上的线长问题上的应用，
+表明了一种可最小化任意图的线长的启发式方法：
+给顶点编号为 $1, 2, \dots, k - 1, k, \dots, n$，从而最小化
+\begin{equation*}
+|\Theta(S_k(\eta))| - |\Theta(S_{k - 1}(\eta))|
+\end{equation*}
+即每增加一个顶点所带来的边际增量。
+把这个启发式方法应用到 $\underline{DB_4}$（去掉自环和边的方向的 $DB_4$）上，
+我们就得到了编号方式 $\eta_0$，见图 \ref{Figure 5}。
+
+\begin{figure}
+	\centering
+	\includesvg{figure-5}
+	\caption{编号方式 $\eta_0$ 下 $\underline{DB_4}$ 的图表}
+	\label{Figure 5}
+\end{figure}
+
+下表列出了 $k$ 的取值范围在 $0$ 到 $16$ 时 $|\Theta(S_k(\eta_0))|$ 的值：
+\begin{center}
+	\begin{tabular}{ c | c c c c c c c c c c c c c c c c c }
+	$k$                     & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 & 16 \\
+	\hline
+	$|\Theta(S_k(\eta_0))|$ & 0 & 2 & 4 & 4 & 6 & 6 & 6 & 6 & 6 & 6 &  8 &  6 &  6 &  4 &  4 &  2 &  0
+	\end{tabular}
+\end{center}
+从这可以看出 $S_{10}(\eta_0)$ 不是 EIP 的解。
+事实上并不存在一个所有的初始段都是 EIP 的解的编号方式，
+因为如果存在的话，它就会产生于我们用来构造 $\eta_0$ 的这个过程中。
+然而，我们可以断言，对于 $k \neq 10$，$S_k(\eta_0)$ 是 EIP 的解。
+因此有不等式可导致定理 \ref{Theorem 2}，即
+\begin{equation*}
+wl(\underline{DB_4}) > \sum_{k = 0}^n\min_{|S| = k}|\Theta(S)| = 2 \times 34 + 6 = 74
+\end{equation*}
+而
+\begin{equation*}
+wl(\eta_0) = 76
+\end{equation*}
+因为对于每一个顶点 $v \in V_{\underline{DB_4}}$，度数 $\delta(v)$ 都是偶数，
+并且对于所有的 $S \subseteq V_{\underline{DB_4}}$，
+\begin{equation*}
+|\Theta(S)| = \sum_{v \in S}\delta(v) - 2|E(S)|
+\end{equation*}
+也是偶数（引理 \ref{Lemma 1} 中的恒等式的泛化），
+所以对于任意 $\underline{DB_4}$ 的编号方式 $\eta$，我们都有 $wl(\eta) \ge 76$，
+因此 $\eta_0$ 是它的线长问题的一个解。
+
+\begin{exercise}
+\label{Exercise 14}
+找出 $\underline{DB_4}$ 上所有的 EIP 的解集，其中 $k \le 8$（无需证明）。
+\end{exercise}
+
+\subsection{划分问题}
+\label{Subsection 3.3}
+
+$G = (V, E, \partial)$ 的一个划分（Partition）是一个集合 $\pi \subseteq 2^V$ 满足
+\begin{enumerate}[(1)]
+	\item $\forall B \in \pi$，$B \neq \emptyset$；
+	\item $\forall A, B \in \pi$，要么 $A = B$，要么 $A \cap B = \emptyset$；
+	\item $\bigcup_{B \in \pi}B = V$。
+\end{enumerate}
+
+$B \in \pi$ 被称为划分的一个块（Block）。
+一个划分 $\pi$ 被认为是均匀的（Uniform），当 $\forall A, B \in \pi$，$||A| − |B|| \le 1$。
+如果 $|\pi| = p$，那么这就等价于
+\begin{equation*}
+\forall B \in \pi,
+\left\lfloor\frac{n}{p}\right\rfloor \le |B| \le \left\lceil\frac{n}{p}\right\rceil,
+\ \text{其中}\ n = |V|
+\end{equation*}
+事实上，如果 $j$ 是 $n$ 除以 $p$ 的余数（即 $n \equiv j \pmod p$，$0 \le j < p$），
+那么 $G$ 的任意均匀 $p$-划分都有 $j$ 个 $\lceil\frac{n}{p}\rceil$-块
+和 $(p - j)$ 个 $\lfloor\frac{n}{p}\rfloor$-块。
+
+一个划分 $\pi$ 的边界（Edge-boundary）是
+\begin{align*}
+\Theta(\pi) & = \{e \in E \mid \partial(e) = \{v, w\}, v \in A, w \in B, A \ne B\} \\
+	    & = \bigcup_{B \in \pi}\Theta(B)
+\end{align*}
+注意后一种表示形式中的并集不是互不相交的，
+而是任意 $e \in E$ 且 $\partial(e) = \{v, w\}$ 都正好被包含了两次，
+一次来自包含 $v$ 的块，另一次来自包含 $w$ 的块。
+
+$G$ 的边界划分问题（Edge-boundary Partition Problem）是对于 $G$ 的所有均匀 $p$-划分 $\pi$，
+找出最小的 $|\Theta(\pi)|$。$G$ 可以被当做一个要布局在 $p$ 块芯片上的布线图，
+其中的元件要尽可能平均地分布在这些芯片上。问题则是给芯片分配元件，
+使得连接不同芯片上元件的线数最小。
+边界划分问题的一个变体是边宽划分问题（Edge-width Partition Problem），
+即对于 $G$ 的所有均匀 $p$-划分 $\pi$，找出最小的 $\max_{B \in \pi}|\Theta(B)|$。
+
+\begin{lemma}
+\label{Lemma 5}
+如果 $n \equiv j \pmod p$，$0 \le j < p$，那么
+\begin{equation*}
+\min_{\substack{
+	|\pi| = p \\
+	\pi \text{ 均匀}
+}}|\Theta(\pi)| \ge \frac{1}{2}\left(
+	j\min_{|B| = \lceil\frac{n}{p}\rceil}|\Theta(B)| +
+	(p - j)\min_{|B| = \lfloor\frac{n}{p}\rfloor}|\Theta(B)|
+\right)
+\end{equation*}
+同样还有
+\begin{equation*}
+\min_{|\pi| = p}\max_{B \in \pi}|\Theta(B)| \ge \max\left\{
+	\min_{|B| = \lceil\frac{n}{p}\rceil}|\Theta(B)|,
+	\min_{|B| = \lfloor\frac{n}{p}\rfloor}|\Theta(B)|
+\right\}
+\end{equation*}
+\end{lemma}
+
+\begin{proof}[证明]
+如果 $\pi_0$ 是一个最优均匀 $p$-划分，那么
+\begin{align*}
+\min_{|\pi| = p}|\Theta(\pi)| & = |\Theta(\pi_0)| \\
+			      & = \frac{1}{2}\sum_{B \in \pi_0}|\Theta(B)| \\
+\intertext{\hfill 因为每一条边 $e \in \Theta(\pi_0)$ 都被计算了两次}
+			      & \ge \frac{1}{2}\left(
+				    j\min_{|B| = \lceil\frac{n}{p}\rceil}|\Theta(B)| +
+				    (p - j)\min_{|B| = \lfloor\frac{n}{p}\rfloor}|\Theta(B)|
+				    \right)
+\end{align*}
+\end{proof}
+
+\subsubsection{例子}
+\label{Subsubsection 3.3.1}
+
+\begin{enumerate}[(1)]
+	\item 对于 $\mathbb{Z}_n$，我们得到
+		\begin{align*}
+		% TODO
+		\end{align*}
+\end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % document bibliography %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
