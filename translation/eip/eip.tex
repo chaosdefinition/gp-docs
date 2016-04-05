@@ -273,7 +273,7 @@ $1 \le k \le 3$，根据引理 \ref{Lemma 1} 和引理 \ref{Lemma 2}，我们有
 \end{exercise}
 
 $Q_d$ 上的 EIP 最初由数据传输上的问题推动。
-W. H. Kautz \cite{Kautz}、E. C. Posner 和本书作者的研究引发了一种猜测：
+W. H. Kautz \cite{Kautz.1954}、E. C. Posner 和本书作者的研究引发了一种猜测：
 字典序编号方式（Lexicographic Numbering）的起始部分，即对于 $x \in V_{Q_d}$，
 \begin{equation*}
 lex(x) = 1 + \sum_{i = 1}^d x_i 2^{i - 1}
@@ -344,7 +344,7 @@ $S \subseteq V_{Q_d}$ 在基数为 $k$ 时有最大的 $|E(S)|$，当且仅当 $
 
 \begin{lemma}
 \label{Lemma 3}
-（Bernstein \cite{Bernstein}）
+（Bernstein \cite{Bernstein.1967}）
 对于 $\forall d$ 和 $\forall k, t > 0$ 使得 $k + t < 2^d$，都有
 \begin{equation*}
 E(t) < E(k + t) − E(k) < E(2^d) − E(2^d − t)
@@ -547,7 +547,7 @@ wl(\eta)
 
 \begin{exercise}
 \label{Exercise 11}
-（Steiglitz–Bernstein \cite{Steiglitz}）
+（Steiglitz–Bernstein \cite{Steiglitz.1965}）
 假设线形机箱实际上是一条实线，上面有 $n$ 个位置 $s_1 < s_2 < \cdots < s_n$ 用来放置元件。
 布局 $\eta$ 将顶点 $v \in V$ 放置在位置 $s_{\eta(v)}$ 上，证明 $\eta$ 有总线长为
 \begin{equation*}
@@ -624,7 +624,8 @@ $E_{DB_d}$是 $0$ 和 $1$ 构成的所有 $(d + 1)$ 元组的集合，并且
 \partial_{-}(x_1, x_2, \dots, x_d, x_{d + 1}) & = (x_1, x_2, \dots, x_d) \\
 \partial_{+}(x_1, x_2, \dots, x_d, x_{d + 1}) & = (x_2, \dots, x_d, x_{d + 1})
 \end{align*}
-关于德布鲁因图的更多信息，请参考 \cite{Golomb}。$DB_4$ 的图表见图 \ref{Figure 4}。
+关于德布鲁因图的更多信息，请参考 \cite{Golomb.1982}。
+$DB_4$ 的图表见图 \ref{Figure 4}。
 
 \begin{figure}
 	\centering
@@ -799,7 +800,7 @@ $G$ 的边界划分问题（Edge-boundary Partition Problem）是对于 $G$ 的�
 		\end{align*}
 		同样不出意料地，这个下界，以及与边宽对应的那个下界，
 		可以在把 $Q_d$ 划分为 $(d - a)$ 阶子立方时取到。
-		不过令人惊讶是，根据 Bezrukov \cite{Bezrukov} 的观察，
+		不过令人惊讶是，根据 Bezrukov \cite{Bezrukov.1997} 的观察，
 		对于 $p$ 的其他（也许是全部）的值，这些下界依然是精确的。
 \end{enumerate}
 
@@ -851,7 +852,7 @@ $\forall d > a$，都存在一个均匀 $(2^a + 1)$-划分，能把 $Q_d$ 划分
 留作练习。
 \end{proof}
 
-Bezrukov \cite{Bezrukov} 继续用类似的方法证明了对于固定的 $p$，
+Bezrukov \cite{Bezrukov.1997} 继续用类似的方法证明了对于固定的 $p$，
 当 $d \rightarrow \infty$ 时，存在一个均匀 $p$ 划分能把 $Q_d$ 划分为渐进最优集。
 
 \section{评论}
@@ -861,10 +862,10 @@ Bezrukov \cite{Bezrukov} 继续用类似的方法证明了对于固定的 $p$，
 一个人总是要不断超越自我，否则还要天堂做什么？
 \end{displayquote}
 
-当我在写给本章奠定基础的论文 \cite{Harper-1964} 的时候，我还只是一个初期的研究生。
+当我在写给本章奠定基础的论文 \cite{Harper.1964} 的时候，我还只是一个初期的研究生。
 当时的我毫无疑问超越了自我，甚至也许足以让 Browning 也赞同这个说法。
 很幸运，我并不需要等到上了天堂才有机会弥补我的不足。
-在我的论文发表两年后，Bernstein 发表了一篇后续论文 \cite{Bernstein}，
+在我的论文发表两年后，Bernstein 发表了一篇后续论文 \cite{Bernstein.1967}，
 指出我忽视了一种情况（定理 \ref{Theorem 1} 论据中的情况 \ref{Lemma 3 Case 3}）
 并填补了这个空缺。当时 Bernstein 的补丁（引理 \ref{Lemma 3}）看似复杂得令人失望，
 现在，有了将近四十年该教材的使用经验，我了解到 Bernstein 的引理正是当时所需的。
@@ -877,12 +878,12 @@ Bezrukov \cite{Bezrukov} 继续用类似的方法证明了对于固定的 $p$，
 
 我们所谓的线长问题出现在许多不同的应用中，因此在文献中也有不同的名称。
 我们之所以称之为“线长”是因为它既简洁又具有描述性。
-$\mathbb{Z}_n$ 上线长问题的解由 Lehman \cite{Lehman} 发表于 1963 年。
+$\mathbb{Z}_n$ 上线长问题的解由 Lehman \cite{Lehman.1963} 发表于 1963 年。
 它的应用是显示如何用 $n$ 个不同重量但由均匀的弹簧相连的珠子来构造一个手镯，
-以便最小化基本频率。$Q_d$ 上线长问题的解的原始应用 \cite{Harper-1964} 是将数据从集合
+以便最小化基本频率。$Q_d$ 上线长问题的解的原始应用 \cite{Harper.1964} 是将数据从集合
 $\{1, 2, \dots, 2^d\}$ 编码到 $0$ 和 $1$ 的 $d$-元组，
 以便在一个有噪声（二元对称）但任意位发生错误概率都较低的信道上传输时最小化平均绝对误差。
-这类线长问题的原始实例是 $4$ 阶德布鲁因图 \cite{Harper-1970}，
+这类线长问题的原始实例是 $4$ 阶德布鲁因图 \cite{Harper.1970}，
 它出现在解码电路的布线图中。最小化线长意味着最小化自感。
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -892,43 +893,43 @@ $\{1, 2, \dots, 2^d\}$ 编码到 $0$ 和 $1$ 的 $d$-元组，
 \label{Bibliography}
 \addcontentsline{toc}{section}{\refname} % add bibliography to ToC
 
-\bibitem{Kautz}
+\bibitem{Kautz.1954}
 	W. H. Kautz,
 	\emph{Optimized data encoding for digital computers},
 	Convention Record I. R. E., 1954, pp. 47-57
 
-\bibitem{Bernstein}
+\bibitem{Bernstein.1967}
 	A. J. Bernstein,
 	\emph{Maximally connected arrays on the n-cube},
 	SIAM J. Appl. Math., vol. 15, pp. 1485–1489, 1967
 
-\bibitem{Steiglitz}
+\bibitem{Steiglitz.1965}
 	K. Steiglitz, A. J. Bernstein,
 	\emph{Optimal binary coding of ordered numbers},
 	J. SIAM, vol. 13, pp. 441-443, 1965
 
-\bibitem{Golomb}
+\bibitem{Golomb.1982}
 	S. W. Golomb,
 	\emph{Shift Register Sequences},
 	Aegean Park Press, 1982
 
-\bibitem{Harper-1964}
+\bibitem{Harper.1964}
 	L. H. Harper,
 	\emph{Optimal assignments of numbers to vertices},
 	J. SIAM, vol. 12, pp. 131-135, 1964
 
-\bibitem{Bezrukov}
+\bibitem{Bezrukov.1997}
 	S. L. Bezrukov,
 	\emph{On k-partitioning the n-cube},
 	Proc. International Conference on Graph Theory Concepts in Computer Science,
 	Como, Italy, 1997
 
-\bibitem{Lehman}
+\bibitem{Lehman.1963}
 	A. Lehman,
 	\emph{A result on rearrangements},
 	Israel J. Math, vol. 1, pp. 22-28, 1963
 
-\bibitem{Harper-1970}
+\bibitem{Harper.1970}
 	L. H. Harper,
 	\emph{Chassis layout and isoperimetric problems},
 	Jet Propulsion Lab. SPS, vol. 11, pp. 37-66, 1970
