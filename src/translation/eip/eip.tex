@@ -6,14 +6,15 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass[12pt, a4paper]{article}
 
-\usepackage[UTF8]{ctex}	% for Chinese environment
-\usepackage{enumerate}	% for customized list numbering
-\usepackage{hyperref}	% for bookmarks and hyperlinks
-\usepackage{amsmath}	% for mathematical features
-\usepackage{amssymb}	% for mathematical symbols
-\usepackage{amsthm}	% for theorems
-\usepackage{svg}	% for svg images
-\usepackage{csquotes}	% for customized quotation
+\usepackage[UTF8]{ctex}		% for Chinese environment
+\usepackage[perpage]{footmisc}	% for per page footnote
+\usepackage{enumerate}		% for customized list numbering
+\usepackage{hyperref}		% for bookmarks and hyperlinks
+\usepackage{amsmath}		% for mathematical features
+\usepackage{amssymb}		% for mathematical symbols
+\usepackage{amsthm}		% for theorems
+\usepackage{svg}		% for svg images
+\usepackage{csquotes}		% for customized quotation
 
 \author{L. H. Harper}
 \date{2016 年 3 月 11 日}
@@ -176,7 +177,7 @@ $\delta |S|$ 表示 $S$ 对应的边数，然而出现在 $E(S)$ 中的边被计
 	|S| = k
 }}|\partial^\ast(S)|
 \end{equation*}
-与 EIP 等价。
+与 EIP 等价 \footnote{练习的解答见第 \ref{Subsection 5.2} 小节，下同。}。
 \end{exercise}
 
 回想一下，一棵树（Tree）是连通无环图。一个无环图也被称为森林（Forest），因为它是
@@ -307,9 +308,11 @@ lex(x) = 1 + \sum_{i = 1}^d x_i 2^{i - 1}
 
 总体而言，令
 \begin{equation*}
-k = \sum_{i = 1}^K 2^{c_i}, 0 \le c_1 < c_2 < \cdots < c_K \le \lfloor \log_2 k \rfloor
+k = \sum_{i = 1}^K 2^{c_i}, 0 \le c_1 < c_2 < \cdots < c_K \footnotemark
 \end{equation*}
-为 $k$ 的二进制表示形式（注意 $K \le \lceil \log_2 k \rceil$）。
+\footnotetext{这里 $c_K \le \lfloor \log_2 k \rfloor$。}
+为 $k$ 的二进制表示形式（注意 $K = \lfloor \log_2 k \rfloor$
+\footnote{该处有错误，应为 $K \le \lceil \log_2 k \rceil$。}）。
 如果 $S \subseteq V_{Q_d}$ 是一个互不相交的子立方的并集，
 其中每个 $c_i$ 阶子立方（$1 \le i \le K$）都满足：对于其他所有 $c_i$ 阶子立方（$j > i$），
 该 $c_i$ 阶子立方处在该 $c_j$ 阶子立方的一个邻居中，那么 $S$ 就被称为立方集（Cubal Set）。
@@ -369,15 +372,17 @@ E(t) < E(k + t) − E(k) < E(2^d) − E(2^d − t)
 		如果 $k + t \le 2^{d − 1}$，那么左边的不等式遵循归纳假设；
 		右边的不等式遵循上述恒等式，因而也遵循归纳假设。
 	\item \label{Lemma 3 Case 3}
-		如果 $k < 2_{d − 1} < k + t$，那么
+		如果 $k < 2^{d − 1} < k + t$，那么
 		\begin{align*}
 		E(k + t) − E(k) & = \left[E(k + t) − E(2^{d − 1})\right] +
 				    \left[E(2^{d − 1}) − E(k)\right] \\
 				& > \left[E(k + t − 2^{d − 1})\right] +
 				    \left[E(t) − E(t − (2^{d − 1} − k))\right] \\
-		\intertext{\hfill 分别根据情况 \ref{Lemma 3 Case 1} 和 \ref{Lemma 3 Case 2}}
+		\intertext{\hfill 分别根据情况 \ref{Lemma 3 Case 1} 和 \ref{Lemma 3 Case 2}
+		\footnotemark}
 				& = E(t)
 		\end{align*}
+		\footnotetext{该处证明不完整，详见第 \ref{Subsection 5.1} 节。}
 \end{enumerate}
 
 \begin{exercise}
@@ -912,6 +917,38 @@ Polya 的论题是解决问题是可以学习的，尤其是存在有效的策�
 但它确实导致了一个更强有力的结果，使得这个结果能被更加灵活地应用起来。
 注意 Bezrukov 在边界划分问题上的应用就利用了这种灵活性，
 然而这是发生在这篇文章 \cite{Harper.1964} 发表的 33 年后了。
+
+\section{译者后记}
+\label{Section 5}
+
+\subsection{错误与指正}
+\label{Subsection 5.1}
+
+在仔细阅读引理 \ref{Lemma 3} 的证明以及该证明的来源——Bernstein 的论文
+\cite{Bernstein.1967} 后，我（译者，下同）惊奇地发现虽然 Bernstein 为 Harper
+的定理 \ref{Theorem 1} 打上了补丁，然而该补丁依然有纰漏之处：
+该证明的第 \ref{Lemma 3 Case 3} 部分并未考虑 $t \ge 2^{d - 1}$ 的情况，
+即当 $k < 2^{d − 1} < k + t$ 时，
+\begin{equation*}
+E(2^{d − 1}) − E(k) > E(t) − E(t − (2^{d − 1} − k))
+\end{equation*}
+仅对 $t < 2^{d - 1}$ 成立。下面的补充证明由我的导师给出。
+\begin{proof}[引理 \ref{Lemma 3} 情况 \ref{Lemma 3 Case 3} 的补充证明]
+如果 $k < 2^{d − 1} < k + t$ 且 $t \ge 2^{d - 1}$，那么
+\begin{align*}
+E(k + t) - E(k) & = \left[E(k + t) - E(2^{d - 1})\right] +
+		    \left[E(2^{d - 1}) - E(k)\right] \\
+		& = \left[E(k + t - 2^{d - 1}) + k + t - 2^{d - 1}\right] +
+		    \left[E(2^{d - 1}) - E(k)\right] \\
+		& = \left[E(k + t - 2^{d - 1}) - E(k)\right] +
+		    E(2^{d - 1}) + k + t - 2^{d - 1} \\
+		& > E(t - 2^{d - 1}) + E(2^{d - 1}) + t - 2^{d - 1} + k \\
+		& = E(t) + k > E(t)
+\end{align*}
+\end{proof}
+
+\subsection{练习解答}
+\label{Subsection 5.2}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % document bibliography %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
