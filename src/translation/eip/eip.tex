@@ -7,7 +7,7 @@
 \documentclass[12pt, a4paper]{article}
 
 \usepackage[UTF8]{ctex}		% for Chinese environment
-\usepackage[perpage]{footmisc}	% for per page footnote
+\usepackage[perpage]{footmisc}	% for per page footnotes
 \usepackage{enumerate}		% for customized list numbering
 \usepackage{hyperref}		% for bookmarks and hyperlinks
 \usepackage{amsmath}		% for mathematical features
@@ -39,6 +39,16 @@
 \newtheorem{corollary}{推论}
 \newtheorem{exercise}{练习}
 \newtheorem{definition}{定义}
+
+% a new environment 'answer' inheriting 'proof' but without QED symbol
+\newenvironment{answer}[1][Answer]{
+	% before
+	\begin{proof}[#1]
+	\let\qed\relax
+}{
+	% after
+	\end{proof}
+}
 
 % svg options
 \setsvg{
@@ -270,7 +280,7 @@ $1 \le k \le 3$，根据引理 \ref{Lemma 1} 和引理 \ref{Lemma 2}，我们有
 
 \begin{exercise}
 \label{Exercise 7}
-计算一个 $d$ 阶立方的 $c$ 阶子立方有多少个邻居？
+计算 $d$ 阶立方的一个 $c$ 阶子立方有多少个邻居？
 \end{exercise}
 
 $Q_d$ 上的 EIP 最初由数据传输上的问题推动。
@@ -949,6 +959,77 @@ E(k + t) - E(k) & = \left[E(k + t) - E(2^{d - 1})\right] +
 
 \subsection{练习解答}
 \label{Subsection 5.2}
+
+\begin{proof}[练习 \ref{Exercise 1} 的证明]
+练习 \ref{Exercise 1} 的证明。
+\end{proof}
+
+\begin{answer}[练习 \ref{Exercise 2} 的解答]
+将两个 $Q_{d - 1}$ 中的对应点一一相连即可构成一个 $Q_d$，因此有
+\begin{equation*}
+m = |E_{Q_d}| = \begin{cases}
+	2 \left|E_{Q_{d - 1}}\right| + 2^{d - 1} & d > 0 \\
+	0                                        & d = 0
+\end{cases}
+\end{equation*}
+可以得到
+\begin{equation*}
+m = |E_{Q_d}| = d \cdot 2^{d - 1}, d \ge 0
+\end{equation*}
+\end{answer}
+
+\begin{proof}[练习 \ref{Exercise 3} 的证明]
+练习 \ref{Exercise 3} 的证明。
+\end{proof}
+
+\begin{answer}[练习 \ref{Exercise 4} 的解答]
+一个 $d$ 阶立方有两个 $(d - 1)$ 阶子立方（$d > 0$）。
+因此一个 $d$ 阶立方有 $2^{d - c}$ 个 $c$ 阶子立方。
+\end{answer}
+
+\begin{proof}[练习 \ref{Exercise 5} 的证明]
+练习 \ref{Exercise 5} 的证明。
+\end{proof}
+
+\begin{proof}[练习 \ref{Exercise 6} 的证明]
+练习 \ref{Exercise 6} 的证明。
+\end{proof}
+
+\begin{answer}[练习 \ref{Exercise 7} 的解答]
+根据邻居的定义，$d$ 阶立方的一个 $c$ 阶子立方有 $(d - c)$ 个邻居。
+\end{answer}
+
+\begin{proof}[练习 \ref{Exercise 8} 的证明]
+练习 \ref{Exercise 8} 的证明。
+\end{proof}
+
+\begin{proof}[练习 \ref{Exercise 9} 的证明]
+练习 \ref{Exercise 9} 的证明。
+\end{proof}
+
+\begin{proof}[练习 \ref{Exercise 10} 的证明]
+练习 \ref{Exercise 10} 的证明。
+\end{proof}
+
+\begin{proof}[练习 \ref{Exercise 11} 的证明]
+练习 \ref{Exercise 11} 的证明。
+\end{proof}
+
+\begin{proof}[练习 \ref{Exercise 12} 的证明]
+练习 \ref{Exercise 12} 的证明。
+\end{proof}
+
+\begin{proof}[练习 \ref{Exercise 13} 的证明]
+练习 \ref{Exercise 13} 的证明。
+\end{proof}
+
+\begin{answer}[练习 \ref{Exercise 14} 的解答]
+练习 \ref{Exercise 14} 的解答。
+\end{answer}
+
+\begin{proof}[练习 \ref{Exercise 15} 的证明]
+练习 \ref{Exercise 15} 的证明。
+\end{proof}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % document bibliography %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
