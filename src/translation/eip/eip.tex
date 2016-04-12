@@ -77,14 +77,14 @@
 \Theta(S) = \{e \in E \mid \partial(e) = \{v, w\}, v \in S, w \notin S\}
 \end{equation*}
 并称之为 $S$ 的边界（Edge-boundary）。那么对于一个给定的图 $G$ 和 $k \in \mathbb{Z}^+$，
-边等周问题（Edge-Isoperimetric Problem, EIP）是对于所有的 $S \in V$ 并且 $|S| = k$，
+边等周问题（Edge-Isoperimetric Problem, EIP）是对于所有的 $S \subseteq V$ 并且 $|S| = k$，
 找出最小的 $|\Theta(S)|$。注意 $|\Theta(S)|$ 是不变量（Invariant），即如果
-$\phi \colon G \rightarrow H$ 表示一个图同构，那么对于 $\forall S \in V_G$，都有
+$\phi \colon G \rightarrow H$ 表示一个图同构，那么对于 $\forall S \subseteq V_G$，都有
 $|\Theta(\phi(S))| = |\Theta(S)|$。因此，在一个自同构下等价的顶点子集有相同的边界。
 
 自环，即只对应一个顶点的边，与 EIP 无关，因此我们将忽略它们。我们大多数的图（但并非全部）
 是简单图（Ordinary Graph），即不含自环和多重边。一个简单图的表示可以缩短至 $(V, E)$，
-其中 $E \in (_2^v)$，$\partial$ 则是隐含的。
+其中 $E \subseteq (_2^v)$，$\partial$ 则是隐含的。
 
 \section{例子}
 \label{Section 2}
@@ -92,7 +92,7 @@ $|\Theta(\phi(S))| = |\Theta(S)|$。因此，在一个自同构下等价的顶�
 \subsection{$K_n$，$n$-完全图}
 \label{Subsection 2.1}
 
-$K_n$ 有 $n$ 个顶点且 $E = (_2^v)$，即每一对不同顶点之间都有一条边。对于每一个 $S \in V$
+$K_n$ 有 $n$ 个顶点且 $E = (_2^v)$，即每一对不同顶点之间都有一条边。对于每一个 $S \subseteq V$
 且 $|S| = k$，$|\Theta(S)| = |S \times (V − S)| = k(n − k)$。因此 $K_n$ 的 EIP
 很简单：任意一个 $k$-集都是解。
 
@@ -422,7 +422,7 @@ $S_0 = S \cap Q_{d, 0}$ 和 $S_1 = S \cap Q_{d, 1}$。
 如果 $S_1$ 是基数为 $k_1$ 的立方集，那么根据归纳，我们有
 $|E(S_1)| = E(k_1) = \max_{|S| = k_1} |E(S)|$。
 $S_1$ 在 $Q_{d, 0}$ 中的邻居与 $S_1$ 同构，因此也是立方集。
-根据立方集的递归构造，$\exists S_0 \in Q_{d, 0}$ 且 $|S_0| = k_0$，
+根据立方集的递归构造，$\exists S_0 \subseteq Q_{d, 0}$ 且 $|S_0| = k_0$，
 它是立方集，并且包含 $S_1$ 的邻居。因此我们可以取到 $|E(S)|$ 的上界，
 而且每个取到上界的集合都必须是两个立方集的并集。
 令 $k_0 = \sum_{i = 1}^{K_0} 2^{c_{i, 0}}, 0 \le c_{1, 0} \le c_{2, 0} \le \cdots \le c_{K_0, 0}$，
@@ -670,9 +670,11 @@ $DB_4$ 的图表见图 \ref{Figure 4}。
 下表列出了 $k$ 的取值范围在 $0$ 到 $16$ 时 $|\Theta(S_k(\eta_0))|$ 的值：
 \begin{center}
 	\begin{tabular}{ c | c c c c c c c c c c c c c c c c c }
-	$k$                     & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 & 16 \\
+	$k$                     & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9
+	                        & 10 & 11 & 12 & 13 & 14 & 15 & 16 \\
 	\hline
-	$|\Theta(S_k(\eta_0))|$ & 0 & 2 & 4 & 4 & 6 & 6 & 6 & 6 & 6 & 6 &  8 &  6 &  6 &  4 &  4 &  2 &  0
+	$|\Theta(S_k(\eta_0))|$ & 0 & 2 & 4 & 4 & 6 & 6 & 6 & 6 & 6 & 6
+	                        &  8 &  6 &  6 &  4 &  4 &  2 &  0
 	\end{tabular}
 \end{center}
 从这可以看出 $S_{10}(\eta_0)$ 不是 EIP 的解。
@@ -896,7 +898,7 @@ Bezrukov \cite{Bezrukov.1997} 继续用类似的方法证明了对于固定的 $
 $\mathbb{Z}_n$ 上线长问题的解由 Lehman \cite{Lehman.1963} 发表于 1963 年。
 它的应用是显示如何用 $n$ 个不同重量但由均匀的弹簧相连的珠子来构造一个手镯，
 以便最小化基本频率。$Q_d$ 上线长问题的解的原始应用 \cite{Harper.1964}
-是将数据从集合 $\{1, 2, \dots, 2^d\}$ 编码到 $0$ 和 $1$ 的 $d$-元组，
+是将数据从集合 $\{1, 2, \dots, 2^d\}$ 编码到 $0$ 和 $1$ 的 $d$ 元组，
 以便在一个有噪声（二元对称）但任意位发生错误概率都较低的信道上传输时最小化平均绝对误差。
 这类线长问题的原始实例是 $4$ 阶德布鲁因图 \cite{Harper.1970}，
 它出现在解码电路的布线图中。最小化线长意味着最小化自感。
