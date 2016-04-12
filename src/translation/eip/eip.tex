@@ -961,7 +961,24 @@ E(k + t) - E(k) & = \left[E(k + t) - E(2^{d - 1})\right] +
 \label{Subsection 5.2}
 
 \begin{proof}[练习 \ref{Exercise 1} 的证明]
-练习 \ref{Exercise 1} 的证明。
+根据 $\partial^\ast(S)$ 的定义，我们有
+\begin{equation*}
+|\partial^\ast(S)| = |\Theta(S)| + |E(S)|
+\end{equation*}
+所以对于 $\delta$ 度正则图，根据引理 \ref{Lemma 1} 我们可以得到
+\begin{equation*}
+|\partial^\ast(S)| = \delta |S| - |E(S)|
+\end{equation*}
+即对于 $\forall k$，
+$\min_{|S| = k} |\partial^\ast(S)| = \delta k - \max_{|S| = k} |E(S)|$。
+因此，对于正则图，计算
+\begin{equation*}
+\min_{\substack{
+	S \subseteq V \\
+	|S| = k
+}}|\partial^\ast(S)|
+\end{equation*}
+与导出边问题等价，从而与 EIP 等价。
 \end{proof}
 
 \begin{answer}[练习 \ref{Exercise 2} 的解答]
@@ -979,7 +996,16 @@ m = |E_{Q_d}| = d \cdot 2^{d - 1}, d \ge 0
 \end{answer}
 
 \begin{proof}[练习 \ref{Exercise 3} 的证明]
-练习 \ref{Exercise 3} 的证明。
+根据子立方的定义，$d$ 阶立方的一个 $c$ 阶子立方的顶点集有 $(d - c)$ 个固定坐标的值相同。
+因此其中的两个顶点是否有边相连仅由剩下的 $c$ 个坐标决定，
+即两个顶点对应一条边当且仅当剩下的 $c$ 个坐标中正好有一位不相同。
+用 $Q_d^c$ 表示 $d$ 阶立方的一个 $c$ 阶子立方，
+我们可以构造一个双射函数 $\phi \colon Q_d^c \rightarrow Q_c$，
+对于 $\forall x \in V_{Q_d^c}$，
+$\phi(x)$ 是将 $x$ 的 $(d - c)$ 个固定坐标移除后得到的 $0$ 和 $1$ 的 $c$ 元组。
+显而易见，对于 $\forall x, y \in V_{Q_d^c}$，
+$x$ 和 $y$ 对应一条边当且仅当 $\phi(x)$ 和 $\phi(y)$ 对应一条边，
+即 $\phi$ 是 $Q_d^c$ 到 $Q_c$ 的一个图同构。
 \end{proof}
 
 \begin{answer}[练习 \ref{Exercise 4} 的解答]
