@@ -33,12 +33,13 @@
 	pdfauthor = {Zhuojia Shen}	% PDF althor
 }
 
-% theorems
+% theorem-like environments
 \newtheorem{theorem}{定理}
 \newtheorem{lemma}{引理}
 \newtheorem{corollary}{推论}
 \newtheorem{exercise}{练习}
 \newtheorem{definition}{定义}
+\newtheorem{exercisewithanswer}{练习}
 
 % a new environment 'answer' inheriting 'proof' but without QED symbol
 \newenvironment{answer}[1][Answer]{
@@ -962,7 +963,18 @@ E(k + t) - E(k) & = \left[E(k + t) - E(2^{d - 1})\right] +
 \subsection{练习解答}
 \label{Subsection 5.2}
 
-\begin{proof}[练习 \ref{Exercise 1} 的证明]
+\begin{exercisewithanswer}
+对于正则图，证明计算
+\begin{equation*}
+\min_{\substack{
+	S \subseteq V \\
+	|S| = k
+}}|\partial^\ast(S)|
+\end{equation*}
+与 EIP 等价。
+\end{exercisewithanswer}
+
+\begin{proof}[证明]
 根据 $\partial^\ast(S)$ 的定义，我们有
 \begin{equation*}
 |\partial^\ast(S)| = |\Theta(S)| + |E(S)|
@@ -983,7 +995,11 @@ $\min_{|S| = k} |\partial^\ast(S)| = \delta k - \max_{|S| = k} |E(S)|$。
 与导出边问题等价，从而与 EIP 等价。
 \end{proof}
 
-\begin{answer}[练习 \ref{Exercise 2} 的解答]
+\begin{exercisewithanswer}
+找出 $m = |E_{Q_d}|$ 对应的公式。
+\end{exercisewithanswer}
+
+\begin{answer}[解答]
 将两个 $Q_{d - 1}$ 中的对应点一一相连即可构成一个 $Q_d$，因此有
 \begin{equation*}
 m = |E_{Q_d}| = \begin{cases}
@@ -997,7 +1013,11 @@ m = |E_{Q_d}| = d \cdot 2^{d - 1}, d \ge 0
 \end{equation*}
 \end{answer}
 
-\begin{proof}[练习 \ref{Exercise 3} 的证明]
+\begin{exercisewithanswer}
+证明 $d$ 阶立方的任意 $c$ 阶子立方与 $c$ 阶立方同构。
+\end{exercisewithanswer}
+
+\begin{proof}[证明]
 根据子立方的定义，$d$ 阶立方的一个 $c$ 阶子立方的顶点集有 $(d - c)$ 个固定坐标的值相同。
 因此其中的两个顶点是否有边相连仅由剩下的 $c$ 个坐标决定，
 即两个顶点对应一条边当且仅当剩下的 $c$ 个坐标中正好有一位不相同。
@@ -1010,53 +1030,114 @@ $x$ 和 $y$ 对应一条边当且仅当 $\phi(x)$ 和 $\phi(y)$ 对应一条边�
 即 $\phi$ 是 $Q_d^c$ 到 $Q_c$ 的一个图同构。
 \end{proof}
 
-\begin{answer}[练习 \ref{Exercise 4} 的解答]
+\begin{exercisewithanswer}
+计算 $d$ 阶立方有多少个 $c$ 阶子立方？
+\end{exercisewithanswer}
+
+\begin{answer}[解答]
 一个 $d$ 阶立方有两个 $(d - 1)$ 阶子立方（$d > 0$）。
 因此一个 $d$ 阶立方有 $2^{d - c}$ 个 $c$ 阶子立方。
 \end{answer}
 
-\begin{proof}[练习 \ref{Exercise 5} 的证明]
+\begin{exercisewithanswer}
+证明一个 $c$ 阶子立方的所有邻居都互不相交。
+\end{exercisewithanswer}
+
+\begin{proof}[证明]
 练习 \ref{Exercise 5} 的证明。
 \end{proof}
 
-\begin{proof}[练习 \ref{Exercise 6} 的证明]
+\begin{exercisewithanswer}
+证明一个 $c$ 阶子立方的两个不同邻居（的顶点）之间没有边相连。
+\end{exercisewithanswer}
+
+\begin{proof}[证明]
 练习 \ref{Exercise 6} 的证明。
 \end{proof}
 
-\begin{answer}[练习 \ref{Exercise 7} 的解答]
+\begin{exercisewithanswer}
+计算 $d$ 阶立方的一个 $c$ 阶子立方有多少个邻居？
+\end{exercisewithanswer}
+
+\begin{answer}[解答]
 根据邻居的定义，$d$ 阶立方的一个 $c$ 阶子立方有 $(d - c)$ 个邻居。
 \end{answer}
 
-\begin{proof}[练习 \ref{Exercise 8} 的证明]
+\begin{exercisewithanswer}
+证明如果 $S \subseteq V_{Q_d}$ 是立方集，那么它的补集 $V_{Q_d} − S$ 也是立方集。
+\end{exercisewithanswer}
+
+\begin{proof}[证明]
 练习 \ref{Exercise 8} 的证明。
 \end{proof}
 
-\begin{proof}[练习 \ref{Exercise 9} 的证明]
+\begin{exercisewithanswer}
+证明任意两个 $k$-立方集都同构，即存在能把一个 $d$ 阶立方映射到另一个的自同构。
+\end{exercisewithanswer}
+
+\begin{proof}[证明]
 练习 \ref{Exercise 9} 的证明。
 \end{proof}
 
-\begin{proof}[练习 \ref{Exercise 10} 的证明]
+\begin{exercisewithanswer}
+完成引理 \ref{Lemma 3} 情况 \ref{Lemma 3 Case 3} 的证明（右边的不等式）。
+\end{exercisewithanswer}
+
+\begin{proof}[证明]
 练习 \ref{Exercise 10} 的证明。
 \end{proof}
 
-\begin{proof}[练习 \ref{Exercise 11} 的证明]
+\begin{exercisewithanswer}
+假设线形机箱实际上是一条实线，上面有 $n$ 个位置 $s_1 < s_2 < \cdots < s_n$ 用来放置元件。
+布局 $\eta$ 将顶点 $v \in V$ 放置在位置 $s_{\eta(v)}$ 上，证明 $\eta$ 有总线长为
+\begin{equation*}
+wl(\eta) = \sum_{k = 0}^n (s_{k + 1} - s_k) |\Theta(S_k(\eta))|
+\end{equation*}
+\end{exercisewithanswer}
+
+\begin{proof}[证明]
 练习 \ref{Exercise 11} 的证明。
 \end{proof}
 
-\begin{proof}[练习 \ref{Exercise 12} 的证明]
+\begin{exercisewithanswer}
+证明 $wl(Q_d) = 2^{d - 1} (2^d - 1)$。
+\end{exercisewithanswer}
+
+\begin{proof}[证明]
 练习 \ref{Exercise 12} 的证明。
 \end{proof}
 
-\begin{proof}[练习 \ref{Exercise 13} 的证明]
+\begin{exercisewithanswer}
+对于练习 \ref{Exercise 11} 中的更一般的线形机箱，
+证明 $lex$ 同时也是它的 $Q_d$ 上线长问题的一个解。
+\end{exercisewithanswer}
+
+\begin{proof}[证明]
 练习 \ref{Exercise 13} 的证明。
 \end{proof}
 
-\begin{answer}[练习 \ref{Exercise 14} 的解答]
+\begin{exercisewithanswer}
+找出 $\underline{DB_4}$ 上所有的 EIP 的解集，其中 $k \le 8$（无需证明）。
+\end{exercisewithanswer}
+
+\begin{answer}[解答]
 练习 \ref{Exercise 14} 的解答。
 \end{answer}
 
-\begin{proof}[练习 \ref{Exercise 15} 的证明]
+\begin{exercisewithanswer}
+在阅读定理 \ref{Theorem 3} 的证明之前，先证明 $a = 1$ 时的特例。
+\end{exercisewithanswer}
+
+\begin{proof}[证明]
 练习 \ref{Exercise 15} 的证明。
+\end{proof}
+
+\begin{exercisewithanswer}
+给出引理 \ref{Lemma 6} 的证明。
+\end{exercisewithanswer}
+
+\begin{proof}[证明]
+引理 \ref{Lemma 6} 的证明。
 \end{proof}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
