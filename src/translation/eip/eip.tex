@@ -254,7 +254,7 @@ $1 \le k \le 3$，根据引理 \ref{Lemma 1} 和引理 \ref{Lemma 2}，我们有
 为了将这个 EIP 的解推广到 $Q_d$（$d > 3$），我们需要利用一些关于立方的简单结论，
 这些结论的证明将被留作练习。
 一个 $d$ 阶立方的 $c$ 阶子立方（$c$-subcube of the $d$-cube）是 $Q_d$ 的子图，
-导出自一个包含所有在 $d − c$ 个坐标下有相同（固定）值的顶点的集合。
+导出自一个包含所有在 $(d − c)$ 个坐标下有相同（固定）值的顶点的集合。
 
 \begin{exercise}
 \label{Exercise 3}
@@ -266,7 +266,7 @@ $1 \le k \le 3$，根据引理 \ref{Lemma 1} 和引理 \ref{Lemma 2}，我们有
 计算 $d$ 阶立方有多少个 $c$ 阶子立方？
 \end{exercise}
 
-一个 $d$ 阶立方的 $c$ 阶子立方的邻居（Neighbor）是在 $d − c$
+一个 $d$ 阶立方的 $c$ 阶子立方的邻居（Neighbor）是在 $(d − c)$
 个固定坐标下有正好一个坐标不同的任意 $c$ 阶子立方。
 
 \begin{exercise}
@@ -1021,7 +1021,7 @@ m = |E_{Q_d}| = d \cdot 2^{d - 1}, d \ge 0
 根据子立方的定义，$d$ 阶立方的一个 $c$ 阶子立方的顶点集有 $(d - c)$ 个固定坐标的值相同。
 因此其中的两个顶点是否有边相连仅由剩下的 $c$ 个坐标决定，
 即两个顶点对应一条边当且仅当剩下的 $c$ 个坐标中正好有一位不相同。
-用 $Q_d^c$ 表示 $d$ 阶立方的一个 $c$ 阶子立方，
+令 $Q_d^c$ 表示 $d$ 阶立方的一个 $c$ 阶子立方，
 我们可以构造一个双射函数 $\phi \colon Q_d^c \rightarrow Q_c$，
 对于 $\forall x \in V_{Q_d^c}$，
 $\phi(x)$ 是将 $x$ 的 $(d - c)$ 个固定坐标移除后得到的 $0$ 和 $1$ 的 $c$ 元组。
@@ -1044,7 +1044,25 @@ $x$ 和 $y$ 对应一条边当且仅当 $\phi(x)$ 和 $\phi(y)$ 对应一条边�
 \end{exercisewithanswer}
 
 \begin{proof}[证明]
-练习 \ref{Exercise 5} 的证明。
+令 $Q_d^c$ 表示 $d$ 阶立方的任意一个 $c$ 阶子立方，
+$Q_d^{c, i}$ 表示 $Q_d^c$ 的一个邻居，
+它的 $(d - c)$ 个固定坐标中第 $i$ 位与 $Q_d^c$ 不同（$1 \le i \le d - c$）。
+则 $Q_d^c$，
+以及 $Q_d^c$ 的任意两个不同邻居 $Q_d^{c, a}$ 和 $Q_d^{c, b}$（不妨假设 $a < b$）
+的顶点集可表示为
+\begin{align*}
+V_{Q_d^c}      & = \{x \in V_{Q_d} \mid
+		   x_{p_1} = v_1, x_{p_2} = v_2, \dots, x_{p_{d - c}} = v_{d - c}\} \\
+V_{Q_d^{c, a}} & = \{x \in V_{Q_d} \mid
+		   \dots, x_{p_a} = 1 - v_a, \dots, x_{p_b} = v_b, \dots\} \\
+V_{Q_d^{c, b}} & = \{x \in V_{Q_d} \mid
+		   \dots, x_{p_a} = v_a, \dots, x_{p_b} = 1 - v_b, \dots\}
+\end{align*}
+其中对于 $\forall i \in \{1, 2, \dots, d - c\}$，
+$v_i \in \{0, 1\}$，$p_i \in \{1, 2, \dots, d\}$ 且互不相同。
+很显然，若 $\exists x$ 同时满足 $x \in V_{Q_d^{c, a}}$ 和 $x \in V_{Q_d^{c, b}}$，
+那么 $x_{p_a}$ 和 $x_{p_b}$ 的取值将无法得到满足。
+因此 $V_{Q_d^{c, a}} \cap V_{Q_d^{c, b}} = \emptyset$。
 \end{proof}
 
 \begin{exercisewithanswer}
@@ -1052,7 +1070,16 @@ $x$ 和 $y$ 对应一条边当且仅当 $\phi(x)$ 和 $\phi(y)$ 对应一条边�
 \end{exercisewithanswer}
 
 \begin{proof}[证明]
-练习 \ref{Exercise 6} 的证明。
+$Q_d^c$、$Q_d^{c, a}$ 和 $Q_d^{c, b}$ 的记号同上一证明。
+由上一证明可知，
+对于 $\forall x \in V_{Q_d^{c, a}}$ 和 $\forall y \in V_{Q_d^{c, b}}$，
+\begin{equation*}
+\begin{cases}
+x_{p_a} \neq y_{p_a} \\
+x_{p_b} \neq y_{p_b}
+\end{cases}
+\end{equation*}
+因此 $x$ 和 $y$ 之间没有边相连。
 \end{proof}
 
 \begin{exercisewithanswer}
