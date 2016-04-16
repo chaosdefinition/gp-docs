@@ -348,7 +348,8 @@ E(k + 1) − E(k) = E(k − 2^{d − 1} + 1) − E(k − 2^{d − 1}) + 1
 
 \begin{exercise}
 \label{Exercise 9}
-证明任意两个 $k$-立方集都同构，即存在能把一个 $d$ 阶立方映射到另一个的自同构。
+证明任意两个 $k$-立方集都同构，
+即存在一个 $d$ 阶立方的自同构能把一个（$k$-立方集）映射到另一个。
 \end{exercise}
 
 \begin{theorem}
@@ -1095,11 +1096,21 @@ x_{p_b} \neq y_{p_b}
 \end{exercisewithanswer}
 
 \begin{proof}[证明]
-练习 \ref{Exercise 8} 的证明。
+假设 $V_{Q_d} − S$ 不是立方集，
+即若把 $V_{Q_d} − S$ 视为互不相交的子立方的并集，
+则至少存在一个 $c_i$ 阶子立方 $Q_d^{c_i}$ 和一个 $c_j$ 阶子立方 $Q_d^{c_j}$
+满足 $c_i \le c_j$，且 $Q_d^{c_i}$ 不处在 $Q_d^{c_j}$ 的任意邻居中。
+那么 $S$ 中必然存在一个 $c_j$ 阶子立方 ${Q_d^{c_j}}'$，
+它是 $Q_d^{c_j}$ 的邻居，但不为 $Q_d^{c_i}$ 提供邻居。
+如果我们把 $Q_d^{c_i}$ 归入 $S$，
+把 ${Q_d^{c_j}}'$ 中与 $Q_d^{c_i}$ 对应的顶点归入 $V_{Q_d} − S$，
+那么 $Q_d^{c_i}$ 将为 $S$ 提供更多的内部边，这便与 $S$ 是立方集相矛盾。
+因此 $V_{Q_d} − S$ 也是立方集。
 \end{proof}
 
 \begin{exercisewithanswer}
-证明任意两个 $k$-立方集都同构，即存在能把一个 $d$ 阶立方映射到另一个的自同构。
+证明任意两个 $k$-立方集都同构，
+即存在一个 $d$ 阶立方的自同构能把一个（$k$-立方集）映射到另一个。
 \end{exercisewithanswer}
 
 \begin{proof}[证明]
