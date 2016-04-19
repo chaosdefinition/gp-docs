@@ -21,16 +21,18 @@
 
 % hyperref options
 \hypersetup{
-	hidelinks,			% hide links
-	bookmarksnumbered = true,	% number bookmarks
-	pdfstartview = {FitH},		% fit width
-	pdftitle = {			% PDF title
-		Chinese Translation of Chapter 1 of
-		Global Methods for Combinatorial Isoperimetric Problems
-	},
-	pdfsubject = {			% PDF subject
-		The Edge-Isoperimetric Problem},
-	pdfauthor = {Zhuojia Shen}	% PDF althor
+	% hide links
+	hidelinks,
+	% number bookmarks
+	bookmarksnumbered = true,
+	% fit width
+	pdfstartview = {FitH},
+	% PDF title
+	pdftitle = {Chinese Translation of Chapter 1 of Global Methods for Combinatorial Isoperimetric Problems},
+	% PDF subject
+	pdfsubject = {The Edge-Isoperimetric Problem},
+	% PDF author
+	pdfauthor = {Zhuojia Shen}
 }
 
 % theorem-like environments
@@ -313,8 +315,8 @@ lex(x) = 1 + \sum_{i = 1}^d x_i 2^{i - 1}
 即一个 $(c − 1)$ 阶子立方，我们只能选择一个使 $|E(S)|$ 增量为 $1 $的顶点，
 即一个相邻的 $(c − 1)$ 阶子立方中的任意顶点。从一个相邻的子立方中选出一个顶点后，
 我们必须继续从同一个子立方中选顶点，直到用尽它所有的顶点，
-这是因为所选择的子立方中总会存在一个顶点使得 $|E(S \cup {x})| − |E(S)| \ge 2$，
-而其他子立方中的任意顶点都有 $|E(S \cup {x})| − |E(S)| \le 2$。
+这是因为所选择的子立方中总会存在一个顶点使得 $|E(S \cup \{x\})| − |E(S)| \ge 2$，
+而其他子立方中的任意顶点都有 $|E(S \cup \{x\})| − |E(S)| \le 2$。
 当我们用尽所有相邻的 $(c − 1)$ 阶子立方时，我们就得到了一个 $c$ 阶子立方。
 
 总体而言，令
