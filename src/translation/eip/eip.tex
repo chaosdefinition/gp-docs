@@ -72,21 +72,27 @@
 \section{基本定义}
 \label{Section 1}
 
-一个图（Graph）$G = (V, E, \partial)$ 由顶点集 $V$、边集 $E$ 和标识每一条边对应一对顶点
-（可以相同）的边界函数 $\partial \colon E \rightarrow (_1^v) \cup (_2^v)$ 构成。
-图经常用图表（Diagram）来表示，其中顶点对应图表中的点，边对应图表中连接一对点的曲线。
+一个图（Graph）$G = (V, E, \partial)$ 由顶点集 $V$、边集 $E$
+和标识每一条边对应一对顶点（可以相同）的边界函数
+$\partial \colon E \rightarrow \binom{v}{1} \cup \binom{v}{2}$ 构成。
+图经常用图表（Diagram）来表示，
+其中顶点对应图表中的点，边对应图表中连接一对点的曲线。
 对任意的图 $G$ 和 $S \subseteq V$，我们定义：
 \begin{equation*}
 \Theta(S) = \{e \in E \mid \partial(e) = \{v, w\}, v \in S, w \notin S\}
 \end{equation*}
-并称之为 $S$ 的边界（Edge-boundary）。那么对于一个给定的图 $G$ 和 $k \in \mathbb{Z}^+$，
+并称之为 $S$ 的边界（Edge-boundary）。
+那么对于一个给定的图 $G$ 和 $k \in \mathbb{Z}^+$，
 边等周问题（Edge-Isoperimetric Problem, EIP）是对于所有的 $S \subseteq V$ 并且 $|S| = k$，
-找出最小的 $|\Theta(S)|$。注意 $|\Theta(S)|$ 是不变量（Invariant），即如果
-$\phi \colon G \rightarrow H$ 表示一个图同构，那么对于 $\forall S \subseteq V_G$，都有
-$|\Theta(\phi(S))| = |\Theta(S)|$。因此，在一个自同构下等价的顶点子集有相同的边界。
+找出最小的 $|\Theta(S)|$。
+注意 $|\Theta(S)|$ 是不变量（Invariant），
+即如果 $\phi \colon G \rightarrow H$ 表示一个图同构，
+那么对于 $\forall S \subseteq V_G$，都有 $|\Theta(\phi(S))| = |\Theta(S)|$。
+因此，在一个自同构下等价的顶点子集有相同的边界。
 
-自环，即只对应一个顶点的边，与 EIP 无关，因此我们将忽略它们。我们大多数的图（但并非全部）
-是简单图（Ordinary Graph），即不含自环和多重边。一个简单图的表示可以缩短至 $(V, E)$，
+自环，即只对应一个顶点的边，与 EIP 无关，因此我们将忽略它们。
+我们大多数的图（但并非全部）是简单图（Ordinary Graph），即不含自环和多重边。
+一个简单图的表示可以缩短至 $(V, E)$，
 其中 $E \subseteq (_2^v)$，$\partial$ 则是隐含的。
 
 \section{例子}
@@ -95,9 +101,10 @@ $|\Theta(\phi(S))| = |\Theta(S)|$。因此，在一个自同构下等价的顶�
 \subsection{$K_n$，$n$-完全图}
 \label{Subsection 2.1}
 
-$K_n$ 有 $n$ 个顶点且 $E = (_2^v)$，即每一对不同顶点之间都有一条边。对于每一个 $S \subseteq V$
-且 $|S| = k$，$|\Theta(S)| = |S \times (V − S)| = k(n − k)$。因此 $K_n$ 的 EIP
-很简单：任意一个 $k$-集都是解。
+$K_n$ 有 $n$ 个顶点且 $E = \binom{v}{2}$，即每一对不同顶点之间都有一条边。
+对于每一个 $S \subseteq V$ 且 $|S| = k$，
+$|\Theta(S)| = |S \times (V − S)| = k(n − k)$。
+因此 $K_n$ 的 EIP 很简单：任意一个 $k$-集都是解。
 
 \subsection{$\mathbb{Z}_n$，$n$-环}
 \label{Subsection 2.2}
@@ -117,10 +124,12 @@ $\mathbb{Z}_4$ 的图表见图 \ref{Figure 1}。
 $\mathbb{Z}_n$ 上 EIP 的解：
 
 \begin{enumerate}[(1)]
-	\item 对于 $|S| = k = 0$，在任意的图里都只有一个子集，即空集 $\emptyset$。
-		因此 $\min_{|S| = 0} |\Theta(S)| = |\Theta(\emptyset)| = 0$。
-	\item 对于 $k = |V| = n$，也只有一个子集，即 $V$。
-		因此 $\min_{|S| = n} |\Theta(S)| = |\Theta(V)| = 0$。
+	\item \begin{enumerate}[(a)]
+		\item 对于 $|S| = k = 0$，在任意的图里都只有一个子集，即空集 $\emptyset$。
+			因此 $\min_{|S| = 0} |\Theta(S)| = |\Theta(\emptyset)| = 0$。
+		\item 对于 $k = |V| = n$，也只有一个子集，即 $V$。
+			因此 $\min_{|S| = n} |\Theta(S)| = |\Theta(V)| = 0$。
+		\end{enumerate}
 	\item 一个图被称为 $\delta$ 度正则图（Regular of Degree $\delta$），
 		当它的每个顶点都正好对应 $\delta$ 条边。在一个正则图中，
 		如果 $|S| = k = 1$ 那么 $\Theta(S) = \delta$，
@@ -1038,8 +1047,10 @@ $x$ 和 $y$ 对应一条边当且仅当 $\phi(x)$ 和 $\phi(y)$ 对应一条边�
 \end{exercisewithanswer}
 
 \begin{answer}[解答]
-一个 $d$ 阶立方有两个 $(d - 1)$ 阶子立方（$d > 0$）。
-因此一个 $d$ 阶立方有 $2^{d - c}$ 个 $c$ 阶子立方。
+首先我们从 $d$ 个坐标中选出 $(d - c)$ 个固定坐标，有 $\binom{d}{d - c}$ 种选法。
+接下来我们为这 $(d - c)$ 个固定坐标确定一个值（$0$ 或 $1$），构成一个 $c$ 阶子立方，
+有 $2^{d - c}$ 种选法。
+因此一个 $d$ 阶立方有 $\binom{d}{d - c} \cdot 2^{d - c}$ 个 $c$ 阶子立方。
 \end{answer}
 
 \begin{exercisewithanswer}
