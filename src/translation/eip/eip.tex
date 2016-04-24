@@ -1127,7 +1127,25 @@ x_{p_b} \neq y_{p_b}
 \end{exercisewithanswer}
 
 \begin{proof}[证明]
-练习 \ref{Exercise 9} 的证明。
+令 $S_1, S_2$ 表示 $d$ 阶立方的任意两个 $k$-立方集，$|S_1| = |S_2| = k$。
+根据练习 \ref{Exercise 8}，$V_{Q_d} - S_1$ 和 $V_{Q_d} - S_2$ 是 $(2^d - k)$-立方集。
+我们把 $S_1, S_2$ 和 $V_{Q_d} - S_1, V_{Q_d} - S_2$ 都表示成互不相交的子立方的并集
+\begin{align*}
+S_1           & = \bigcup_{i = 1}^K V_{Q_d^{c_i, 1}} \\
+S_2           & = \bigcup_{i = 1}^K V_{Q_d^{c_i, 2}} \\
+V_{Q_d} - S_1 & = \bigcup_{i = 1}^{K'} V_{Q_d^{c_i, 3}} \\
+V_{Q_d} - S_2 & = \bigcup_{i = 1}^{K'} V_{Q_d^{c_i, 4}}
+\end{align*}
+由于 $k$ 和 $2^d - k$ 的二进制表示形式都是唯一的，
+我们可以很容易地知道 $S_1$ 中的子立方和 $S_2$ 中的子立方一一对应，
+$V_{Q_d} - S_1$ 和 $V_{Q_d} - S_2$ 同理。
+
+接下来我们构造一个映射 $\phi \colon Q_d \rightarrow Q_d$，满足
+\begin{align*}
+\forall i \in \{1, 2, \dots, K\}, \phi(Q_d^{c_i, 1}) = Q_d^{c_i, 2} \\
+\forall i \in \{1, 2, \dots, K'\}, \phi(Q_d^{c_i, 3}) = Q_d^{c_i, 4}
+\end{align*}
+显而易见，$\phi$ 是一个双射函数，因此是一个 $Q_d$ 上的自同构。
 \end{proof}
 
 \begin{exercisewithanswer}
@@ -1135,7 +1153,35 @@ x_{p_b} \neq y_{p_b}
 \end{exercisewithanswer}
 
 \begin{proof}[证明]
-练习 \ref{Exercise 10} 的证明。
+同样分两种情况：
+\begin{enumerate}[(1)]
+	\item 当 $t < 2^{d - 1}$ 时，我们有
+		\begin{align*}
+		E(k + t) - E(k) & = \left[E(k + t) - E(2^{d - 1})\right] +
+				    \left[E(2^{d - 1}) - E(k)\right] \\
+				& = \left[E(k + t - 2^{d - 1}) + k + t - 2^{d - 1}\right] +
+				    \left[E(2^{d - 1}) - E(k)\right] \\
+				& = \left[E(k + t - 2^{d - 1}) - E(k)\right] +
+				    E(2^{d - 1}) + k + t - 2^{d - 1} \\
+				& < E(2^{d - 1}) - E(2^{d - 1} - t) + t + k - 2^{d - 1} \\
+				& = E(2^d) - E(2^d - t) + k - 2^{d - 1} \\
+				& < E(2^d) - E(2^d - t)
+		\end{align*}
+	\item 当 $t \ge 2^{d - 1}$ 时，我们有
+		\begin{align*}
+		E(k + t) - E(k) & = \left[E(k + t) - E(2^{d - 1})\right] +
+				    \left[E(2^{d - 1}) - E(k)\right] \\
+				& = \left[E(k + t - 2^{d - 1}) + k + t - 2^{d - 1}\right] +
+				    \left[E(2^{d - 1}) - E(k)\right] \\
+				& = \left[E(k + t - 2^{d - 1}) - E(k)\right] +
+				    E(2^{d - 1}) + k + t - 2^{d - 1} \\
+				& < E(2^{d - 1}) - E(2^d - t) + E(2^{d - 1}) +
+				    k + t - 2^{d - 1} \\
+				& = 2 E(2^{d - 1}) + k + t - 2^{d - 1} - E(2^d - t) \\
+				& < 2 E(2^{d - 1}) + 2^{d - 1} - E(2^d - t) \\
+				& = E(2^d) - E(2^d - t)
+		\end{align*}
+\end{enumerate}
 \end{proof}
 
 \begin{exercisewithanswer}
