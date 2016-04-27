@@ -177,3 +177,7 @@ TSWLatexianTemp*
 
 # KBibTeX
 *~[0-9]*
+
+## Sublime Text project files
+*.sublime-project
+*.sublime-workspace
