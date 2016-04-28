@@ -1,0 +1,993 @@
+  % -*- coding: utf-8 -*-
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{bitbook}[2008/02/28 Wenchang Sun, 2008/05/19 Li Xiang]
+
+\newif\if@BITstyle	% 指定宏包是否使用 BITstyle
+\@BITstylefalse		% 默认值为 false
+
+\DeclareOption{emptydoublepage}{	% 定义宏包选项 emptydoublepage
+  \def\cleardoublepage{			% 定义命令 cleardoublepage
+    \clearpage
+    \if@twoside
+      \ifodd\c@page
+      \else
+        \hbox{}
+        \thispagestyle{empty}
+        \newpage
+        \if@twocolumn
+          \hbox{}
+          \thispagestyle{empty}
+          \newpage
+        \fi
+      \fi
+    \fi}}
+
+\DeclareOption{twoside}{\def\zhcn@setside{\twoside}}
+
+\DeclareOption{oneside}{\def\zhcn@setside{}}
+
+\DeclareOption{BITstyle}{\@BITstyletrue}
+
+\ExecuteOptions{twoside}
+\ProcessOptions
+
+\AtBeginDocument{\zhcn@setside}
+
+\endlinechar \m@ne
+\newif\if@tocline	% 目录
+\@toclinetrue
+
+\newif\if@firstappendix	% 是否第一个附录
+\@firstappendixtrue
+
+\newif\if@zhcntwoside	% 是否双面？
+\if@twoside
+  \@zhcntwosidetrue
+\else
+  \@zhcntwosidefalse
+\fi
+
+\newif\if@zhcnopenright	% 章节是否总是在奇数页开始？
+\if@openright
+  \@zhcnopenrighttrue
+  \@openrightfalse
+\else
+  \@zhcntwosidefalse
+\fi
+
+
+\newdimen\zhcntemp@dim@a
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 定义图片和表格编号为 4-1, 4-2 之类的形式
+\def\thefigure{\thechapter-\arabic{figure}}
+\def\thetable{\thechapter-\arabic{table}}
+\@addtoreset{figure}{chapter}
+\@addtoreset{table}{chapter}
+% 定义公式编号为 (4-1), (4-2) 之类的形式
+\def\theequation{\arabic{chapter}-\arabic{equation}}
+\@addtoreset{equation}{chapter}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\@startsection#1#2#3#4#5#6{
+  \if@noskipsec
+    \leavevmode
+  \fi
+  \par
+  \@tempskipa #4\relax
+  \@afterindenttrue
+  \ifdim \@tempskipa <\z@
+    \@tempskipa -\@tempskipa
+  \fi
+  \if@nobreak
+    \everypar{}
+  \else
+    \addpenalty\@secpenalty
+  \fi
+  \@ifstar
+    {\@ssect{#3}{#4}{#5}{#6}{#1}}
+    {\@dblarg{\@sect{#1}{#2}{#3}{#4}{#5}{#6}}}}
+
+\def\@sect#1#2#3#4#5#6[#7]#8{
+  \ifnum #2>\c@secnumdepth
+    \let\@svsec\@empty
+  \else
+    \refstepcounter{#1}
+    \protected@edef\@svsec{
+      \@seccntformat{#1}\relax}
+  \fi
+  \@tempskipa #5\relax
+  \vspace*{\csname over#1space\endcsname}
+  \ifdim \@tempskipa>\z@
+    \begingroup
+      \edef\tempaa{\csname #1headerheight\endcsname}
+      \vbox to \tempaa{
+        \vss
+        {#6
+        \@hangfrom{\hskip #3\relax\@svsec}
+          \interlinepenalty \@M #8
+          \@@par}
+        \vss}
+    \endgroup
+    \csname #1mark\endcsname{#7}
+    \addcontentsline{toc}{#1}{
+      \ifnum #2>\c@secnumdepth
+      \else
+        \protect\numberline{\csname #1name\endcsname}
+      \fi
+      #7}
+  \else
+    \def\@svsechd{
+      #6
+      {\hskip #3\relax
+       \@svsec #8}
+      \csname #1mark\endcsname{#7}
+      \addcontentsline{toc}{#1}{
+        \ifnum #2>\c@secnumdepth
+        \else
+          \protect\numberline{\csname #1name\endcsname}
+        \fi
+        #7}}
+  \fi
+  \@xsect{#5}{#1}}
+
+\def\@ssect#1#2#3#4#5#6{
+  \@tempskipa #3\relax
+  \vspace*{\csname over#5space\endcsname}
+  \ifdim \@tempskipa>\z@
+    \begingroup
+      #4
+      {\@hangfrom{\hskip #1}
+       \interlinepenalty \@M
+       #6
+       \@@par}
+    \endgroup
+  \else
+    \def\@svsechd{#4{\hskip #1\relax #6}}
+  \fi
+  \@xssect{#3}{#5}}
+
+\def\@xsect#1#2{
+  \@tempskipa #1\relax
+  \ifdim \@tempskipa>\z@
+    \par \nobreak
+    \vskip\csname below#2space\endcsname
+    \nobreak
+  \else
+    \@nobreakfalse
+    \global\@noskipsectrue
+    \everypar{
+      \if@noskipsec
+        \global\@noskipsecfalse
+        {\setbox\z@\lastbox}%
+        \clubpenalty\@M
+        \begingroup
+          \@svsechd
+        \endgroup
+        \unskip
+        \@tempskipa #1\relax
+        \hskip -\@tempskipa
+      \else
+        \clubpenalty \@clubpenalty
+        \everypar{}
+      \fi}
+  \fi
+  \ignorespaces}
+
+\def\@xssect#1#2{
+  \@tempskipa #1\relax
+  \ifdim \@tempskipa>\z@
+    \par
+    \nobreak
+    \vskip\csname below#2space\endcsname
+    \nobreak
+  \else
+    \@nobreakfalse
+    \global\@noskipsectrue
+    \everypar{
+      \if@noskipsec
+        \global\@noskipsecfalse
+        {\setbox\z@\lastbox}
+        \clubpenalty\@M
+        \begingroup
+          \@svsechd
+        \endgroup
+        \unskip
+        \@tempskipa #1\relax
+        \hskip -\@tempskipa
+      \else
+        \clubpenalty \@clubpenalty
+        \everypar{}
+      \fi}
+  \fi
+  \ignorespaces}
+
+% 章节标题
+\def\section{\@startsection {section}{1}{\z@}
+                                   {-3.5ex \@plus -1ex \@minus -.2ex}%
+                                   {2.3ex \@plus.2ex}
+                                   {\sectionformat}}
+\def\subsection{\@startsection{subsection}{2}{\z@}
+                                     {-3.25ex\@plus -1ex \@minus -.2ex}%
+                                     {1.5ex \@plus .2ex}
+                                     {\subsectionformat}}
+\def\subsubsection{\@startsection{subsubsection}{3}{\z@}
+                                     {-3.25ex\@plus -1ex \@minus -.2ex}%
+                                     {1.5ex \@plus .2ex}
+                                     {\subsubsectionformat}}
+
+\def\part{
+  \if@openright
+    \cleardoublepage
+  \else
+    \clearpage
+  \fi
+  \thispagestyle{plain}
+  \if@twocolumn
+    \onecolumn
+    \@tempswatrue
+  \else
+    \@tempswafalse
+  \fi
+  \secdef\@part\@spart}
+
+\def\@part[#1]#2{
+  \ifnum \c@secnumdepth >-2\relax
+    \refstepcounter{part}
+    \addcontentsline{toc}{part}{\partname \,\,\, #1}
+  \else
+    \addcontentsline{toc}{part}{#1}
+  \fi
+  \markboth{}{}
+  {\centering
+     \interlinepenalty \@M
+     \normalfont
+     \ifnum \c@secnumdepth >-2\relax
+       \partformat \partname \quad #2% By Wenchang Sun
+       \par
+       \vskip 20\p@
+     \fi
+  \par}
+  \@endpart}
+
+\def\@spart#1{
+  {\centering
+   \interlinepenalty \@M
+   \normalfont
+   \partformat #1\par}
+  \@endpart}
+
+\def\chapter{
+  \if@openright
+    \cleardoublepage
+  \else
+    \clearpage
+  \fi
+  \global\@topnum\z@
+  \secdef\@chapter\@schapter}
+
+\newif\if@zhcn@firstchatper
+\@zhcn@firstchatpertrue
+
+\def\@chapter[#1]#2{
+  \if@BITstyle
+  \else
+    \thispagestyle{plain}
+  \fi
+  \if@zhcn@firstchatper
+    \arabicpagenumber
+    \@zhcn@firstchatperfalse
+  \fi
+  \ifnum \c@secnumdepth >\m@ne
+    \if@mainmatter
+      \refstepcounter{chapter} \typeout{\@chapapp\space\thechapter.} \addcontentsline{toc}{chapter}
+        {\protect\numberline{\chaptername}#1}% By Wenchang Sun
+    \else
+      \addcontentsline{toc}{chapter}{#1} \fi
+  \else
+    \addcontentsline{toc}{chapter}{#1}
+  \fi
+  \chaptermark{#1}
+  \addtocontents{lof}{\protect\addvspace{10\p@}}
+  \addtocontents{lot}{\protect\addvspace{10\p@}}
+  \if@twocolumn
+    \@topnewpage[\@makechapterhead{#2}] \else
+    \@makechapterhead{#2}
+    \@afterheading
+  \fi}
+
+\def\@makechapterhead#1{
+  \vspace*{\overchapterspace}
+  \vbox to \chpaterheaderheight{
+    \vss{
+      \parindent \z@
+      \raggedright
+      \normalfont
+      \ifnum \c@secnumdepth >\m@ne
+        \if@mainmatter
+          \chapterformat \chaptername \hskip\chapternamesep
+        \fi
+      \fi
+      \interlinepenalty\@M
+      \chapterformat #1
+      \par
+      \nobreak}
+    \vss}
+  \vspace*{\belowchapterspace}}
+
+\def\@schapter#1{
+  \if@twocolumn
+    \@topnewpage[\@makeschapterhead{#1}]
+  \else
+    \@makeschapterhead{#1}
+    \@afterheading
+  \fi
+
+  \if@BITstyle
+  \else
+    \thispagestyle{plain}
+  \fi
+
+  \if@tocline
+    \addcontentsline{toc}{chapter}{\protect\numberline{#1}{}}
+  \fi
+  \markboth{#1}{#1}}
+
+\def\@makeschapterhead#1{
+  \vspace*{\overchapterspace}
+  \vbox to \chpaterheaderheight{
+    \vss{
+      \parindent \z@
+      \raggedright
+      \normalfont
+      \interlinepenalty\@M
+      \chapterformat  #1
+      \par
+      \nobreak}
+    \vss}
+  \vspace*{\belowchapterspace}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                      %
+%                                                                      %
+%                          table of contents                           %
+%                                                                      %
+%                                                                      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% 目录设定
+\renewcommand\tableofcontents{
+  \zhcntemp@dim@a\baselineskip
+  \if@twocolumn
+    \@restonecoltrue\onecolumn
+  \else
+    \@restonecolfalse
+  \fi
+   {\@toclinefalse\chapter*{\contentsname}}
+  \@starttoc{toc}%
+  \if@restonecol
+    \twocolumn
+  \fi
+  \baselineskip\zhcntemp@dim@a}
+
+\newdimen\npnumwidth
+
+\def\l@part#1#2{
+  \addpenalty{\@secpenalty}
+  \addvspace{\csname zhcn@toc@over@part\endcsname}
+  \@tempdima 1.5em
+  \begingroup
+    \hfil\tocpartfonts #1\hfil
+    \par
+  \endgroup
+  \addvspace{\csname zhcn@toc@below@part\endcsname}}
+
+\def\l@subsection{\dottedline{subsection}}
+\def\l@section{\dottedline{section}}
+\def\l@chapter{\dottedline{chapter}}
+
+\def\dottedline#1#2#3{{
+  \addpenalty{\@secpenalty}
+  \addvspace{\csname zhcn@toc@over@#1\endcsname}
+  \@tempdima 1.5em\begingroup
+  \csname toc#1fonts\endcsname
+  \parindent \csname toc#1indent\endcsname
+  \rightskip \@pnumwidth
+  \parfillskip -\@pnumwidth
+  \leavevmode
+  \advance\leftskip\@tempdima
+  \hskip -\leftskip
+  \setnewwidth{#1}{#2}
+  \nobreak
+  \hfil
+  \settowidth\npnumwidth{#3}
+  \nobreak
+  \leaders\hbox{\tocleaders}
+  \hfill
+  \nobreak
+  \settowidth\npnumwidth{#3}
+  \hbox to\npnumwidth{\hfil #3}
+  \par
+  \endgroup
+  \addvspace{\csname zhcn@toc@below@#1\endcsname}}}
+
+\def\setnewwidth#1{
+  \def\numberline{
+    \csname zhcn#1numberline\endcsname}}
+
+\def\zhcnchapternumberline#1{
+  \hbox to \tocchptitlewidth{#1\hfil}
+  \hskip \toctitlesep}
+
+\def\zhcnsectionnumberline#1{
+  \hbox to \tocsectitlewidth{\hfil #1}
+  \hskip \toctitlesep}
+
+\def\zhcnsubsectionnumberline#1{
+  \hbox to \tocsubsectitlewidth{\hfil #1}
+  \hskip \toctitlesep}
+
+\def\tocdepth#1{
+  \ifcase #1
+    \def\tableofcontents{}
+    \renewcommand{\l@chapter}[2]{}
+    \renewcommand{\l@section}[2]{}
+    \renewcommand{\l@subsection}[2]{}
+  \or
+    \renewcommand{\l@section}[2]{}
+    \renewcommand{\l@subsection}[2]{}
+  \or
+    \renewcommand{\l@subsection}[2]{}
+  \fi}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                   %
+%                                                                   %
+%                         PAGE    STYLE                             %
+%                                                                   %
+%                                                                   %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% 页眉风格设定
+\def\sethead#1{
+  \def\@oddhead{#1}
+  \if@twoside
+    \def\@evenhead{#1}
+  \fi}
+
+\def\pagestyle{
+  \@ifnextchar[{\zhcn@pagestyles}{\zhcn@pagestyle}}
+
+\def\zhcn@pagestyle#1{
+  \@ifundefined{ps@#1}
+    {\undefinedpagestyle}
+    {\@nameuse{ps@#1}}
+  \def\sectionmark##1{}}
+
+\def\zhcn@pagestyles[section]#1{%
+  \@ifundefined{ps@#1}%
+    {\undefinedpagestyle}
+    {\@nameuse{ps@#1}}}
+
+
+\newif\if@newfoot
+\@newfootfalse
+
+\if@twoside
+  \def\ps@newheadings{
+    \let\@mkboth\markboth
+    \def\@oddfoot{}
+    \def\@evenfoot{}
+    \def\setevenhead{
+      \def\@evenhead{
+        \protect\rule[-5pt]{\textwidth}{1pt}
+        \hspace{-\textwidth}
+        \headingfonts\thepage\hfil\leftmark}}
+
+    \sethead{\protect\rule[-5pt]{\textwidth}{0.5pt}
+      \hspace{-\textwidth}
+      \headingfonts  \rightmark \hfil\thepage}
+    \def\chaptermark##1{
+      \markboth{\chaptername \ \  ##1}
+        {\chaptername \ \  ##1}}
+    \def\sectionmark##1{\markright{##1}}}
+
+  \def\ps@headings{
+    \let\@oddfoot\@empty
+    \let\@evenfoot\@empty
+    \def\setevenhead{
+      \def\@evenhead{
+        \thepage\hfil\headingfonts\leftmark}}
+    \sethead{
+      {\headingfonts\rightmark}\hfil\thepage} \let\@mkboth\markboth
+    \def\chaptermark##1{
+      \markboth {\MakeUppercase{\chaptername\,\, \ ##1}}
+        {\MakeUppercase{\chaptername\,\, \ ##1}}}
+    \def\sectionmark##1{
+      \markright {\MakeUppercase{
+        \ifnum \c@secnumdepth >\z@
+          \thesection. \ %
+        \fi
+        ##1}}}}
+
+  \def\ps@centerheadingsUP{
+    \let\@mkboth\markboth
+    \def\@oddfoot{}
+    \def\@evenfoot{}
+    \def\setevenhead{
+      \def\@evenhead{
+        \protect\rule[-5pt]{\textwidth}{0.5pt}\hspace{-\textwidth}
+        \headingfonts\thepage
+        \hfil\leftmark\hfil}}
+    \sethead{
+      \protect\rule[-5pt]{\textwidth}{0.5pt}
+      \hspace{-\textwidth}
+      \headingfonts
+      \hfil \rightmark
+      \hfil\thepage}
+    \def\chaptermark##1{
+      \markboth{\chaptername \ \  ##1}
+        {\chaptername \ \  ##1}}%
+    \def\sectionmark##1{
+      \markright{##1}}}
+%
+  \def\ps@thesis{
+    \let\@mkboth\markboth
+    \def\@oddfoot{}
+    \def\@evenfoot{}
+    \def\setevenhead{
+      \def\@evenhead{
+        \protect\rule[-5pt]{\textwidth}{0.5pt}
+        \hspace{-\textwidth}
+        \headingfonts\thepage
+        \hfil\thesisname \hfil}}
+    \sethead{
+      \protect\rule[-5pt]{\textwidth}{0.5pt}
+      \hspace{-\textwidth}
+      \headingfonts \hfil \rightmark \hfil\thepage}
+    \def\chaptermark##1{
+      \markboth{\chaptername \ \  ##1}
+        {\chaptername \ \  ##1}}%
+    \def\sectionmark##1{
+      \markright{##1}}}%
+%
+  \def\ps@centerheadings{
+    \let\@mkboth\markboth
+    \def\@oddfoot{{\small\hfil  \thepage \hfil}}
+    \def\@evenfoot{{\small\hfil  \thepage \hfil}}
+    \def\setevenhead{
+      \def\@evenhead{
+        \protect\rule[-5pt]{\textwidth}{0.5pt}
+        \hspace{-\textwidth}
+        \headingfonts\hfil\leftmark\hfil}}
+    \sethead{
+      \protect\rule[-5pt]{\textwidth}{0.5pt}
+      \hspace{-\textwidth}
+      \headingfonts \hfil\rightmark\hfil}
+    \def\chaptermark##1{
+      \markboth{\chaptername \ \  ##1}
+        {\chaptername \ \  ##1}}
+    \def\sectionmark##1{
+      \markright{##1}}}
+% 北京理工大学页眉页脚设定
+  \def\ps@thesisbit{
+    \def\@oddfoot{
+      {\zihaowu\hfil\thepage\hfil}
+    }
+    \sethead{
+      \protect\rule[-5pt]{\textwidth}{0.5pt}
+      \hspace{-\textwidth}
+      \headingfonts \hfil 北京理工大学本科生毕业设计（论文） \hfil
+    }
+  }
+%
+  \def\ps@plain{
+    \let\@mkboth\markboth
+    \def\@oddfoot{
+      {\small\hfil $\cdot$\, \thepage \, $\cdot$\hfil}}
+    \def\@evenfoot{
+      {\small\hfil $\cdot$\, \thepage \, $\cdot$\hfil}}
+    \sethead{}}
+%
+  \def\ps@newfoot{
+    \global\@newfoottrue
+    \let\@mkboth\markboth
+    \def\@oddfoot{
+      {\small\hfil $\cdot$\, \thepage \, $\cdot$\,\,}}
+    \def\@evenfoot{
+      {\small \,\,$\cdot$\, \thepage \, $\cdot$\hfil}}
+    \sethead{}}
+%
+% one side
+\else
+  \def\ps@newheadings{
+    \let\@mkboth\markboth
+    \def\@oddfoot{}
+    \sethead{
+      \protect\rule[-5pt]{\textwidth}{0.5pt}
+      \hspace{-\textwidth}
+      \headingfonts \rightmark\hfil \thepage}
+    \def\chaptermark##1{
+      \markright{
+        \ifnum \c@secnumdepth >\m@ne
+          \if@mainmatter
+            \chaptername \ \ %
+          \fi
+        \fi
+        ##1}}
+    \def\sectionmark##1{}
+    \def\subsectionmark##1{}}
+%
+  \def\ps@thesis{
+    \let\@mkboth\markboth
+    \def\@oddfoot{}
+    \sethead{
+      \protect\rule[-5pt]{\textwidth}{0.5pt}
+      \hspace{-\textwidth}
+      \headingfonts \rightmark\hfil \thepage}
+    \def\chaptermark##1{
+      \markright{
+        \ifnum \c@secnumdepth >\m@ne
+          \if@mainmatter
+            \chaptername \ \ %
+          \fi
+        \fi
+        ##1}}
+    \def\sectionmark##1{}
+    \def\subsectionmark##1{}}
+%
+  \def\ps@headings{
+    \let\@oddfoot\@empty
+    \sethead{
+      {\headingfonts\rightmark}
+      \hfil\thepage}
+    \let\@mkboth\markboth
+    \def\chaptermark##1{ \markright{
+        \MakeUppercase{
+          \ifnum \c@secnumdepth >\m@ne
+            \if@mainmatter
+              \chaptername\,\, \ %
+            \fi
+          \fi
+          ##1}}}}
+%
+  \def\ps@centerheadingsUP{
+    \let\@mkboth\markboth
+    \def\@oddfoot{}
+    \sethead{
+      \protect\rule[-5pt]{\textwidth}{0.5pt}
+      \hspace{-\textwidth}
+      \headingfonts \hfil\rightmark\hfil \thepage}
+    \def\chaptermark##1{
+      \markright{
+       \ifnum \c@secnumdepth >\m@ne
+         \if@mainmatter
+           \chaptername \ \ %
+         \fi
+       \fi
+       ##1}}
+    \def\sectionmark##1{}
+    \def\subsectionmark##1{}}
+%
+  \def\ps@centerheadings{
+    \let\@mkboth\markboth
+    \def\@oddfoot{{\small\hfil  \thepage \hfil}}
+    \def\@evenfoot{{\small\hfil  \thepage \hfil}}
+    \def\setevenhead{
+      \def\@evenhead{
+        \protect\rule[-5pt]{\textwidth}{0.5pt}
+        \hspace{-\textwidth}
+        \headingfonts\hfil\leftmark\hfil}}
+    \sethead{
+      \protect\rule[-5pt]{\textwidth}{0.5pt}
+      \hspace{-\textwidth}
+      \headingfonts \hfil\rightmark\hfil}
+    \def\chaptermark##1{
+      \markboth{\chaptername \ \  ##1}
+        {\chaptername \ \  ##1}}
+    \def\sectionmark##1{
+      \markright{##1}}}
+% 北京理工大学页眉页脚设定
+  \def\ps@thesisbit{
+    \def\@oddfoot{
+      {\zihaowu\hfil\thepage\hfil}
+    }
+    \sethead{
+      \protect\rule[-5pt]{\textwidth}{0.5pt}
+      \hspace{-\textwidth}
+      \headingfonts \hfil 北京理工大学本科生毕业设计（论文） \hfil
+    }
+  }
+%
+  \def\ps@plain{
+    \let\@mkboth\markboth
+    \def\@oddfoot{
+      {\small\hfil $\cdot$\, \thepage \, $\cdot$\hfil}}
+    \def\@evenfoot{
+      {\small\hfil $\cdot$\, \thepage \, $\cdot$\hfil}}
+    \def\@evenhead{}
+    \sethead{}}
+%
+  \def\ps@newfoot{
+    \global\@newfoottrue
+    \let\@mkboth\markboth
+    \def\@oddfoot{
+      {\small\hfil $\cdot$\, \thepage \, $\cdot$\,\,}}
+    \def\@evenhead{}
+    \sethead{}}
+\fi
+
+
+\def\headingfonts{
+  \rmfamily\songti\fontsize{14}{14}\selectfont}
+
+\def\thesisname{}
+
+\long\def\@caption#1[#2]#3{%
+  \par
+  \addcontentsline{\csname ext@#1\endcsname}{#1}%
+    {\protect\numberline{\csname the#1\endcsname}{\ignorespaces #2}}%
+  \begingroup
+    \@parboxrestore
+    \if@minipage
+      \@setminipage
+    \fi
+    \normalsize
+    \@makecaption[#1]{\csname fnum@#1\endcsname}{\ignorespaces #3}\par
+  \endgroup}
+
+\long\def\@makecaption[#1]#2#3{%
+  \vskip\abovecaptionskip
+  \sbox\@tempboxa{\zihaowu #2\hskip\zhcn@captionsep #3}%
+  \ifdim \wd\@tempboxa >\hsize
+    {\zihaowu #2\hskip\zhcn@captionsep #3}\par
+  \else
+    \global \@minipagefalse
+    \hb@xt@\hsize{\hfil\box\@tempboxa\hfil}%
+  \fi
+  \vskip\csname belowcaptionskip@#1\endcsname}
+
+% 字号和磅的关系
+\def\c@sihao@pt{14}
+\def\c@xiaosihao@pt{12}
+\def\c@wuhao@pt{10.5}
+\def\c@xiaowuhao@pt{9}
+\def\c@liuhao@pt{7.5}
+
+\newcommand\zihaosan{\fontsize{16}{16}\selectfont}
+\newcommand\zihaosi{\fontsize{14}{14}\selectfont}
+\newcommand\zihaoxiaosi{\fontsize{12}{12}\selectfont}
+\newcommand\zihaowu{\fontsize{10.5}{10.5}\selectfont}
+\newcommand\zihaoxiaowu{\fontsize{9}{9}\selectfont}
+\newcommand\zihaoliu{\fontsize{7.5}{7.5}\selectfont}
+
+% 图注设置的字体大小
+\def\figurenote#1{\vskip 3mm \zihaoxiaowu #1}
+
+\renewenvironment{thebibliography}[1]{
+  \chapter*{\bibname}
+  \list{\@biblabel{\@arabic\c@enumiv}}
+       {\settowidth\labelwidth{\@biblabel{#1}}
+        \leftmargin\labelwidth
+        \advance\leftmargin\labelsep
+        \@openbib@code
+        \usecounter{enumiv}
+        \let\p@enumiv\@empty
+        \renewcommand\theenumiv{\@arabic\c@enumiv}}
+  \sloppy
+  \clubpenalty4000
+  \@clubpenalty \clubpenalty
+  \widowpenalty4000%
+  \sfcode`\.\@m}
+  {\def\@noitemerr{
+     \@latex@warning{Empty `thebibliography' environment}}%
+  \endlist}
+
+%%%  From elsart.cls
+\let\nocollapse@citex\@citex
+\newcount\@tempcntc
+\def\collapse@citex[#1]#2{
+  \@tempcnta\z@
+  \@tempcntb\m@ne
+  \def\@citea{}
+  \@cite{
+    \@for\@citeb:=#2\do
+      {\@ifundefined{b@\@citeb}{
+         \@citeo
+         \@tempcntb\m@ne
+         \@citea
+         \def\@citea{,}
+         {\bfseries ?}
+         \@warning{Citation `\@citeb' on page \thepage \space undefined}}
+       {\if@filesw
+          \immediate\write\@auxout{\string\citation{\@citeb}}
+        \fi
+        \setbox\z@\hbox{\global\@tempcntc0\csname b@\@citeb\endcsname\relax}
+        \ifnum\@tempcntc=\z@
+          \@citeo
+          \@tempcntb\m@ne
+          \@citea
+          \def\@citea{,}
+          \hbox{\csname b@\@citeb\endcsname}
+        \else
+          \advance\@tempcntb\@ne
+          \ifnum\@tempcntb=\@tempcntc
+          \else
+            \advance\@tempcntb\m@ne
+            \@citeo
+            \@tempcnta\@tempcntc
+            \@tempcntb\@tempcntc
+          \fi
+        \fi}}
+      \@citeo}
+  {#1}}
+\let\@citex\collapse@citex
+\def\nocollapse@cites{
+  \@ifpackageloaded{hyperref}
+    {}
+    {\global\let\@citex\nocollapse@citex}
+  \global\let\nocollapse@cites\relax}
+
+\def\@citeo{
+  \ifnum\@tempcnta>\@tempcntb
+  \else
+    \@citea
+    \def\@citea{, }
+    \ifnum\@tempcnta=\@tempcntb
+      \the\@tempcnta
+    \else
+      {\advance\@tempcnta\@ne
+       \ifnum\@tempcnta=\@tempcntb
+       \else
+         \def\@citea{--}
+       \fi
+       \advance\@tempcnta\m@ne
+       \the\@tempcnta
+       \@citea
+       \the\@tempcntb}
+    \fi
+  \fi}
+
+\newenvironment{chapterreferences}[1]{
+  \mbox{}\\
+  \mbox{\zihaowu\bfseries\bibname}
+  \vskip 0.5\baselineskip
+  \zihaoxiaowu
+  \list{\@biblabel{\@arabic\c@enumiv}}
+    {\settowidth\labelwidth{\@biblabel{#1}}
+      \leftmargin\labelwidth
+      \advance\leftmargin\labelsep
+      \@openbib@code
+      \usecounter{enumiv}
+      \let\p@enumiv\@empty
+      \renewcommand\theenumiv{\@arabic\c@enumiv}}
+    \sloppy
+    \clubpenalty4000
+    \@clubpenalty \clubpenalty
+    \widowpenalty4000%
+    \sfcode`\.\@m}
+  {\def\@noitemerr{
+     \@latex@warning{Empty `chapterreferences' environment}}
+   \endlist}
+
+% 为内容加边框的环境，from lshort，modified by ideal
+\newenvironment{addborder}[1]{%
+\nopagebreak\par\small\addvspace{2ex plus 0.8ex minus 0.2ex}%
+\vskip -\parskip
+\noindent%
+\begin{tabular}{|p{#1}|}\hline\rule{0pt}{1em}\ignorespaces}%
+{\\\hline\end{tabular}\par\nopagebreak\addvspace{2ex plus 0.8ex
+minus 0.2ex}%
+\vskip -\parskip
+}
+
+% 附录设置
+\def\appendix{
+  % 定义附录中的 section 和 subsection 样式
+  \def\thesection{\Alph{chapter}.\arabic{section}}
+  \def\thesubsection{\Alph{chapter}.\arabic{section}.\arabic{subsection}}
+  \if@firstappendix
+    \setcounter{chapter}{0}%
+    \setcounter{section}{0}%
+    \renewcommand\@chapapp{Appendix}
+    \typeout{....\AppendicesTotal...}
+    \ifnum\AppendicesTotal=1
+      \renewcommand\chaptername{附录}
+    \else
+      \renewcommand\chaptername{\appendixname}
+    \fi
+    \@firstappendixfalse
+  \fi
+  \chapter}%
+
+% 图片设置，在图片上方加 5mm 的垂直空白空间
+\def\figure{\vskip 5mm \@float{figure}}
+\let\endfigure\end@float
+
+\def\AppendicesTotal{0}
+\def\AppendicesNumber#1{
+  \gdef\AppendicesTotal{#1}}
+
+\AtEndDocument{
+  \if@firstappendix
+  \else
+    \immediate\write\@auxout{\string\AppendicesNumber{\thechapter}}
+  \fi}
+
+\def\songti{\CJKfamily{}}
+%\def\heiti{\bfseries}
+
+\def\twoside{
+  \if@zhcntwoside
+    \csname setevenhead\endcsname
+  \fi
+  \if@zhcnopenright
+    \@openrighttrue
+  \fi}
+
+\def\arabicpagenumber{
+  \setcounter{page}{1}
+  \def\thepage{\arabic{page}}}
+
+\def\thepage{\Roman{page}}	% 大些罗马数字页码
+
+\def\sectionname{\thesection}
+\def\subsectionname{\thesubsection}
+
+
+
+\renewcommand\contentsname{目　录}
+\renewcommand\listfigurename{插图目录}
+\renewcommand\listtablename{表格目录}
+\renewcommand\bibname{参考文献}
+\renewcommand\indexname{索　引}
+\renewcommand\figurename{图}
+\renewcommand\tablename{表}
+
+\renewcommand\partname{第\zhcn@no{part}部分}
+%\renewcommand\chaptername{第\zhcn@no{chapter}章}
+\renewcommand\chaptername{第 \arabic{chapter} 章}
+%\renewcommand\appendixname{附录\zhcn@no{chapter}}
+\renewcommand\appendixname{附录\Alph{chapter}}
+
+\def\zhcn@no#1{\CJKnumber{\arabic{#1}}}
+
+\def\CJKparindent{\@tempdima \f@size pt\relax
+   \multiply\@tempdima by 2\relax
+   \edef\temp{\the\@tempdima}
+   \parindent\temp}
+
+
+\def\enum#1{
+  \ifnum \@enumdepth >3
+    \@toodeep
+  \else
+    \advance\@enumdepth\@ne
+    \edef\@enumctr{
+      enum\romannumeral\the\@enumdepth}
+    \list{
+      \csname label\@enumctr\endcsname\,}
+      {\settowidth\labelwidth{#1}
+       \leftmargin\labelwidth
+       \advance\leftmargin\labelsep
+       \ifnum\@enumdepth=1
+         \advance\leftmargin\parindent
+       \fi
+       \usecounter{\@enumctr}
+       \listparindent\parindent
+       \itemsep\z@
+       \def\makelabel##1{
+         \mbox{##1}\hfil}}
+    \def\newblock{
+      \hskip .11em plus .33em minus .07em}
+    \sloppy\clubpenalty4000
+    \widowpenalty4000
+    \sfcode`\.=1000\relax
+  \fi}
+\let\endenum=\endlist
+
+\input{bitbook.cfg}
+\endlinechar `\^^M
+\endinput
