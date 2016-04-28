@@ -316,6 +316,12 @@
   \vspace*{\belowchapterspace}}
 
 \def\@schapter#1{
+  % add a phantom hyperlink and move this ahead of @makeschapterhead
+  \if@tocline
+    \phantomsection
+    \addcontentsline{toc}{chapter}{\protect\numberline{#1}{}}
+  \fi
+
   \if@twocolumn
     \@topnewpage[\@makeschapterhead{#1}]
   \else
@@ -328,9 +334,6 @@
     \thispagestyle{plain}
   \fi
 
-  \if@tocline
-    \addcontentsline{toc}{chapter}{\protect\numberline{#1}{}}
-  \fi
   \markboth{#1}{#1}}
 
 \def\@makeschapterhead#1{
@@ -363,7 +366,7 @@
   \else
     \@restonecolfalse
   \fi
-   {\@toclinefalse\chapter*{\contentsname}}
+   {\chapter*{\contentsname}} % add ToC to bookmark
   \@starttoc{toc}%
   \if@restonecol
     \twocolumn
@@ -885,12 +888,12 @@ minus 0.2ex}%
 
 % 附录设置
 \def\appendix{
+  % use a new counter 'appendix' instead of 'chapter'
   % 定义附录中的 section 和 subsection 样式
-  \def\thesection{\Alph{chapter}.\arabic{section}}
-  \def\thesubsection{\Alph{chapter}.\arabic{section}.\arabic{subsection}}
+  \def\thesection{\Alph{appendix}.\arabic{section}}
+  \def\thesubsection{\Alph{appendix}.\arabic{section}.\arabic{subsection}}
   \if@firstappendix
-    \setcounter{chapter}{0}%
-    \setcounter{section}{0}%
+    \newcounter{appendix}{0}
     \renewcommand\@chapapp{Appendix}
     \typeout{....\AppendicesTotal...}
     \ifnum\AppendicesTotal=1
@@ -900,6 +903,7 @@ minus 0.2ex}%
     \fi
     \@firstappendixfalse
   \fi
+  \stepcounter{appendix}
   \chapter}%
 
 % 图片设置，在图片上方加 5mm 的垂直空白空间
@@ -931,18 +935,18 @@ minus 0.2ex}%
   \setcounter{page}{1}
   \def\thepage{\arabic{page}}}
 
-\def\thepage{\Roman{page}}	% 大些罗马数字页码
+\def\thepage{\Roman{page}}	% 大写罗马数字页码
 
 \def\sectionname{\thesection}
 \def\subsectionname{\thesubsection}
 
 
 
-\renewcommand\contentsname{目　录}
+\renewcommand\contentsname{目录} % remove space in-between
 \renewcommand\listfigurename{插图目录}
 \renewcommand\listtablename{表格目录}
 \renewcommand\bibname{参考文献}
-\renewcommand\indexname{索　引}
+\renewcommand\indexname{索引} % remove space in-between
 \renewcommand\figurename{图}
 \renewcommand\tablename{表}
 
@@ -950,7 +954,7 @@ minus 0.2ex}%
 %\renewcommand\chaptername{第\zhcn@no{chapter}章}
 \renewcommand\chaptername{第 \arabic{chapter} 章}
 %\renewcommand\appendixname{附录\zhcn@no{chapter}}
-\renewcommand\appendixname{附录\Alph{chapter}}
+\renewcommand\appendixname{附录\Alph{appendix}} % change counter
 
 \def\zhcn@no#1{\CJKnumber{\arabic{#1}}}
 
