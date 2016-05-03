@@ -695,7 +695,7 @@ $DB_4$ 的图表见图 \ref{Figure 4}。
 事实上并不存在一个所有的初始段都是 EIP 的解的编号方式，
 因为如果存在的话，它就会产生于我们用来构造 $\eta_0$ 的这个过程中。
 然而，我们可以断言，对于 $k \neq 10$，$S_k(\eta_0)$ 是 EIP 的解。
-因此有不等式可导致定理 \ref{Theorem 2}，即
+因此那个推导出定理 \ref{Theorem 2} 的不等式可以给出
 \begin{equation*}
 wl(\underline{DB_4}) > \sum_{k = 0}^n \min_{|S| = k} |\Theta(S)| = 2 \times 34 + 6 = 74
 \end{equation*}
@@ -714,7 +714,7 @@ wl(\eta_0) = 76
 
 \begin{exercise}
 \label{Exercise 14}
-找出 $\underline{DB_4}$ 上所有的 EIP 的解集，其中 $k \le 8$（无需证明）。
+找出 $\underline{DB_4}$ 上 \emph{所有} EIP 的解集，其中 $k \le 8$（无需证明）。
 \end{exercise}
 
 \subsection{划分问题}
@@ -1271,7 +1271,47 @@ wl(Q_d) \ge \sum_{k = 0}^n (s_{k + 1} - s_k) |\Theta(S_k(lex))|
 \end{exercisewithanswer}
 
 \begin{answer}[解答]
-练习 \ref{Exercise 14} 的解答。
+当 $k = 0$ 时，解集为 $\emptyset$。
+下面讨论 $k > 0$ 的情况，顶点均用 $4$ 元组的十进制来表示。
+\begin{enumerate}[(1)]
+	\item 当 $k = 1$ 时，解集有
+		\begin{align*}
+		\{0\}, & \{15\}
+		\end{align*}
+	\item 当 $k = 2$ 时，解集有
+		\begin{align*}
+		\{0, 1\}, & \{14, 15\}, \\
+		\{0, 8\}, & \{7, 15\}
+		\end{align*}
+	\item 当 $k = 3$ 时，解集有
+		\begin{align*}
+		\{0, 1, 8\}, & \{7, 14, 15\}
+		\end{align*}
+	\item 当 $k = 4$ 时，解集有
+		\begin{align*}
+		\{0, 1, 2, 8\}, & \{7, 13, 14, 15\}, \\
+		\{0, 1, 3, 8\}, & \{7, 12, 14, 15\}, \\
+		\{0, 1, 4, 8\}, & \{7, 11, 14, 15\}, \\
+		\{0, 1, 8, 12\}, & \{3, 7, 14, 15\}
+		\end{align*}
+	\item 当 $k = 5$ 时，解集有
+		\begin{align*}
+		\{0, 1, 2, 4, 8\}, & \{7, 11, 13, 14, 15\}
+		\end{align*}
+	\item 当 $k = 6$ 时，解集有
+		\begin{align*}
+		\{0, 1, 2, 4, 8, 9\}, & \{6, 7, 11, 13, 14, 15\}
+		\end{align*}
+	\item 当 $k = 7$ 时，解集有
+		\begin{align*}
+		\{0, 1, 2, 3, 4, 8, 9\}, & \{6, 7, 11, 12, 13, 14, 15\}, \\
+		\{0, 1, 2, 4, 8, 9, 12\}, & \{3, 6, 7, 11, 13, 14, 15\}
+		\end{align*}
+	\item 当 $k = 8$ 时，解集有
+		\begin{align*}
+		\{0, 1, 2, 3, 4, 8, 9, 12\}, & \{3, 6, 7, 11, 12, 13, 14, 15\}
+		\end{align*}
+\end{enumerate}
 \end{answer}
 
 \begin{exercisewithanswer}
