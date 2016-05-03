@@ -564,13 +564,12 @@ wl(\eta) = \sum_{k = 0}^n |\Theta(S_k(\eta))|
 \end{equation*}
 那么
 \begin{align*}
-wl(\eta)
-& = \sum_{\substack{
-	e \in E \\
-	\partial(e) = \{v, w\}
-}} |\eta(v) - \eta(w)| = \sum_{e \in E} \sum_{k = 0}^n \chi(e, k) \\
-& = \sum_{k = 0}^n \sum_{e \in E} \chi(e, k)
-  = \sum_{k = 0}^n |\Theta(S_k(\eta))|
+wl(\eta) & = \sum_{\substack{
+		     e \in E \\
+		     \partial(e) = \{v, w\}
+	     }} |\eta(v) - \eta(w)| = \sum_{e \in E} \sum_{k = 0}^n \chi(e, k) \\
+	 & = \sum_{k = 0}^n \sum_{e \in E} \chi(e, k)
+	   = \sum_{k = 0}^n |\Theta(S_k(\eta))|
 \end{align*}
 \end{proof}
 
@@ -590,16 +589,17 @@ wl(\eta) = \sum_{k = 0}^n (s_{k + 1} - s_k) |\Theta(S_k(\eta))|
 \label{Corollary 2}
 对于任意的图 $G$，
 \begin{align*}
-wl(G)
-& = \min_{\eta} wl(\eta) = \min_{\eta} \sum_{k = 0}^n |\Theta(S_k(\eta))| \\
-& \ge \sum_{k = 0}^n \min_{\eta} |\Theta(S_k(\eta))| = \sum_{k = 0}^n \min_{|S| = k} |\Theta(S)|
+wl(G) & = \min_{\eta} wl(\eta)
+	= \min_{\eta} \sum_{k = 0}^n |\Theta(S_k(\eta))| \\
+      & \ge \sum_{k = 0}^n \min_{\eta} |\Theta(S_k(\eta))|
+	= \sum_{k = 0}^n \min_{|S| = k} |\Theta(S)|
 \end{align*}
 \end{corollary}
 
 \begin{theorem}
 \label{Theorem 2}
-对于 $G = (V, E, \partial)$ 的任意顶点编号方式 $\eta_0$，
-如果它的所有初始段 $S_k(\eta_0)$（$0 \le k \le n$）都是 $G$ 上 EIP 的解，
+对于 $G = (V, E, \partial)$ 的任意顶点编号方式 $\eta$，
+如果它的所有初始段 $S_k(\eta)$（$0 \le k \le n$）都是 $G$ 上 EIP 的解，
 那么它本身就是 $G$ 上线长问题的一个解。
 \end{theorem}
 
@@ -779,14 +779,13 @@ $G$ 的边界划分问题（Edge-boundary Partition Problem）是对于 $G$ 的�
 \begin{proof}[证明]
 如果 $\pi_0$ 是一个最优均匀 $p$-划分，那么
 \begin{align*}
-\min_{|\pi| = p} |\Theta(\pi)|
-& = |\Theta(\pi_0)| \\
-& = \frac{1}{2} \sum_{B \in \pi_0} |\Theta(B)| \\
+\min_{|\pi| = p} |\Theta(\pi)| & = |\Theta(\pi_0)| \\
+			       & = \frac{1}{2} \sum_{B \in \pi_0} |\Theta(B)| \\
 \intertext{\hfill 因为每一条边 $e \in \Theta(\pi_0)$ 都被计算了两次}
-& \ge \frac{1}{2} \left(
-	j \min_{|B| = \lceil\frac{n}{p}\rceil} |\Theta(B)| +
-	(p - j) \min_{|B| = \lfloor\frac{n}{p}\rfloor} |\Theta(B)|
-\right)
+			       & \ge \frac{1}{2} \left(
+					     j \min_{|B| = \lceil\frac{n}{p}\rceil} |\Theta(B)| +
+					     (p - j) \min_{|B| = \lfloor\frac{n}{p}\rfloor} |\Theta(B)|
+				     \right)
 \end{align*}
 \end{proof}
 
@@ -1105,7 +1104,7 @@ x_{p_b} \neq y_{p_b}
 \end{exercisewithanswer}
 
 \begin{answer}[解答]
-根据邻居的定义，$d$ 阶立方的一个 $c$ 阶子立方有 $(d - c)$ 个邻居。
+根据邻居的定义，$d$ 阶立方的一个 $c$ 阶子立方有 $(d - c - 1)$ 个邻居。
 \end{answer}
 
 \begin{exercisewithanswer}
@@ -1206,13 +1205,12 @@ wl(\eta) = \sum_{k = 0}^n (s_{k + 1} - s_k) |\Theta(S_k(\eta))|
 \end{equation*}
 那么
 \begin{align*}
-wl(\eta)
-& = \sum_{\substack{
-	e \in E \\
-	\partial(e) = \{v, w\}
-}} |\eta(v) - \eta(w)| = \sum_{e \in E} \sum_{k = 0}^n \chi(e, k) \\
-& = \sum_{k = 0}^n \sum_{e \in E} \chi(e, k)
-  = \sum_{k = 0}^n (s_{k + 1} - s_k) |\Theta(S_k(\eta))|
+wl(\eta) & = \sum_{\substack{
+		     e \in E \\
+		     \partial(e) = \{v, w\}
+	     }} |\eta(v) - \eta(w)| = \sum_{e \in E} \sum_{k = 0}^n \chi(e, k) \\
+	 & = \sum_{k = 0}^n \sum_{e \in E} \chi(e, k)
+	   = \sum_{k = 0}^n (s_{k + 1} - s_k) |\Theta(S_k(\eta))|
 \end{align*}
 \end{proof}
 
@@ -1248,7 +1246,24 @@ wl(\eta)
 \end{exercisewithanswer}
 
 \begin{proof}[证明]
-练习 \ref{Exercise 13} 的证明。
+对于任意的图 $G$，
+\begin{align*}
+wl(G) & = \min_{\eta} wl(\eta)
+	= \min_{\eta} \sum_{k = 0}^n (s_{k + 1} - s_k) |\Theta(S_k(\eta))| \\
+      & \ge \sum_{k = 0}^n \min_{\eta} (s_{k + 1} - s_k) |\Theta(S_k(\eta))| \\
+      & = \sum_{k = 0}^n (s_{k + 1} - s_k) \min_{\eta} |\Theta(S_k(\eta))| \\
+      & = \sum_{k = 0}^n (s_{k + 1} - s_k) \min_{|S| = k} |\Theta(S)|
+\end{align*}
+根据推论 \ref{Corollary 4}，
+对于 $S \subseteq V_{Q_d}$ 和 $\forall k \in \{0, 1, \dots, n\}$，都有
+\begin{equation*}
+\min_{|S| = k} |\Theta(S)| = |\Theta(S_k(lex))|
+\end{equation*}
+因此我们有
+\begin{equation*}
+wl(Q_d) \ge \sum_{k = 0}^n (s_{k + 1} - s_k) |\Theta(S_k(lex))|
+\end{equation*}
+即 $lex$ 是该更一般的线形机箱的 $Q_d$ 上线长问题的一个解。
 \end{proof}
 
 \begin{exercisewithanswer}
@@ -1278,6 +1293,8 @@ wl(\eta)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % document bibliography %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+
 \begin{thebibliography}{9}
 \label{Bibliography}
 \addcontentsline{toc}{section}{\refname} % add bibliography to ToC
