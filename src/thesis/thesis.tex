@@ -1,0 +1,80 @@
+%% LaTeX source of the thesis.
+%% Use command 'xelatex --shell-escape thesis.tex' TWICE to compile it into a PDF.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% document preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt, oneside, a4paper]{book}
+
+% \usepackage[UTF8]{ctex}
+\usepackage{xeCJK}		% for Chinese environment
+\usepackage{enumerate}		% for customized list numbering
+\usepackage{hyperref}		% for bookmarks and hyperlinks
+\usepackage{amsmath}		% for mathematical features
+\usepackage{amssymb}		% for mathematical symbols
+\usepackage{amsthm}		% for theorems
+\usepackage{algorithmicx}
+\usepackage{svg}		% for svg images
+\usepackage[BITstyle]{bitbook}	% for BIT-style thesis
+
+% CJK settings
+\xeCJKsetup{
+	AutoFakeBold = true,	% use fake bold if no bold font
+	AutoFakeSlant = true	% use face slant if no slant font
+}
+\setCJKmainfont{SimSun}
+\setCJKmonofont{SimSun}
+
+% hyperref options
+\hypersetup{
+	% hide links
+	hidelinks,
+	% number bookmarks
+	bookmarksnumbered = true,
+	% fit width
+	pdfstartview = {FitH},
+	% PDF title
+	pdftitle = {Zhuojia Shen's Undergraduate Thesis},
+	% PDF subject
+	pdfsubject = {Research in Embedding of Hypercubes into Circles},
+	% PDF author
+	pdfauthor = {Zhuojia Shen}
+}
+
+% svg options
+\setsvg{
+	svgpath = {./images/},		% svg directory
+	inkscape = {inkscape -z -D}	% Inkscape command
+}
+
+% BIT-style
+\pagestyle{thesisbit}
+\tocdepth{3}
+
+% list of files to include
+\includeonly{
+	abstract,
+	chapter-1,
+	chapter-2,
+	acknowledgements,
+	bibliography,
+	appendices
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% document body %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\fontsize{12}{12}\selectfont
+\baselineskip 22pt
+
+\include{abstract}
+\tableofcontents
+\include{chapter-1}
+\include{chapter-2}
+\include{acknowledgements}
+\include{bibliography}
+\include{appendices}
+
+\end{document}
