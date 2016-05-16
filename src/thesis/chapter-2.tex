@@ -2,11 +2,118 @@
 %% NEVER compile this file. Complie 'thesis.tex' instead.
 
 \chapter{背景知识}
+\label{Chapter 2}
 
-一个图 $G = (V_G, E_G, \partial_G)$ 是一个三元组，
+\section{图}
+\label{Section 2.1}
+
+一个图（Graph）$G = (V_G, E_G, \partial_G)$ 是一个三元组，
 其中 $V_G$ 是顶点的集合，$E_G$ 是边的集合，
-$\partial_G \colon E_G \rightarrow \binom{V_G}{2}$
-则是从边集到顶点集的二元子集的一个映射函数。
+$\partial_G \colon E_G \rightarrow \binom{V_G}{1} \cup \binom{V_G}{2}$
+则是从边集到顶点集的可重复二元子集的一个映射函数。
 $\partial_G$ 指出了一条边对应了哪两个顶点。
 
+$d$ 阶超立方体（Hypercube），我们用 $Q_d$ 来表示。
+$Q_d = (V_{Q_d}, E_{Q_d}, \partial_{Q_d})$，
+其中 $V_{Q_d} = \{0, 1\}^d$
+（即 $\{0, 1\}$ 的 $d$ 倍笛卡尔积，$|V_{Q_d}| = 2^d$）。
+对于 $e \in E_{Q_d}$ 和 $v, w \in V_{Q_d}$，
+$\partial_{Q_d}(e) = \{v, w\}$ 当且仅当 $v$ 和 $w$ 有正好一位坐标不相同。
+$Q_3$ 的图表见图 \ref{Figure 1}。
+
+\begin{figure}[h!]
+	\centering
+	\includesvg{figure-1}
+	\caption{$Q_3$ 的图表}
+	\label{Figure 1}
+\end{figure}
+
+长为 $n$ 的环（Circle），我们用 $C_n$ 来表示。
+$C_n = (V_{C_n}, E_{C_n}, \partial_{C_n})$，
+其中 $V_{C_n} = \{0, 1, 2, \dots, n - 1\}$。
+对于 $e \in E_{C_n}$ 和 $i, j \in V_{C_n}$，
+$\partial_{C_n}(e) = \{i, j\}$ 当且仅当 $j \equiv (i + 1) \bmod n$。
+$C_4$ 的图表见图 \ref{Figure 2}。
+
+\begin{figure}[h!]
+	\centering
+	\includesvg{figure-2}
+	\caption{$C_4$ 的图表}
+	\label{Figure 2}
+\end{figure}
+
+给定图 $G = (V_G, E_G, \partial_G)$ 和 $v, w \in V_G$，
+一条从 $v$ 到 $w$ 且长度为 $n$ 的路径（Path）$P(v, w)$ 是一个长为 $n$ 的边序列
+$(e_1, e_2, \dots, e_n)$，
+其中存在顶点序列 $(v_0 = v, v_1, \dots, v_{n - 1}, v_n = w)$
+满足对于 $i = 1, \dots, n$，$e_i = \{v_{i - 1}, v_i\}$。
+因此 $P(v, w)$ 也可以表示为 $(v e_1 v_1 e_2 \cdots e_n w)$。
+从 $v$ 到 $w$ 的距离（Distance）$|P_G(v, w)|$ 是从 $v$ 到 $w$ 的最短路径的长度。
+
+\section{线长和割宽}
+\label{Section 2.2}
+
+有了上述关于图的基本概念的定义，我们便可以来定义线长和割宽等一系列概念了。
+
+给定图 $G = (V_G, E_G, \partial_G)$、
+图 $H = (V_H, E_H, \partial_H)$ 和单射函数 $\eta \colon V_G \rightarrow V_H$，
+其中 $|V_G| \le |V_H|$，那么在 $\eta$ 下从 $G$ 到 $H$ 的线长（Wirelength）为
+\begin{equation*}
+wl(G, H, \eta) = \sum_{\substack{
+	e \in E_G \\
+	\partial_G(e) = \{v, w\}
+}} |P_H(\eta(v), \eta(w))|
+\end{equation*}
+即 $G$ 中所有的边在 $\eta$ 下嵌入到 $H$ 后的距离之和。
+从 $G$ 到 $H$ 的线长为
+\begin{equation*}
+wl(G, H) = \min_{\eta} wl(G, H, \eta)
+\end{equation*}
+从 $G$ 到 $H$ 的线长问题即寻找 $wl(G, H)$ 和能达到最小线长的单射函数 $\eta$。
+
+与线长类似，给定图 $G$、$H$ 和单射函数 $\eta$，
+在 $\eta$ 下从 $G$ 到 $H$ 的割宽（Cutwidth）为
+\begin{equation*}
+cw(G, H, \eta) = \max_{i \in V_H} |\{\{v, w\} \in E_G \colon \\
+P_H(\eta(v), \eta(w)) = (\cdots i \cdots), i \neq \eta(w)\}|
+\end{equation*}
+即穿过 $H$ 中的顶点的 $G$ 中边数的最大值。
+从 $G$ 到 $H$ 的割宽为
+\begin{equation*}
+cw(G, H) = \min_{\eta} cw(G, H, \eta)
+\end{equation*}
+从 $G$ 到 $H$ 的割宽问题即寻找 $cw(G, H)$ 和能达到最小割宽的单射函数 $\eta$。
+
+本文所研究的问题为从超立方体到环嵌入的线长问题，
+即对 $\forall d > 2$，寻找 $wl(Q_d, C_{2^d})$ 和能达到最小线长的双射函数 $\eta$。
+注意 $\eta$ 在这里也被称为编号方式（Numbering），
+因为环的顶点集由自然数构成。
+
+\section{格雷码编号方式}
+\label{Section 2.3}
+
+格雷码（Graycode）在计算机组成原理、体系结构以及通信领域中有着重要的作用，
+并且研究人员已证明（或相信）
+格雷码编号方式是从超立方体到链、环、圆柱等结构的嵌入的线长问题的解
+\cite{Harper.1964,Guu.1997,Manuel.2011}。
+
+对于从超立方体到环的嵌入，
+格雷码编号方式 $\mathcal{G} \colon Q_d \rightarrow C_{2^d}$ 有如下的递归定义：
+\begin{enumerate}[(1)]
+	\item 首先我们有 $Q_1$ 上的格雷码编号方式
+		$\mathcal{G} \colon Q_1 \rightarrow C_2$ 为
+		\begin{equation*}
+		\mathcal{G}(0) = 0 \qquad \mathcal{G}(1) = 1
+		\end{equation*}
+	\item 如果给定了 $Q_d$ 上的格雷码编号方式
+		$\mathcal{G} \colon Q_d \rightarrow C_{2^d}$（$d \ge 1$），
+		那么我们给 $Q_d$ 的每一个顶点添加一个坐标前缀 $0$ 和一个相邻的顶点。
+		这些新的顶点则给出了一个 $Q_d$ 的拷贝，
+		我们为其添加一个坐标前缀 $1$。
+		这个新的 $Q_d$ 的编号与原先的相反，
+		即与编号为 $2^d - 1$ 的顶点相邻的顶点编号为 $2^d$、
+		与编号为 $2^d - 2$ 的顶点相邻的顶点编号为 $2^d + 1$、……
+		与编号为 $0$ 的顶点相邻的顶点编号为 $2^{d + 1} - 1$。
+		这样我们便得到了 $Q_{d + 1}$ 上的格雷码编号方式了。
+\end{enumerate}
 
