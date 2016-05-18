@@ -6,8 +6,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass[12pt, oneside, a4paper]{book}
 
-% \usepackage[UTF8]{ctex}
-\usepackage{xeCJK}		% for Chinese environment
+\usepackage[UTF8]{ctex}		% for high level Chinese environment
 \usepackage{enumerate}		% for customized list numbering
 \usepackage{hyperref}		% for bookmarks and hyperlinks
 \usepackage{amsmath}		% for mathematical features
@@ -15,15 +14,10 @@
 \usepackage{amsthm}		% for theorems
 \usepackage{algorithmicx}
 \usepackage{svg}		% for svg images
+\usepackage{listings}
+\usepackage{color}
+% \usepackage{showframe}
 \usepackage[BITstyle]{bitbook}	% for BIT-style thesis
-
-% CJK settings
-\xeCJKsetup{
-	AutoFakeBold = true,	% use fake bold if no bold font
-	AutoFakeSlant = true	% use face slant if no slant font
-}
-\setCJKmainfont{SimSun}
-\setCJKmonofont{SimSun}
 
 % hyperref options
 \hypersetup{
@@ -52,9 +46,36 @@
 	inkscape = {inkscape -z -D}	% Inkscape command
 }
 
+% listings settings
+\definecolor{commentgreen}{rgb}{0, 0.6, 0}
+\definecolor{stringbrown}{rgb}{0.75, 0.5, 0}
+\lstset{
+	basicstyle = \ttfamily\footnotesize,
+	tabsize = 2,
+	showstringspaces = false,
+	% highlight styles
+	commentstyle = \color{commentgreen},
+	keywordstyle = \color{blue},
+	stringstyle = \color{stringbrown}
+}
+
 % BIT-style
 \pagestyle{thesisbit}
 \tocdepth{3}
+
+\ctexset{
+	chapter = {
+		number = \arabic{chapter},
+		format = \bfseries\songti\zihao{3}
+	},
+	section = {
+		% number = \arabic{chapter},
+		format = \bfseries\songti\zihao{4}
+	},
+	subsection = {
+		format = \bfseries\songti\zihao{-4}
+	}
+}
 
 % list of files to include
 \includeonly{
@@ -75,7 +96,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 
-\fontsize{12}{12}\selectfont
+\zihao{-4}\ziju{0.1}
 \baselineskip 22pt
 
 \include{abstract}
