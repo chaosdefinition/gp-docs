@@ -53,7 +53,7 @@ wl(Q_d, P_n, \eta) = \sum_{\substack{
 wl(Q_d, P_n) = \min_\eta wl(Q_d, P_n, \eta)
 \end{equation*}
 
-为了将从 $Q_d$ 到 $P_n$ 的线长问题转化为 EIP，首先我们令
+为了将从 $Q_d$ 到 $P_n$ 的线长问题转化为 $Q_d$ 上的 EIP，首先我们令
 \begin{equation*}
 S_k(\eta) = \eta^{-1}(\{0, 1, \dots, k - 1\}) = \{v \in V \colon \eta(v) \le k\}
 \end{equation*}
@@ -93,5 +93,17 @@ wl(Q_d, P_n) & = \min_{\eta} wl(Q_d, P_n, \eta) \\
 
 根据定理 \ref{Theorem 3.1}，我们将问题转化为了 EIP。
 
-\subsection{证明的改进}
+\subsection{EIP 证明的改进}
 \label{Subsection 3.1.3}
+
+对于 $Q_d$ 上的 EIP，
+L. H. Harper 在一篇论文 \cite{Harper.1964} 中提出了一个定理并给出了他的证明。
+
+\begin{theorem}
+$S \subseteq V_{Q_d}$ 在基数为 $k$ 时有最大的 $|E(S)|$，当且仅当 $S$ 是立方集。
+\end{theorem}
+
+然而在这篇论文发表两年后，
+A. J. Bernstein 发表了一篇后续论文 \cite{Bernstein.1967}，
+指出 Harper 忽视了一种情况。
+他在这篇后续论文中提出了一个引理，用该引理修补了 Harper 的证明中的漏洞。
