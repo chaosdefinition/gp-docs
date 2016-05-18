@@ -7,3 +7,91 @@
 \section{边等周问题}
 \label{Section 3.1}
 
+在图论中，大量的问题都可以被转化为边等周问题并得到解决，包括一些图嵌入问题。
+在 L. H. Harper 的著作 \cite{Harper.1964,Harper.2004} 中，
+他通过一系列的转化，利用边等周问题证明了从超立方体到链嵌入的线长问题。
+
+下面我们给出边等周问题的定义，
+再简要概述如何利用其解决从超立方体到链嵌入的线长问题，
+并给出 $Q_d$ 上的边等周问题证明过程的改进。
+注意这种转化方式为我们提供了一种重要的问题解决思路。
+
+\subsection{定义}
+\label{Subsection 3.1.1}
+
+对任意的图 $G$ 和 $S \subseteq V_G$，我们定义：
+\begin{equation*}
+\Theta(S) = \{e \in E_G \colon \partial_G(e) = \{v, w\}, v \in S, w \notin S\}
+\end{equation*}
+并称之为 $S$ 的边界（Edge-boundary）。
+那么对于一个给定的图 $G$ 和自然数 $k$，
+边等周问题（Edge-Isoperimetric Problem, EIP）
+是对于所有的 $S \subseteq V_G$ 并且 $|S| = k$，
+寻找
+\begin{equation*}
+\min_{|S| = k} |\Theta(S)|
+\end{equation*}
+和能达到该最小值的子集 $S$。
+
+\subsection{线长问题到 EIP}
+\label{Subsection 3.1.2}
+
+回想一下，
+对于给定的编号方式 $\eta \colon V_{Q_d} \rightarrow V_{P_n}$，
+在 $\eta$ 下从 $Q_d$ 到 $P_n$ 的线长 $wl(Q_d, P_n, \eta)$ 为
+\begin{equation*}
+wl(Q_d, P_n, \eta) = \sum_{\substack{
+	e \in E \\
+	\partial(e) = {v, w}
+}} |P_{P_n}(\eta(v), \eta(w))| = \sum_{\substack{
+	e \in E \\
+	\partial(e) = {v, w}
+}} |\eta(v) - \eta(w)|
+\end{equation*}
+而从 $Q_d$ 到 $P_n$ 的线长问题则是寻找
+\begin{equation*}
+wl(Q_d, P_n) = \min_\eta wl(Q_d, P_n, \eta)
+\end{equation*}
+
+为了将从 $Q_d$ 到 $P_n$ 的线长问题转化为 EIP，首先我们令
+\begin{equation*}
+S_k(\eta) = \eta^{-1}(\{0, 1, \dots, k - 1\}) = \{v \in V \colon \eta(v) \le k\}
+\end{equation*}
+即编号方式 $\eta$ 下的前 $k$ 个顶点的集合。
+接下来，我们令
+\begin{equation*}
+\chi(e, k) = \begin{cases}
+	1 & \text{如果}\ \partial(e) = \{v, w\}, \eta(v) \le k < \eta(w) \\
+	0 & \text{其他情况}
+\end{cases}
+\end{equation*}
+那么我们就有
+\begin{align*}
+wl(Q_d, P_n, \eta) & = \sum_{\substack{
+			       e \in E \\
+			       \partial(e) = \{v, w\}
+		       }} |\eta(v) - \eta(w)|
+		     = \sum_{e \in E} \sum_{k = 0}^n \chi(e, k) \\
+		   & = \sum_{k = 0}^n \sum_{e \in E} \chi(e, k)
+		     = \sum_{k = 0}^n |\Theta(S_k(\eta))|
+\end{align*}
+因此，
+\begin{align*}
+wl(Q_d, P_n) & = \min_{\eta} wl(Q_d, P_n, \eta) \\
+	     & = \min_{\eta} \sum_{k = 0}^n |\Theta(S_k(\eta))| \\
+	     & \ge \sum_{k = 0}^n \min_{\eta} |\Theta(S_k(\eta))|
+	       = \sum_{k = 0}^n \min_{|S| = k} |\Theta(S)|
+\end{align*}
+根据该式，我们可以得到一个结论。
+
+\begin{theorem}
+\label{Theorem 3.1}
+对于 $\forall \eta \colon V_{Q_d} \rightarrow V_{P_n}$，
+如果它的所有初始段 $S_k(\eta)$（$0 \le k \le n$）都是 EIP 的解，
+那么它本身就是从 $Q_d$ 到 $P_n$ 的线长问题的一个解。
+\end{theorem}
+
+根据定理 \ref{Theorem 3.1}，我们将问题转化为了 EIP。
+
+\subsection{证明的改进}
+\label{Subsection 3.1.3}
