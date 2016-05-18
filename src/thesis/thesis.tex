@@ -6,18 +6,18 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass[12pt, oneside, a4paper]{book}
 
-\usepackage[UTF8]{ctex}		% for high level Chinese environment
-\usepackage{enumerate}		% for customized list numbering
-\usepackage{hyperref}		% for bookmarks and hyperlinks
-\usepackage{amsmath}		% for mathematical features
-\usepackage{amssymb}		% for mathematical symbols
-\usepackage{amsthm}		% for theorems
-\usepackage{algorithmicx}
-\usepackage{svg}		% for svg images
-\usepackage{listings}
-\usepackage{color}
-% \usepackage{showframe}
-\usepackage[BITstyle]{bitbook}	% for BIT-style thesis
+\usepackage[UTF8]{ctex}			% for high level Chinese environment
+\usepackage{enumerate}			% for customized list numbering
+\usepackage{hyperref}			% for bookmarks and hyperlinks
+\usepackage{amsmath}			% for mathematical features
+\usepackage{amssymb}			% for mathematical symbols
+\usepackage{amsthm}			% for theorems
+\usepackage{algorithm, algorithmicx}	% for pseudo code algorithms
+\usepackage{svg}			% for svg images
+\usepackage{listings}			% for source code listing
+\usepackage{color}			% for customized colors
+% \usepackage{showframe}			% for showing page frames
+\usepackage[BITstyle]{bitbook}		% for BIT-style thesis
 
 % hyperref options
 \hypersetup{
@@ -39,6 +39,7 @@
 
 % theorems
 \newtheorem{theorem}{定理}[chapter]
+\newtheorem{lemma}{引理}[chapter]
 
 % svg options
 \setsvg{
@@ -63,6 +64,7 @@
 \pagestyle{thesisbit}
 \tocdepth{3}
 
+% ctex settings
 \ctexset{
 	chapter = {
 		number = \arabic{chapter},

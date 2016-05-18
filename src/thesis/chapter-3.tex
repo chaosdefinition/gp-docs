@@ -19,19 +19,51 @@
 \subsection{定义}
 \label{Subsection 3.1.1}
 
-对任意的图 $G$ 和 $S \subseteq V_G$，我们定义：
+对于任意的图 $G$ 和 $S \subseteq V_G$，令
 \begin{equation*}
 \Theta(S) = \{e \in E_G \colon \partial_G(e) = \{v, w\}, v \in S, w \notin S\}
 \end{equation*}
-并称之为 $S$ 的边界（Edge-boundary）。
+并称之为 $S$ 的\emph{边界}（Edge-boundary）。
 那么对于一个给定的图 $G$ 和自然数 $k$，
-边等周问题（Edge-Isoperimetric Problem, EIP）
-是对于所有的 $S \subseteq V_G$ 并且 $|S| = k$，
-寻找
+\emph{边等周问题}（Edge-Isoperimetric Problem, EIP）
+是对于所有的 $S \subseteq V_G$ 并且 $|S| = k$，寻找
 \begin{equation*}
 \min_{|S| = k} |\Theta(S)|
 \end{equation*}
 和能达到该最小值的子集 $S$。
+
+为了便于下文叙述，我们在这里定义一个与 EIP 类似的问题，
+并给出其在 $Q_d$ 下与 EIP 的关系。
+
+对于任意的图 $G$ 和 $S \subseteq V_G$，令
+\begin{equation*}
+E(S) = \{e \in E_G \colon \partial_G(e) = \{v, w\}, v \in S, w \in S\}
+\end{equation*}
+并称之为 $S$ 的\emph{导出边集}（Induced Edges）。
+对于一个给定的图 $G$ 和自然数 $k$，
+\emph{导出边问题}（Induced Edge Problem）
+是对于所有的 $S \subseteq V_G$ 并且 $|S| = k$，寻找
+\begin{equation*}
+\max_{|S| = k} |E(S)|
+\end{equation*}
+和能达到该最大值的子集 $S$。
+
+\begin{lemma}
+\label{Lemma 3.1}
+如果图 $G = (V_G, E_G, \partial_G)$ 是一个 $\delta$ 度正则图，
+那么对于 $\forall S \subseteq V_G$，都有
+\begin{equation*}
+|\Theta(S)| + 2 |E(S)| = \delta |S|
+\end{equation*}
+\end{lemma}
+
+\begin{proof}[证明]
+$\delta |S|$ 表示 $S$ 对应的边数，然而出现在 $E(S)$ 中的边被计算了两次。
+\end{proof}
+
+根据引理 \ref{Lemma 3.1}，我们可以知道 $Q_d$ 上的导出边问题与 EIP 等价，
+因为对于 $\forall S \subseteq V$ 和 $\forall k$，
+$\min_{|S| = k} |\Theta(S)| = k d − 2 \max_{|S| = k} |E(S)|$。
 
 \subsection{线长问题到 EIP}
 \label{Subsection 3.1.2}
@@ -43,7 +75,7 @@
 wl(Q_d, P_n, \eta) = \sum_{\substack{
 	e \in E \\
 	\partial(e) = {v, w}
-}} |P_{P_n}(\eta(v), \eta(w))| = \sum_{\substack{
+}} d_{P_n}(\eta(v), \eta(w)) = \sum_{\substack{
 	e \in E \\
 	\partial(e) = {v, w}
 }} |\eta(v) - \eta(w)|
@@ -97,13 +129,88 @@ wl(Q_d, P_n) & = \min_{\eta} wl(Q_d, P_n, \eta) \\
 \label{Subsection 3.1.3}
 
 对于 $Q_d$ 上的 EIP，
-L. H. Harper 在一篇论文 \cite{Harper.1964} 中提出了一个定理并给出了他的证明。
+L. H. Harper 在一篇论文 \cite{Harper.1964} 中提出了下面这个定理，
+并给出了他的证明。
 
 \begin{theorem}
+\label{Theorem 3.2}
 $S \subseteq V_{Q_d}$ 在基数为 $k$ 时有最大的 $|E(S)|$，当且仅当 $S$ 是立方集。
 \end{theorem}
 
-然而在这篇论文发表两年后，
+在定理 \ref{Theorem 3.2} 的证明过程中，
+Harper 对 $d$ 进行数学归纳，并用到了下面这个性质：
+如果 $2^{d - 1} \le k < 2^d$，那么
+\begin{equation*}
+E(k + 1) - E(k) = E(k - 2^{d - 1} + 1) - E(k - 2^{d - 1}) + 1
+\end{equation*}
+其中 $E(k)$ 表示一个 $k$-立方集 $S$ 的导出边数 $|E(S)|$，
+因为 $|E(S)|$ 并非由 $d$ 决定，而仅仅由 $k = |S|$ 决定。
+
+在这篇论文发表两年后，
 A. J. Bernstein 发表了一篇后续论文 \cite{Bernstein.1967}，
 指出 Harper 忽视了一种情况。
-他在这篇后续论文中提出了一个引理，用该引理修补了 Harper 的证明中的漏洞。
+他在这篇后续论文中提出了下面这个引理，用该引理修补了 Harper 的证明中的漏洞：
+
+\begin{lemma}
+\label{Lemma 3.2}
+对于 $\forall d$ 和 $\forall k, t > 0$ 使得 $k + t < 2^d$，都有
+\begin{equation*}
+E(t) < E(k + t) − E(k) < E(2^d) − E(2^d − t)
+\end{equation*}
+\end{lemma}
+
+在引理 \ref{Lemma 3.2} 的证明过程中，Bernstein 对 $d$ 进行数学归纳，
+然后分别考虑了三种情况：
+\begin{enumerate}[(1)]
+	\item 当 $k \ge 2^{d − 1}$ 时，左右两边不等式成立；
+	\item 当 $k + t \le 2^{d − 1}$ 时，左右两边不等式成立；
+	\item 当 $k < 2^{d - 1} < k + t$ 时，左右两边不等式成立。
+\end{enumerate}
+
+然而我们发现第 3 种情况的证明依然存在纰漏：
+Bernstein 并未考虑 $t \ge 2^{d − 1}$ 的情况，
+即当 $k < 2^{d − 1} < k + t$ 时，
+\begin{equation*}
+E(2^{d − 1}) − E(k) > E(t) − E(t − (2^{d − 1} − k))
+\end{equation*}
+仅对 $t < 2^{d - 1}$ 成立。
+下面我们给出针对情况 3 的补充证明。
+
+\begin{proof}[引理 \ref{Lemma 3.2} 情况 3 的补充证明]
+如果 $k < 2^{d − 1} < k + t$ 且 $t \ge 2^{d - 1}$，
+那么对于左边的不等式，我们有
+\begin{align*}
+E(k + t) - E(k) & = \left[E(k + t) - E(2^{d - 1})\right] +
+		    \left[E(2^{d - 1}) - E(k)\right] \\
+		& = \left[E(k + t - 2^{d - 1}) + k + t - 2^{d - 1}\right] +
+		    \left[E(2^{d - 1}) - E(k)\right] \\
+		& = \left[E(k + t - 2^{d - 1}) - E(k)\right] +
+		    E(2^{d - 1}) + k + t - 2^{d - 1} \\
+		& > E(t - 2^{d - 1}) + E(2^{d - 1}) + t - 2^{d - 1} + k \\
+		& = E(t) + k > E(t)
+\end{align*}
+对于右边的不等式，我们有
+\begin{align*}
+E(k + t) - E(k) & = \left[E(k + t) - E(2^{d - 1})\right] +
+		    \left[E(2^{d - 1}) - E(k)\right] \\
+		& = \left[E(k + t - 2^{d - 1}) + k + t - 2^{d - 1}\right] +
+		    \left[E(2^{d - 1}) - E(k)\right] \\
+		& = \left[E(k + t - 2^{d - 1}) - E(k)\right] +
+		    E(2^{d - 1}) + k + t - 2^{d - 1} \\
+		& < E(2^{d - 1}) - E(2^d - t) + E(2^{d - 1}) +
+		    k + t - 2^{d - 1} \\
+		& = 2 E(2^{d - 1}) + k + t - 2^{d - 1} - E(2^d - t) \\
+		& < 2 E(2^{d - 1}) + 2^{d - 1} - E(2^d - t) \\
+		& = E(2^d) - E(2^d - t)
+\end{align*}
+\end{proof}
+
+\section{Guu 的研究与缺陷}
+\label{Section 3.2}
+
+待撰写。
+
+\section{边拥塞与分区引理}
+\label{Section 3.3}
+
+待撰写。
