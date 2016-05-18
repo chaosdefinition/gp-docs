@@ -12,6 +12,7 @@
 $\partial_G \colon E_G \rightarrow \binom{V_G}{1} \cup \binom{V_G}{2}$
 则是从边集到顶点集的可重复二元子集的一个映射函数。
 $\partial_G$ 指出了一条边对应了哪两个顶点。
+下面我们列出了三种在本文中会用到的图结构。
 
 $d$ 阶超立方体（Hypercube），我们用 $Q_d$ 来表示。
 $Q_d = (V_{Q_d}, E_{Q_d}, \partial_{Q_d})$，
@@ -28,26 +29,36 @@ $Q_3$ 的图表见图 \ref{Figure 1}。
 	\label{Figure 1}
 \end{figure}
 
-长为 $n$ 的环（Circle），我们用 $C_n$ 来表示。
-$C_n = (V_{C_n}, E_{C_n}, \partial_{C_n})$，
-其中 $V_{C_n} = \{0, 1, 2, \dots, n - 1\}$。
-对于 $e \in E_{C_n}$ 和 $i, j \in V_{C_n}$，
-$\partial_{C_n}(e) = \{i, j\}$ 当且仅当 $j \equiv (i + 1) \bmod n$。
-$C_4$ 的图表见图 \ref{Figure 2}。
+长为 $n$ 的链，也称为路径（Path），我们用 $P_n$ 来表示。
+$P_n = (V_{P_n}, E_{P_n}, \partial_{P_n})$，
+其中 $V_{P_n} = \{0, 1, 2, \dots, n - 1\}$。
+对于 $e \in E_{P_n}$ 和 $i, j \in V_{P_n}$，
+$\partial_{C_n}(e) = \{i, j\}$ 当且仅当 $j = i + 1$。
+$P_4$ 的图表见图 \ref{Figure 2}
 
 \begin{figure}[h!]
 	\centering
 	\includesvg{figure-2}
-	\caption{$C_4$ 的图表}
+	\caption{$P_4$ 的图表}
 	\label{Figure 2}
 \end{figure}
 
+长为 $n$ 的环（Circle），我们用 $C_n$ 来表示。
+$C_n = (V_{C_n}, E_{C_n}, \partial_{C_n})$，其中 $V_{C_n} = V_{P_n}$。
+对于 $e \in E_{C_n}$ 和 $i, j \in V_{C_n}$，
+$\partial_{C_n}(e) = \{i, j\}$ 当且仅当 $j \equiv (i + 1) \bmod n$。
+$C_4$ 的图表见图 \ref{Figure 3}。
+
+\begin{figure}[h!]
+	\centering
+	\includesvg{figure-3}
+	\caption{$C_4$ 的图表}
+	\label{Figure 3}
+\end{figure}
+
 给定图 $G = (V_G, E_G, \partial_G)$ 和 $v, w \in V_G$，
-一条从 $v$ 到 $w$ 且长度为 $n$ 的路径（Path）$P(v, w)$ 是一个长为 $n$ 的边序列
-$(e_1, e_2, \dots, e_n)$，
-其中存在顶点序列 $(v_0 = v, v_1, \dots, v_{n - 1}, v_n = w)$
-满足对于 $i = 1, \dots, n$，$e_i = \{v_{i - 1}, v_i\}$。
-因此 $P(v, w)$ 也可以表示为 $(v e_1 v_1 e_2 \cdots e_n w)$。
+一条从 $v$ 到 $w$ 且长度为 $n$ 的路径 $P(v, w)$ 是一个导出自 $G$ 的长为 $n$ 的链，
+其中 $v$ 可视为 $0$，$w$ 可视为 $n - 1$，$|P(v, w)| = n$。
 从 $v$ 到 $w$ 的距离（Distance）$|P_G(v, w)|$ 是从 $v$ 到 $w$ 的最短路径的长度。
 
 \section{线长和割宽}
@@ -86,8 +97,12 @@ cw(G, H) = \min_{\eta} cw(G, H, \eta)
 
 本文所研究的问题为从超立方体到环嵌入的线长问题，
 即对 $\forall d > 2$，寻找 $wl(Q_d, C_{2^d})$ 和能达到最小线长的双射函数 $\eta$。
-注意 $\eta$ 在这里也被称为编号方式（Numbering），
-因为环的顶点集由自然数构成。
+注意 $\eta$ 在目标图为链或环时也被称为编号方式（Numbering），
+因为链和环的顶点集都是由自然数构成。
+
+在下文中，若无特殊说明，$n = 2^d$，
+$V$、$E$、$\partial$ 等符号都特指超立方体的相应元素。
+大多数情况下，读者应该都能够根据上下文判断出符号的意义。
 
 \section{格雷码编号方式}
 \label{Section 2.3}
