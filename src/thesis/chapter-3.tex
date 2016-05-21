@@ -174,35 +174,58 @@ Bernstein 并未考虑 $t \ge 2^{d − 1}$ 的情况，
 E(2^{d − 1}) − E(k) > E(t) − E(t − (2^{d − 1} − k))
 \end{equation*}
 仅对 $t < 2^{d - 1}$ 成立。
-下面我们给出针对情况 3 的补充证明。
+下面我们给出经过补充的情况 3 的完整证明。
 
-\begin{proof}[引理 \ref{Lemma 3.2} 情况 3 的补充证明]
-如果 $k < 2^{d − 1} < k + t$ 且 $t \ge 2^{d - 1}$，
-那么对于左边的不等式，我们有
-\begin{align*}
-E(k + t) - E(k) & = \left[E(k + t) - E(2^{d - 1})\right] +
-		    \left[E(2^{d - 1}) - E(k)\right] \\
-		& = \left[E(k + t - 2^{d - 1}) + k + t - 2^{d - 1}\right] +
-		    \left[E(2^{d - 1}) - E(k)\right] \\
-		& = \left[E(k + t - 2^{d - 1}) - E(k)\right] +
-		    E(2^{d - 1}) + k + t - 2^{d - 1} \\
-		& > E(t - 2^{d - 1}) + E(2^{d - 1}) + t - 2^{d - 1} + k \\
-		& = E(t) + k > E(t)
-\end{align*}
-对于右边的不等式，我们有
-\begin{align*}
-E(k + t) - E(k) & = \left[E(k + t) - E(2^{d - 1})\right] +
-		    \left[E(2^{d - 1}) - E(k)\right] \\
-		& = \left[E(k + t - 2^{d - 1}) + k + t - 2^{d - 1}\right] +
-		    \left[E(2^{d - 1}) - E(k)\right] \\
-		& = \left[E(k + t - 2^{d - 1}) - E(k)\right] +
-		    E(2^{d - 1}) + k + t - 2^{d - 1} \\
-		& < E(2^{d - 1}) - E(2^d - t) + E(2^{d - 1}) +
-		    k + t - 2^{d - 1} \\
-		& = 2 E(2^{d - 1}) + k + t - 2^{d - 1} - E(2^d - t) \\
-		& < 2 E(2^{d - 1}) + 2^{d - 1} - E(2^d - t) \\
-		& = E(2^d) - E(2^d - t)
-\end{align*}
+\begin{proof}[引理 \ref{Lemma 3.2} 情况 3 的完整证明]
+当 $k < 2^{d − 1} < k + t$ 时，
+\begin{enumerate}[(1)]
+	\item 如果 $t \ge 2^{d - 1}$，那么对于左边的不等式，我们有
+		\begin{align*}
+		E(k + t) - E(k) & = \left[E(k + t) - E(2^{d - 1})\right] +
+				    \left[E(2^{d - 1}) - E(k)\right] \\
+				& = \left[E(k + t - 2^{d - 1}) + k + t - 2^{d - 1}\right] +
+				    \left[E(2^{d - 1}) - E(k)\right] \\
+				& = \left[E(k + t - 2^{d - 1}) - E(k)\right] +
+				    E(2^{d - 1}) + k + t - 2^{d - 1} \\
+				& > E(t - 2^{d - 1}) + E(2^{d - 1}) + t - 2^{d - 1} + k \\
+				& = E(t) + k > E(t)
+		\end{align*}
+		对于右边的不等式，我们有
+		\begin{align*}
+		E(k + t) - E(k) & = \left[E(k + t) - E(2^{d - 1})\right] +
+				    \left[E(2^{d - 1}) - E(k)\right] \\
+				& = \left[E(k + t - 2^{d - 1}) + k + t - 2^{d - 1}\right] +
+				    \left[E(2^{d - 1}) - E(k)\right] \\
+				& = \left[E(k + t - 2^{d - 1}) - E(k)\right] +
+				    E(2^{d - 1}) + k + t - 2^{d - 1} \\
+				& < E(2^{d - 1}) - E(2^d - t) + E(2^{d - 1}) +
+				    k + t - 2^{d - 1} \\
+				& = 2 E(2^{d - 1}) + k + t - 2^{d - 1} - E(2^d - t) \\
+				& < 2 E(2^{d - 1}) + 2^{d - 1} - E(2^d - t) \\
+				& = E(2^d) - E(2^d - t)
+		\end{align*}
+	\item 相应地，如果 $t < 2^{d - 1}$，那么对于左边的不等式，我们有
+		\begin{align*}
+		E(k + t) − E(k) & = \left[E(k + t) − E(2^{d − 1})\right] +
+				    \left[E(2^{d − 1}) - E(k)\right] \\
+				& = \left[E(k + t - 2^{d - 1}) + k + t - 2^{d - 1}\right] +
+				    \left[E(2^{d - 1}) - E(k)\right] \\
+				& > E(k + t - 2^{d - 1}) +
+				    \left[E(t) − E(t − (2^{d − 1} − k))\right] \\
+				& = E(t)
+		\end{align*}
+		对于右边的不等式，我们有
+		\begin{align*}
+		E(k + t) - E(k) & = \left[E(k + t) - E(2^{d - 1})\right] +
+				    \left[E(2^{d - 1}) - E(k)\right] \\
+				& = \left[E(k + t - 2^{d - 1}) + k + t - 2^{d - 1}\right] +
+				    \left[E(2^{d - 1}) - E(k)\right] \\
+				& = \left[E(k + t - 2^{d - 1}) - E(k)\right] +
+				    E(2^{d - 1}) + k + t - 2^{d - 1} \\
+				& < E(2^{d - 1}) - E(2^{d - 1} - t) + t + k - 2^{d - 1} \\
+				& = E(2^d) - E(2^d - t) + k - 2^{d - 1} \\
+				& < E(2^d) - E(2^d - t)
+		\end{align*}
 \end{proof}
 
 \section{Guu 的研究与缺陷}

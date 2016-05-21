@@ -12,7 +12,9 @@
 \usepackage{amsmath}			% for mathematical features
 \usepackage{amssymb}			% for mathematical symbols
 \usepackage{amsthm}			% for theorems
-\usepackage{algorithm, algorithmicx}	% for pseudo code algorithms
+\usepackage[chapter]{algorithm}		% for floated algorithm environment
+\usepackage{algorithmicx}		% for enhanced algorithm features
+\usepackage{algpseudocode}		% for pseudo code algorithms
 \usepackage{svg}			% for svg images
 \usepackage{listings}			% for source code listing
 \usepackage{color}			% for customized colors
@@ -40,6 +42,11 @@
 % theorems
 \newtheorem{theorem}{定理}[chapter]
 \newtheorem{lemma}{引理}[chapter]
+
+% algorithm settings
+\floatname{algorithm}{算法}
+\renewcommand{\algorithmicrequire}{\textbf{输入：}}
+\renewcommand{\algorithmicensure}{\textbf{输出：}}
 
 % svg options
 \setsvg{
