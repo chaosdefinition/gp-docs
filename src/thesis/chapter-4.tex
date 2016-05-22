@@ -54,7 +54,7 @@ Apache Spark 为 Scala、Java 和 Python 程序设计人员
 根据这一事实，
 我们可以得到我们的第一个算法 GeneratePermutationsBySwap，见算法 \ref{Algorithm 4.1}。
 
-\begin{algorithm}
+\begin{algorithm}[h!]
 \caption{GeneratePermutationsBySwap}
 \label{Algorithm 4.1}
 \begin{algorithmic}[1]
@@ -91,7 +91,7 @@ $start$ 和 $end$ 则表示本次调用所需要交换的数的位置范围。
 算法 \ref{Algorithm 4.1} 中我们调用了算法 CalculateWirelength 计算一个排列的线长。
 下面我们给出它的伪代码，见算法 \ref{Algorithm 4.2}。
 
-\begin{algorithm}
+\begin{algorithm}[h!]
 \caption{CalculateWirelength}
 \label{Algorithm 4.2}
 \begin{algorithmic}[1]
@@ -118,7 +118,7 @@ $start$ 和 $end$ 则表示本次调用所需要交换的数的位置范围。
 其中我们用到了算法 HasEdge，其核心则是判断两个数的按位异或值是否为 $2$ 的幂，
 见算法 \ref{Algorithm 4.3}（该技巧来源于 Linux 内核源代码）。
 
-\begin{algorithm}
+\begin{algorithm}[h!]
 \caption{HasEdge}
 \label{Algorithm 4.3}
 \begin{algorithmic}[1]
@@ -142,7 +142,7 @@ wl(Q_d, C_n, \mathcal{G}) = 3 \cdot 2^{2 d - 3} - 2^{d - 1}
 \end{equation*}
 并且我们假设它是最小的。
 
-\begin{algorithm}
+\begin{algorithm}[h!]
 \caption{CalculateMinimumWirelength}
 \label{Algorithm 4.4}
 \begin{algorithmic}[1]
@@ -203,7 +203,7 @@ MapReduce 最初来自于 Jeff Dean 的一篇论文 \cite{Dean.2004}，
 所展示的算法将本小节的结论与下一小节（第 \ref{Subsection 4.3.2} 小节）的结论进行了合并，
 读者可先阅读下一小节。
 
-\begin{algorithm}
+\begin{algorithm}[h!]
 \caption{GenerateIndices}
 \label{Algorithm 4.5}
 \begin{algorithmic}[1]
@@ -215,7 +215,7 @@ MapReduce 最初来自于 Jeff Dean 的一篇论文 \cite{Dean.2004}，
 \end{algorithmic}
 \end{algorithm}
 
-\begin{algorithm}
+\begin{algorithm}[h!]
 \caption{RestoreIndexToPermutation}
 \label{Algorithm 4.6}
 \begin{algorithmic}[1]
@@ -256,40 +256,44 @@ Reduce 过程可被理解为主节点向各个从节点收集任务的输出，�
 令 $\mathcal{S}$ 表示 $C_n$ 上所有的双射函数构成的集合。
 很显然，$\mathcal{S}$ 是一个 $n$ 元对称群。
 
-令 $\sigma \in \mathcal{S}$ 表示 $\mathcal{S}$ 中的一个置换，满足
+令 $\sigma_r \in \mathcal{S}$ 表示 $\mathcal{S}$ 中的一个置换，满足
 \begin{equation*}
-\sigma(i) = (i + 1) \bmod n, i \in V_{C_n}
+\sigma_r(i) = (i + 1) \bmod n, i \in V_{C_n}
 \end{equation*}
-则由 $\sigma$ 我们可以生成一个 $\mathcal{S}$ 的子集
+则由 $\sigma_r$ 我们可以生成一个 $\mathcal{S}$ 的子集
 \begin{equation*}
-R = \left\{\sigma, \sigma^2, \sigma^3, \dots\right\}
+\mathcal{S}_r = \left\{\sigma_r, \sigma_r^2, \sigma_r^3, \dots\right\}
 \end{equation*}
 我们称之为\emph{旋转对称}（Rotational Symmetry）。
-$\sigma$ 的示意图见图 \ref{Figure 4-1}。
+$\sigma_r$ 的示意图见图 \ref{Figure 4-1}。
 
 \begin{figure}[h!]
 	\centering
 	\includesvg{figure-4-1}
-	\caption{$\sigma$ 下的旋转对称}
+	\caption{$\sigma_r$ 下的旋转对称}
 	\label{Figure 4-1}
 \end{figure}
 
-再令 $\sigma_F \in \mathcal{S}$ 表示 $\mathcal{S}$ 中的一个置换，满足
+再令 $\sigma_f \in \mathcal{S}$ 表示 $\mathcal{S}$ 中的一个置换，满足
 \begin{equation*}
-\sigma_F(i) = 2^d - 1 - i, i \in V_{C_n}
+\sigma_f(i) = 2^d - 1 - i, i \in V_{C_n}
 \end{equation*}
-我们称 $\sigma_F$ 为\emph{翻转对称}（Flipping Symmetry）。
-$\sigma_F$ 的示意图见图 \ref{Figure 4-2}。
+则由 $\sigma_r$ 和 $\sigma_f$ 我们可以生成另一个 $\mathcal{S}$ 的子集
+\begin{equation*}
+\mathcal{S}_f = \left\{\sigma_r \cdot \sigma_f, \sigma_r^2 \cdot \sigma_f, \sigma_r^3 \cdot \sigma_f, \dots\right\}
+\end{equation*}
+我们称之为\emph{翻转对称}（Flipping Symmetry）。
+$\sigma_f$ 的示意图见图 \ref{Figure 4-2}。
 
 \begin{figure}[h!]
 	\centering
 	\includesvg{figure-4-2}
-	\caption{$\sigma_F$ 下的翻转对称}
+	\caption{$\sigma_f$ 下的翻转对称}
 	\label{Figure 4-2}
 \end{figure}
 
 我们断言，对于任意的编号方式 $\eta \colon V_{Q_d} \rightarrow V_{C_n}$
-和任意的置换 $\sigma \in R \cup \{\sigma_F\}$，
+和任意的置换 $\sigma \in \mathcal{S}_r \cup \mathcal{S}_f$，
 \begin{equation*}
 wl(Q_d, C_n, \eta) = wl(Q_d, C_n, \eta \cdot \sigma)
 \end{equation*}
@@ -300,7 +304,7 @@ wl(Q_d, C_n, \eta) = wl(Q_d, C_n, \eta \cdot \sigma)
 来生成不带旋转对称和翻转对称这两种“重复情况”的全排列。
 应用该算法，我们将程序复杂度从原先的 $O(2^d !)$ 降低至 $O(\frac{(2^d - 1)!}{2})$。
 
-\begin{algorithm}
+\begin{algorithm}[h!]
 \caption{GeneratePermutationsByInsertion}
 \label{Algorithm 4.7}
 \begin{algorithmic}[1]
@@ -333,7 +337,7 @@ wl(Q_d, C_n, \eta) = wl(Q_d, C_n, \eta \cdot \sigma)
 若不小于，则不继续进行计算，而是直接返回一个中断标识。
 我们将改进后的算法称为 CalculateWirelength2，见算法 \ref{Algorithm 4.8}。
 
-\begin{algorithm}
+\begin{algorithm}[h!]
 \caption{CalculateWirelength2}
 \label{Algorithm 4.8}
 \begin{algorithmic}[1]
@@ -344,11 +348,8 @@ wl(Q_d, C_n, \eta) = wl(Q_d, C_n, \eta \cdot \sigma)
 	\For{$i$ \In{} $1, 2, \dots, length$}
 		\For{$j$ \In{} $i + 1, i + 2, \dots, length$}
 			\If{HasEdge$(L_i, L_j)$} \Comment{见算法 \ref{Algorithm 4.3}}
-				\If{$j - i > 2^{d - 1}$}
-					\State{Let $wirelength = wirelength + (j - i - 2^{d - 1})$;}
-				\Else
-					\State{Let $wirelength = wirelength + (j - i)$;}
-				\EndIf
+				\State{Let $arclength = j - i > 2^{d - 1}$ ? $j - i - 2^{d - 1}$ : $j - i$;}
+				\State{Let $wirelength = wirelength + arclength$;}
 				\If{$wirelength > minimum$}
 					\State{\Return{$-1$};} \Comment{返回 $-1$ 表示中断}
 				\EndIf
@@ -361,7 +362,7 @@ wl(Q_d, C_n, \eta) = wl(Q_d, C_n, \eta \cdot \sigma)
 
 最终，我们得到了完整的并行化算法 CalculateMinimumWirelength2，见算法 \ref{Algorithm 4.9}。
 
-\begin{algorithm}
+\begin{algorithm}[h!]
 \caption{CalculateMinimumWirelength2}
 \label{Algorithm 4.9}
 \begin{algorithmic}[1]
