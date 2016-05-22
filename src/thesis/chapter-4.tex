@@ -3,3 +3,383 @@
 
 \chapter{Hyperspark}
 \label{Chapter 4}
+
+正如在第 \ref{Chapter 3} 章所见，
+目前我们还没有寻找到一个从理论上解决超立方体到环嵌入的线长问题的方法。
+但是这并不表示我们对此就束手无策了。
+一个显而易见的思路是：
+对于给定的阶 $d$，
+编号方式 $\eta \colon V_{Q_d} \rightarrow V_{C_n}$ 的个数必然是有限的。
+既然如此，我们为何不一一穷举所有的编号方式来寻找最小线长呢？
+然而问题是，由于 $Q_d$ 有 $2^d$ 个顶点，意味着存在 $2^d !$ 个编号方式。
+当 $d = 3$ 时，$2^d ! = 8 ! = 40320$ 还是一个较小的数目，
+可以仅通过单机穷举得到解决。
+但是当 $d = 4$ 时，$2^d ! = 16 ! = 20,922,789,888,000$ 就是一个较大的计算量了，
+更不用说 $d > 4$ 时的情况了。
+因此我们不能寄希望于通过穷举所有的编号方式来解决从超立方体到环嵌入的线长问题。
+
+然而，我们还有另外一种思路：
+首先利用程序计算出低阶情况（如 $d = 3, 4$）下的所有最优编号方式，
+再对它们进行数据处理和分析，
+希望从中寻找出一些通用的特性、规律等用以辅助问题的解决。
+正如前面所述，当 $d = 4$ 时问题的规模已经大到难以单机解决了。
+这时我们就需要依赖于时下热门的分布式计算了。
+
+\section{分布式计算与 Apache Spark 简介}
+\label{Section 4.1}
+
+在计算机科学中，分布式计算（Distributed Computing）是一种计算方法，
+和传统的集中式计算是相对的。
+随着计算技术的快速发展，以及计算机所需处理的数据量的激增，
+有些应用需要消耗非常巨大的计算能力才能完成。
+如果采用集中式计算，这些应用需要耗费相当长的时间来完成。
+而分布式计算将这些应用分解成许多小的部分，利用网络分配给多台计算机进行处理。
+这样可以节约整体计算时间，大大提高计算效率。
+
+Apache Spark 是一个开源的通用分布式计算框架，
+最初由加州大学伯克利分校的 AMP 实验室开发，
+可以用来构建大型的、低延迟的分布式计算应用程序。
+Apache Spark 为 Scala、Java 和 Python 程序设计人员
+提供了一套高层的面向数据结构的应用程序编程接口（API），
+它被称为弹性分布式数据集（Resilient Distributed Dataset, RDD），
+是一组分布于集群上的可容错只读数据集。
+我们将利用 Apache Spark 构建分布式计算程序 Hyperspark，
+它将用于生成所有从超立方体到环的编号方式，以及计算它们的线长。
+
+\section{基本算法}
+\label{Section 4.2}
+
+我们很容易就能注意到，
+一个从超立方体到环的编号方式在实质上就是一个 $0$ 到 $2^d - 1$ 这 $2^d$ 个数的排列。
+根据这一事实，
+我们可以得到我们的第一个算法 GeneratePermutationsBySwap，见算法 \ref{Algorithm 4.1}。
+
+\begin{algorithm}
+\caption{GeneratePermutationsBySwap}
+\label{Algorithm 4.1}
+\begin{algorithmic}[1]
+	\Require{$\{A_i\}_{i = 1}^{2^d}$} \Comment{一个给定的初始排列}
+	\Require{$start, end$} \Comment{需要生成全排列的开始、结束位置}
+
+	\If{$start > end$}
+		\State{Let $wirelength =$ CalculateWirelength$(A)$;} \Comment{计算线长，见算法 \ref{Algorithm 4.2}}
+		\If{$wirelength \le minimum$}
+			\State{Let $minimum = wirelength$;}
+			\State{Add $A$ to $S$;} \Comment{$S$ 是结果集}
+		\EndIf
+	\Else
+		\For{$i$ \In{} $start, \dots, end$}
+			\State{Swap $A_i$ with $A_{start}$;}
+			\State{GeneratePermutationsBySwap$(A, start + 1, end)$;} \Comment{递归}
+			\State{Swap $A_i$ with $A_{start}$;}
+		\EndFor
+	\EndIf
+\end{algorithmic}
+\end{algorithm}
+
+算法 \ref{Algorithm 4.1} 首先需要三个输入：
+$\{A_i\}_{i = 1}^{2^d}$ 表示一个给定的初始排列，如 $0, 1, \dots, 2^d - 1$，
+算法将从该排列开始依次生成每一个排列；
+$start$ 和 $end$ 则表示本次调用所需要交换的数的位置范围。
+实质上该算法是一种回溯算法，只是我们还没有对它运用任何剪枝策略
+（我们会在第 \ref{Subsection 4.3.2} 小节讨论如何优化）。
+对于生成全排列，我们可以这样调用：
+\begin{equation*}
+\textnormal{GeneratePermutationsBySwap}(A, 1, 2^d);
+\end{equation*}
+
+算法 \ref{Algorithm 4.1} 中我们调用了算法 CalculateWirelength 计算一个排列的线长。
+下面我们给出它的伪代码，见算法 \ref{Algorithm 4.2}。
+
+\begin{algorithm}
+\caption{CalculateWirelength}
+\label{Algorithm 4.2}
+\begin{algorithmic}[1]
+	\Require{$\{A_i\}_{i = 1}^{2^d}$} \Comment{需要计算线长的排列}
+	\Ensure{$wirelength$} \Comment{线长}
+
+	\State{Let $wirelength = 0$;}
+	\For{$i$ \In{} $1, \dots, 2^d$}
+		\For{$j$ \In{} $i + 1, \dots, 2^d$}
+			\If{HasEdge$(A_i, A_j)$} \Comment{见算法 \ref{Algorithm 4.3}}
+				\If{$j - i > 2^{d - 1}$}
+					\State{Let $wirelength = wirelength + (j - i - 2^{d - 1})$;}
+				\Else
+					\State{Let $wirelength = wirelength + (j - i)$;}
+				\EndIf
+			\EndIf
+		\EndFor
+	\EndFor
+	\State{\Return{$wirelength$};}
+\end{algorithmic}
+\end{algorithm}
+
+该算法对排列中的每一对顶点编号判断这两个顶点是否有边相连，若有则更新线长。
+其中我们用到了算法 HasEdge，其核心则是判断两个数的按位异或值是否为 $2$ 的幂，
+见算法 \ref{Algorithm 4.3}（该技巧来源于 Linux 内核源代码）。
+
+\begin{algorithm}
+\caption{HasEdge}
+\label{Algorithm 4.3}
+\begin{algorithmic}[1]
+	\Require{$v_1, v_2$} \Comment{两个顶点的编号}
+	\Ensure{\True{} or \False{}} \Comment{是否有边相连}
+
+	\State{Let $xorSum = v_1$ \BitXor{} $v_2$;}
+	\If{$(xorSum \neq 0)$ \LogicAnd{} $(xorSum$ \BitAnd{} $(xorSum - 1) = 0)$}
+		\State{\Return{\True{}};}
+	\Else
+		\State{\Return{\False{}};}
+	\EndIf
+\end{algorithmic}
+\end{algorithm}
+
+因此我们得到一个完整的算法 CalculateMinimumWirelength，见算法 \ref{Algorithm 4.4}。
+注意这里我们用了一个已知的事实，
+即格雷码编号方式 $\mathcal{G}$ 的线长为
+\begin{equation*}
+wl(Q_d, C_n, \mathcal{G}) = 3 \cdot 2^{2 d - 3} - 2^{d - 1}
+\end{equation*}
+并且我们假设它是最小的。
+
+\begin{algorithm}
+\caption{CalculateMinimumWirelength}
+\label{Algorithm 4.4}
+\begin{algorithmic}[1]
+	\Require{$d$} \Comment{超立方体的阶}
+	\Ensure{$minimum$} \Comment{线长的最小值}
+	\Ensure{$S$} \Comment{结果集}
+
+	\State{Let $\{A_i\}_{i = 1}^{2^d} = 0, 1, \dots, 2^d - 1$;}
+	\State{Let $minimum = 3 \cdot 2^{2 d - 3} - 2^{d - 1}$;}
+	\State{Let $S = \emptyset$;}
+	\State{GeneratePermutationsBySwap$(A, 1, 2^d)$;} \Comment{见算法 \ref{Algorithm 4.1}}
+	\State{\Return{$minimum, S$};}
+\end{algorithmic}
+\end{algorithm}
+
+\section{改进和优化}
+\label{Section 4.3}
+
+然而上述算法仅能运行于单机环境中，
+若要令其适用于分布式集群环境，我们则还需要解决以下问题：
+\begin{enumerate}[(1)]
+	\item\label{Question 1} 如何将大任务合理有效地划分为小任务并配给分布式集群的计算节点？
+	\item\label{Question 2} 如何将小任务的计算结果合理有效地收集起来？
+\end{enumerate}
+
+除此之外，我们似乎也应该考虑计算过程的优化，例如在上一节提到的剪枝策略等。
+
+\subsection{并行化和 MapReduce}
+\label{Subsection 4.3.1}
+
+对于问题 \ref{Question 1} 和 \ref{Question 2}，
+Apache Spark 已为我们提供了一套编程模型，它被称为 MapReduce。
+MapReduce 最初来自于 Jeff Dean 的一篇论文 \cite{Dean.2004}，
+它由概念 Map（映射）和 Reduce（归约）构成。
+一个典型的 MapReduce 程序包含一个 Map 过程，即对数据集里的每一个元素做单独处理；
+和一个 Reduce 过程，即对数据集里的元素做迭代计算。
+这两个过程被设计为是可以高度并行的，
+这对高性能要求的应用以及并行/分布式计算领域的需求来讲非常有用。
+关于 MapReduce，我们在这里只做上述简要的介绍。
+如要获取 MapReduce 的更详细信息，请参考 \cite{Dean.2004}。
+下面我们就来描述如何利用 Apache Spark 的 RDD 提供的 Map 和 Reduce 接口
+来解决问题 \ref{Question 1} 和问题 \ref{Question 2}。
+
+首先我们可以把 Map 过程理解为主节点（Master Node）将任务的输入数据进行划分，
+将每一个部分映射到各个从节点（Slave Node）并让从节点对其进行单独处理。
+对于我们的程序而言，输入数据为超立方体的阶 $d$，
+或者也可以认为是 $2^d !$ 个不同的排列。
+而直接对 $2^d !$ 个排列进行划分不但会大量消耗主节点的计算资源，
+而且会造成巨大的主从节点之间的网络传输。
+为了提高主节点的计算效率，减小网络传输，我们设计了一个用于 Map 过程的算法：
+它用一个整数——我们称之为\emph{索引}（Index）——来表示一个或多个排列，
+主节点只需向不同的从节点传输一个不同的索引便可完成主从任务分配，
+接下来从节点按照算法便可将分配到的索引还原为排列；
+生成索引序列也非常简单，按照字典序（Lexicographic Order）生成即可。
+于是对于主节点，我们有了算法 GenerateIndices，见算法 \ref{Algorithm 4.5}；
+对于从节点，我们有了算法 RestoreIndexToPermutation，见算法 \ref{Algorithm 4.6}。
+为了简洁起见，
+所展示的算法将本小节的结论与下一小节（第 \ref{Subsection 4.3.2} 小节）的结论进行了合并，
+读者可先阅读下一小节。
+
+\begin{algorithm}
+\caption{GenerateIndices}
+\label{Algorithm 4.5}
+\begin{algorithmic}[1]
+	\Require{$length$} \Comment{需要生成的初始排列的长度}
+
+	\State{Let $nodes = \lfloor\frac{length - 1}{2}\rfloor !$;}
+	\State{Let $\{I_i\}_{i = 1}^{nodes} = 0, 1, \dots, nodes - 1$;}
+	\State{Parallelize$(I)$;} \Comment{Parallelize 是由 Apache Spark 提供的并行化原语}
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\caption{RestoreIndexToPermutation}
+\label{Algorithm 4.6}
+\begin{algorithmic}[1]
+	\Require{$index$} \Comment{代表一个或多个排列的索引}
+	\Require{$length$} \Comment{需要生成的初始排列的长度}
+	\Ensure{$\{L_i\}_{i = 1}^{length}$} \Comment{初始排列}
+
+	\State{Let $\{L_i\}_{i = 1}^3 = 0, 1, 2$;}
+	\State{Let $\{p_i\}_{i = 1}^{length} = 0, 0, \dots, 0$;}
+	\For{$i$ \In{} $length - 1, length - 2, \dots, 3$}
+		\State{Let $p_{i + 1} = 2 + index \pmod i$;} \Comment{$0$ 的位置总是固定在 1，因此加 2}
+		\State{Let $index = \lfloor index / i \rfloor$;}
+	\EndFor
+	\For{$i$ \In{} $3, 4, \dots, length - 1$}
+		\State{Insert $i$ into $L$ at position $p_{i + 1}$;}
+	\EndFor
+	\State{\Return{$L$};}
+\end{algorithmic}
+\end{algorithm}
+
+然后我们考虑 Reduce 过程。
+Reduce 过程可被理解为主节点向各个从节点收集任务的输出，并做一定的处理。
+这一阶段 Apache Spark 已为我们做好了绝大多数的工作，
+我们只需要将各个从节点的计算结果集进行合并即可。
+
+\subsection{剪枝和去重}
+\label{Subsection 4.3.2}
+
+下面我们再来探索计算过程中可以采取的优化策略。
+前文中我们已经指出，算法 \ref{Algorithm 4.1} 本质上是一个回溯算法，
+因此我们可以对其进行剪枝，即在每一次递归调用之前加入判断条件，
+对于那些不符合条件的情况，我们直接跳过该次递归。
+剪枝策略在某些场景下有很好的优化效果，
+然而在我们当前这个场景下，我们该如何合理地设计这个判断条件呢？
+
+在给出我们的剪枝策略之前，我们先来讨论一下目标图 $C_n$ 的一些性质。
+首先我们发现 $C_n$ 是有对称性的。
+令 $\mathcal{S}$ 表示 $C_n$ 上所有的双射函数构成的集合。
+很显然，$\mathcal{S}$ 是一个 $n$ 元对称群。
+
+令 $\sigma \in \mathcal{S}$ 表示 $\mathcal{S}$ 中的一个置换，满足
+\begin{equation*}
+\sigma(i) = (i + 1) \bmod n, i \in V_{C_n}
+\end{equation*}
+则由 $\sigma$ 我们可以生成一个 $\mathcal{S}$ 的子集
+\begin{equation*}
+R = \left\{\sigma, \sigma^2, \sigma^3, \dots\right\}
+\end{equation*}
+我们称之为\emph{旋转对称}（Rotational Symmetry）。
+$\sigma$ 的示意图见图 \ref{Figure 4-1}。
+
+\begin{figure}[h!]
+	\centering
+	\includesvg{figure-4-1}
+	\caption{$\sigma$ 下的旋转对称}
+	\label{Figure 4-1}
+\end{figure}
+
+再令 $\sigma_F \in \mathcal{S}$ 表示 $\mathcal{S}$ 中的一个置换，满足
+\begin{equation*}
+\sigma_F(i) = 2^d - 1 - i, i \in V_{C_n}
+\end{equation*}
+我们称 $\sigma_F$ 为\emph{翻转对称}（Flipping Symmetry）。
+$\sigma_F$ 的示意图见图 \ref{Figure 4-2}。
+
+\begin{figure}[h!]
+	\centering
+	\includesvg{figure-4-2}
+	\caption{$\sigma_F$ 下的翻转对称}
+	\label{Figure 4-2}
+\end{figure}
+
+我们断言，对于任意的编号方式 $\eta \colon V_{Q_d} \rightarrow V_{C_n}$
+和任意的置换 $\sigma \in R \cup \{\sigma_F\}$，
+\begin{equation*}
+wl(Q_d, C_n, \eta) = wl(Q_d, C_n, \eta \cdot \sigma)
+\end{equation*}
+
+有了上述这个结论，我们提出了一个新的生成全排列的算法 GeneratePermutationsByInsertion，
+见算法 \ref{Algorithm 4.7}。
+该算法通过往已经存在 $i$ 个编号的排列中插入第 $i + 1$ 个编号的方式
+来生成不带旋转对称和翻转对称这两种“重复情况”的全排列。
+应用该算法，我们将程序复杂度从原先的 $O(2^d !)$ 降低至 $O(\frac{(2^d - 1)!}{2})$。
+
+\begin{algorithm}
+\caption{GeneratePermutationsByInsertion}
+\label{Algorithm 4.7}
+\begin{algorithmic}[1]
+	\Require{$element$} \Comment{待插入的元素}
+	\Require{$\{L_i\}_{i = 1}^{element}$} \Comment{待插入元素的排列}
+
+	\If{$element \ge 2^d$}
+		\State{Add $L$ to $S$;} \Comment{$S$ 是结果集}
+	\Else
+		\For{$i$ \In{} $2, 3, \dots, element + 1$}
+			\State{Insert $element$ into $L$ at position $i$;}
+			\If{CalculateWirelength2$(L) \neq -1$} \Comment{计算线长来剪枝，见算法 \ref{Algorithm 4.8}}
+				\State{GeneratePermutationsByInsertion$(element + 1, L)$;} \Comment{递归}
+			\EndIf
+			\State{Remove $element$ from $L$ at position $i$;}
+		\EndFor
+	\EndIf
+\end{algorithmic}
+\end{algorithm}
+
+回到前文讨论的剪枝策略，我们注意到该算法同样也是一个回溯算法。
+然而与先前不同的是，我们可以很方便地对其进行剪枝：
+在下一次递归之前计算一次已在排列中的编号的线长，
+若其已不小于已知的最小值，则剪去该分支。
+应用该剪枝策略，我们程序的效率得到了极大的提升
+（等效运行时间大约由原先的 3360 小时左右缩短至了 1 小时左右）。
+
+另外，我们还可以更进一步地改进算法 CalculateWirelength，即算法 \ref{Algorithm 4.2}。
+我们可以在计算线长的过程中每更新一次线长就将其与已知的最小值进行比较，
+若不小于，则不继续进行计算，而是直接返回一个中断标识。
+我们将改进后的算法称为 CalculateWirelength2，见算法 \ref{Algorithm 4.8}。
+
+\begin{algorithm}
+\caption{CalculateWirelength2}
+\label{Algorithm 4.8}
+\begin{algorithmic}[1]
+	\Require{$\{L_i\}_{i = 1}^{length}$} \Comment{需要计算线长的排列}
+	\Ensure{$wirelength$} \Comment{线长}
+
+	\State{Let $wirelength = 0$;}
+	\For{$i$ \In{} $1, 2, \dots, length$}
+		\For{$j$ \In{} $i + 1, i + 2, \dots, length$}
+			\If{HasEdge$(L_i, L_j)$} \Comment{见算法 \ref{Algorithm 4.3}}
+				\If{$j - i > 2^{d - 1}$}
+					\State{Let $wirelength = wirelength + (j - i - 2^{d - 1})$;}
+				\Else
+					\State{Let $wirelength = wirelength + (j - i)$;}
+				\EndIf
+				\If{$wirelength > minimum$}
+					\State{\Return{$-1$};} \Comment{返回 $-1$ 表示中断}
+				\EndIf
+			\EndIf
+		\EndFor
+	\EndFor
+	\State{\Return{$wirelength$};}
+\end{algorithmic}
+\end{algorithm}
+
+最终，我们得到了完整的并行化算法 CalculateMinimumWirelength2，见算法 \ref{Algorithm 4.9}。
+
+\begin{algorithm}
+\caption{CalculateMinimumWirelength2}
+\label{Algorithm 4.9}
+\begin{algorithmic}[1]
+	\Require{$d$} \Comment{超立方体的阶}
+	\Require{$length$} \Comment{初始排列的长度}
+	\Ensure{$minimum$} \Comment{线长的最小值}
+	\Ensure{$S$} \Comment{结果集}
+
+	\State{Let $minimum = 3 \cdot 2^{2 d - 3} - 2^{d - 1}$;}
+	\State{Let $S = \emptyset$;}
+	\State{GenerateIndices$(length)$;} \Comment{生成和并行化索引序列，见算法 \ref{Algorithm 4.5}}
+	\ForAll{index \In{} \textbf{parallel}}
+		\State{Let $\{L_i\}_{i = 1}^{length} =$ RestoreIndexToPermutation$(index, length)$;} \Comment{见算法 \ref{Algorithm 4.6}}
+		\State{GeneratePermutationsByInsertion$(length, L)$;} \Comment{见算法 \ref{Algorithm 4.7}}
+	\EndFor
+	\State{\Return{$minimum, S$};}
+\end{algorithmic}
+\end{algorithm}
+
+上述算法均为 Hyperspark 实现时所用算法。
+Hyperspark 的核心源代码参见附录 A。
