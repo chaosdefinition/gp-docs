@@ -12,7 +12,7 @@
 编号方式 $\eta \colon V_{Q_d} \rightarrow V_{C_n}$ 的个数必然是有限的。
 既然如此，我们为何不一一穷举所有的编号方式来寻找最小线长呢？
 然而问题是，由于 $Q_d$ 有 $2^d$ 个顶点，意味着存在 $2^d !$ 个编号方式。
-当 $d = 3$ 时，$2^d ! = 8 ! = 40320$ 还是一个较小的数目，
+当 $d = 3$ 时，$2^d ! = 8 ! = 40,320$ 还是一个较小的数目，
 可以仅通过单机穷举得到解决。
 但是当 $d = 4$ 时，$2^d ! = 16 ! = 20,922,789,888,000$ 就是一个较大的计算量了，
 更不用说 $d > 4$ 时的情况了。
@@ -252,7 +252,7 @@ Reduce 过程可被理解为主节点向各个从节点收集任务的输出，�
 然而在我们当前这个场景下，我们该如何合理地设计这个判断条件呢？
 
 在给出我们的剪枝策略之前，我们先来讨论一下目标图 $C_n$ 的一些性质。
-首先我们发现 $C_n$ 是有对称性的。
+首先我们发现 $C_n$ 上的双射函数——也称为\emph{置换}（Substitution）——是有对称性的。
 令 $\mathcal{S}$ 表示 $C_n$ 上所有的双射函数构成的集合。
 很显然，$\mathcal{S}$ 是一个 $n$ 元对称群。
 
@@ -269,7 +269,7 @@ $\sigma_r$ 的示意图见图 \ref{Figure 4-1}。
 
 \begin{figure}[h!]
 	\centering
-	\includesvg{figure-4-1}
+	\includesvg[width = 0.6\textwidth]{figure-4-1}
 	\caption{$\sigma_r$ 下的旋转对称}
 	\label{Figure 4-1}
 \end{figure}
@@ -284,10 +284,12 @@ $\sigma_r$ 的示意图见图 \ref{Figure 4-1}。
 \end{equation*}
 我们称之为\emph{翻转对称}（Flipping Symmetry）。
 $\sigma_f$ 的示意图见图 \ref{Figure 4-2}。
+注意 $|\mathcal{S}_r| = |\mathcal{S}_f| = n = 2^d$，
+因为 $\sigma_r^{n + 1} = \sigma_r$。
 
 \begin{figure}[h!]
 	\centering
-	\includesvg{figure-4-2}
+	\includesvg[width = 0.6\textwidth]{figure-4-2}
 	\caption{$\sigma_f$ 下的翻转对称}
 	\label{Figure 4-2}
 \end{figure}
@@ -300,9 +302,10 @@ wl(Q_d, C_n, \eta) = wl(Q_d, C_n, \eta \cdot \sigma)
 
 有了上述这个结论，我们提出了一个新的生成全排列的算法 GeneratePermutationsByInsertion，
 见算法 \ref{Algorithm 4.7}。
-该算法通过往已经存在 $i$ 个编号的排列中插入第 $i + 1$ 个编号的方式
-来生成不带旋转对称和翻转对称这两种“重复情况”的全排列。
-应用该算法，我们将程序复杂度从原先的 $O(2^d !)$ 降低至 $O(\frac{(2^d - 1)!}{2})$。
+该算法通过往已经存在 $i$ 个编号的排列中不重复地插入第 $i + 1$ 个编号的方式
+来生成不带有旋转对称和翻转对称这两种“重复情况”的全排列。
+应用该算法，
+我们将程序复杂度从原先的 $O\left(2^d !\right)$ 降低至 $O\left(\frac{(2^d - 1)!}{2}\right)$。
 
 \begin{algorithm}[h!]
 \caption{GeneratePermutationsByInsertion}
@@ -327,10 +330,10 @@ wl(Q_d, C_n, \eta) = wl(Q_d, C_n, \eta \cdot \sigma)
 
 回到前文讨论的剪枝策略，我们注意到该算法同样也是一个回溯算法。
 然而与先前不同的是，我们可以很方便地对其进行剪枝：
-在下一次递归之前计算一次已在排列中的编号的线长，
-若其已不小于已知的最小值，则剪去该分支。
+在下一次递归之前计算一次已在排列中的编号的已有线长，
+若其已不小于已知的最小值，我们就跳过这一次递归，剪去该分支。
 应用该剪枝策略，我们程序的效率得到了极大的提升
-（等效运行时间大约由原先的 3360 小时左右缩短至了 1 小时左右）。
+（计算 $4$ 阶的等效运行时间大约由原先的 3360 小时左右缩短至了 1 小时左右）。
 
 另外，我们还可以更进一步地改进算法 CalculateWirelength，即算法 \ref{Algorithm 4.2}。
 我们可以在计算线长的过程中每更新一次线长就将其与已知的最小值进行比较，
