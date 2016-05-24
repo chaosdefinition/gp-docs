@@ -78,15 +78,131 @@ length \rightarrow \frac{(length - 1)!}{2}
 
 通过上述调用，我们得到 $3$ 阶情况下的最短线长为 $20$，以及 $768$ 个 $3$ 阶排列
 （由于数据量过大，我们不在这里列出），从而印证了我们的估算。
+同时这也说明了我们 Hyperspark 的正确性，以及在 $3$ 阶情况下 Guu 的结论的正确性。
+
+下面我们对这 $48$ 个排列进行简单的数据分析。
+为此我们开发了一个辅助性的 Matlab 画图程序，
+用来把每一个排列和它的线长分布情况以图形的方式清晰直观地展现出来。
+该程序的核心源代码参见附录 B。
+由于篇幅限制，我们从 $48$ 个排列中随机选择了两个排列的图形放在本文中，
+一个是格雷码编号方式，见图 \ref{Figure 5-1-a}；
+另一个则是我们结果集中的第一个编号方式，见图 \ref{Figure 5-1-b}。
+
+\begin{figure}[h!]
+	\centering
+	\subfloat[格雷码编号方式]{
+		\includesvg[width = 0.5\textwidth]{figure-5-1-a}
+		\label{Figure 5-1-a}
+	}
+	\subfloat[另一种最优编号方式]{
+		\includesvg[width = 0.5\textwidth]{figure-5-1-b}
+		\label{Figure 5-1-b}
+	}
+	\caption{$Q_3$ 到 $C_{8}$ 的两种编号方式}
+	\label{Figure 5-1}
+\end{figure}
+
+上面两个图中的黑色的圆表示我们的目标图 $C_8$。
+$C_8$ 的顶点从圆上最顶端的位置起沿顺时针方向依次分布在圆上，
+我们用一条指向圆心的黑色线段来标识。
+对于 $Q_3$，我们用数字 $0, 1, \dots, 7$——即十进制表示形式——来表示它的顶点，
+用黑色圆外的每一段彩色圆弧来表示它的每一条边。
+
+注意我们将 $Q_3$ 的每一条边用不同的颜色进行了区分，
+而区分的根据则是一条边对应的两个顶点的哪一位不同。
+回想一下，在超立方体 $Q_d$ 中，
+两个顶点 $v, w \in V_{Q_d}$ 之间有边相连当且仅当 $v$ 和 $w$ 的坐标（二进制表示形式）
+正好只有一位不相同。
+在这里，我们用红色的圆弧表示第 $1$ 位（最低位）坐标不相同的边，
+用绿色的圆弧表示第 $2$ 位（次低位）坐标不相同的边，
+接下来是蓝色和粉色（粉色在 $3$ 阶情况中不存在，但存在于接下来的 $4$ 阶情况中）。
+
+通过画图程序可视化所有 $48$ 个排列后，
+我们发现 $3$ 阶情况下的最优排列有一个共同的特点：
+每一个最优排列都存在 $4$ 条 $C_8$ 中的边，它们的边拥塞度为 $2$，
+并且它们的位置也是相对固定的，即若找到一条这样的边，我们可以马上找到其余的三条；
+而其他剩下的 $4$ 条边每一条都有边拥塞度为 $3$。
+不仅如此，我们还发现包含边拥塞度为 $2$ 的 $Q_3$ 中的边只对应同一种颜色，
+而包含边拥塞度为 $3$ 的 $Q_3$ 中的边至少对应两种颜色。
+
+用更严格的形式来表示，对于 $\forall e \in E_{Q_d}$ 且 $\partial(e) = \{v, w\}$，
+我们令
+\begin{equation*}
+t(e) = i,\ \text{其中}\ v_i \neq w_i, 1 \le i \le d
+\end{equation*}
+表示 $Q_d$ 中的边 $e$ 的类型。
+那么对于每一个最优编号方式 $\eta \colon V_{Q_3} \rightarrow V_{C_8}$，
+\begin{enumerate}[(1)]
+	\item 存在 $4$ 条边 $e_1, e_2, e_3, e_4 \in E_{C_8}$ 满足对于 $\forall e \in E_{C_8}$，
+		\begin{equation}
+		\label{Equation 5-1}
+		|EC(e)| = \begin{cases}
+			2 & e \in \{e_1, e_2, e_3, e_4\} \\
+			3 & e \in E_{C_8} - \{e_1, e_2, e_3, e_4\}
+		\end{cases}
+		\end{equation}
+	\item 对于 $\forall k \in \{1, 2, 3, 4\}$
+		和 $\forall e_1', e_2' \in EC(e_k)$，
+		如果同时有 $e_k \in P(e_1')$ 和 $e_k \in P(e_2')$，
+		那么
+		\begin{equation}
+		\label{Equation 5-2}
+		t(e_1') = t(e_2')
+		\end{equation}
+	\item 若令 $e_k = \{i_k, j_k\}$，$1 \le k \le 4$，那么有
+		\begin{equation}
+		\label{Equation 5-3}
+		\begin{cases}
+		i_1 \equiv (i_2 - 2) \bmod 8 \equiv (i_3 - 4) \bmod 8 \equiv (i_4 - 6) \bmod 8 \\
+		j_1 \equiv (j_2 - 2) \bmod 8 \equiv (j_3 - 4) \bmod 8 \equiv (j_4 - 6) \bmod 8
+		\end{cases}
+		\end{equation}
+\end{enumerate}
+
+我们把式 (\ref{Equation 5-1}) 称为边拥塞公式，
+把式 (\ref{Equation 5-2}) 称为同色公式，
+把式 (\ref{Equation 5-3}) 称为位置公式。
+
+注意这三个公式只适用于 $Q_3$ 到 $C_8$ 的最优编号方式，
+对于这一特性是否在 $4$ 阶情况下也保持成立，我们将在下一节中进行探索。
 
 \section{$4$ 阶情况}
 \label{Section 5.3}
 
 下面是 $4$ 阶的计算结果。
+$4$ 阶的情况下一共只有 $16 !$ 种编号方式，
+因此算法 \ref{Algorithm 4.4} 已不再适用了。
+我们直接运行 Hyperspark，调用
+\begin{equation*}
+\textnormal{CalculateMinimumWirelength2}(4, 4);
+\end{equation*}
+其中输入数据为 $d = 4$ 和 $length = 4$。
+$length = 4$ 的条件下主节点将生成长度为 $4$ 的初始排列
 
 \begin{figure}[h!]
 	\centering
-	\includesvg[width = 0.8\textwidth]{figure-5-1}
-	\caption{$Q_4$ 到 $C_{16}$ 的格雷码编号方式}
-	\label{Figure 5-1}
+	\subfloat[格雷码编号方式]{
+		\includesvg[width = 0.5\textwidth]{figure-5-2-a}
+		\label{Figure 5-2-a}
+	}
+	\subfloat[结果集 1 中的一个编号方式]{
+		\includesvg[width = 0.5\textwidth]{figure-5-2-b}
+		\label{Figure 5-2-b}
+	}
+	\caption{$Q_4$ 到 $C_{16}$ 的两种编号方式}
+	\label{Figure 5-2}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\subfloat[结果集 2 中的一个编号方式]{
+		\includesvg[width = 0.5\textwidth]{figure-5-3-a}
+		\label{Figure 5-3-a}
+	}
+	\subfloat[结果集 3 中的一个编号方式]{
+		\includesvg[width = 0.5\textwidth]{figure-5-3-b}
+		\label{Figure 5-3-b}
+	}
+	\caption{$Q_4$ 到 $C_{16}$ 的另外两种编号方式}
+	\label{Figure 5-3}
 \end{figure}
