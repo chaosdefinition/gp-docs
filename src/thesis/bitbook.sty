@@ -875,6 +875,15 @@
      \@latex@warning{Empty `chapterreferences' environment}}
    \endlist}
 
+\renewcommand*{\listofalgorithms}{%
+    \@namedef{l@algorithm}{\@dottedtocline{1}{1.5em}{2.3em}}%
+    \chapter*{\listalgorithmname}%
+    \begingroup\setlength{\parskip}{\z@}%
+      \@starttoc{\@nameuse{ext@algorithm}}%
+    \endgroup
+  }
+}
+
 % 为内容加边框的环境，from lshort，modified by ideal
 \newenvironment{addborder}[1]{%
 \nopagebreak\par\small\addvspace{2ex plus 0.8ex minus 0.2ex}%
@@ -945,6 +954,7 @@ minus 0.2ex}%
 \renewcommand\contentsname{目录} % remove space in-between
 \renewcommand\listfigurename{插图目录}
 \renewcommand\listtablename{表格目录}
+\renewcommand\listalgorithmname{算法目录}
 \renewcommand\bibname{参考文献}
 \renewcommand\indexname{索引} % remove space in-between
 \renewcommand\figurename{图}

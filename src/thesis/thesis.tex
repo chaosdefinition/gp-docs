@@ -9,6 +9,7 @@
 \usepackage[UTF8]{ctex}			% for high level Chinese environment
 \usepackage{enumerate}			% for customized list numbering
 \usepackage{hyperref}			% for bookmarks and hyperlinks
+\usepackage[all]{hypcap}		% for correction of figure link targets
 \usepackage{amsmath}			% for mathematical features
 \usepackage{amssymb}			% for mathematical symbols
 \usepackage{amsthm}			% for theorems
@@ -16,9 +17,9 @@
 \usepackage{algorithmicx}		% for enhanced algorithm features
 \usepackage{algpseudocode}		% for pseudo code algorithms
 \usepackage{svg}			% for svg images
+\usepackage{subfig}			% for subfigures
 \usepackage{listings}			% for source code listing
 \usepackage{color}			% for customized colors
-% \usepackage{showframe}			% for showing page frames
 \usepackage[BITstyle]{bitbook}		% for BIT-style thesis
 
 % hyperref options
@@ -118,6 +119,8 @@
 
 \include{abstract}
 \tableofcontents
+\listoffigures
+\listofalgorithms
 \include{chapter-1}
 \include{chapter-2}
 \include{chapter-3}
