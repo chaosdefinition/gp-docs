@@ -1,16 +1,569 @@
 %% LaTeX source of Appendices of the thesis.
 %% NEVER compile this file. Complie 'thesis.tex' instead.
 
-\appendix{测试}
+\appendix{Hyperspark 核心源代码}
+\label{Appendix A}
 
-\section{附录节测试}
+\section{App.java}
+\label{Section A.1}
 
-附录的节和 chapter 的一样。
+\begin{lstlisting}[language = Java]
+package me.chaosdefinition.hyperspark;
 
-\subsection{附录小节测试}
+import java.util.List;
 
-附录的小节和 chapter 的一样。
+import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.JavaSparkContext;
 
-\appendix{}
+import me.chaosdefinition.hyperspark.common.HypersparkException;
+import me.chaosdefinition.hyperspark.core.WirelengthCalculator;
+import me.chaosdefinition.hyperspark.optparse.OptionParser;
+import me.chaosdefinition.hyperspark.util.MathUtils;
 
-这是附录 B。
+/**
+ * Application starting point.
+ *
+ * @author Chaos Shen
+ */
+public class App {
+	public static void main(String[] args) {
+		try {
+			/* Parse command line options. */
+			OptionParser parser = new OptionParser();
+			parser.parse(args);
+
+			/* Get options. */
+			int dimension = parser.getDimension();
+			int length = parser.getLength() < 3 ? 3 : parser.getLength();
+			String outdir = parser.getOutdir();
+			boolean verbose = parser.isVerbose();
+
+			/* Initialize Spark environment. */
+			SparkConf conf = new SparkConf().setAppName("hyperspark");
+			JavaSparkContext ctx = new JavaSparkContext(conf);
+
+			/*
+			 * Generate a list of lexicographic ordered integers, each
+			 * representing an index in all permutations of specified length
+			 * without rotation and flip symmetries, and then parallelize them
+			 * to JavaRDD.
+			 */
+			JavaRDD<Integer> indices = ctx.parallelize(
+					MathUtils.lexicode(MathUtils.factorial(length - 1) / 2)
+			);
+
+			if (verbose) {
+				/*
+				 * In verbose mode, first convert each index to corresponding
+				 * initial permutation, and then construct a
+				 * WirelengthCalculator with specified dimension and the initial
+				 * permutation, finally call findMinimumMappings() which returns
+				 * the result by this permutation.
+				 *
+				 * We don't need to reduce all the results since they are
+				 * exactly what we want. Save them to the output directory.
+				 */
+				indices.flatMap(index -> {
+					List<Integer> initial = MathUtils.indexToPermutation(index,
+						length
+					);
+					WirelengthCalculator calculator = new WirelengthCalculator(
+						dimension, initial
+					);
+					calculator.setVerbose(verbose);
+					return calculator.findMinimumMappings();
+				}).saveAsTextFile(outdir);
+			} else {
+				/*
+				 * Otherwise, we just need to know the minimum wirelength, which
+				 * can be acquired by following the above steps but finally
+				 * calling calculateMinimumWirelength() instead.
+				 *
+				 * Reduce the results by taking the minimum and print the final
+				 * minimum.
+				 */
+				int minimum = indices.map(index -> {
+					List<Integer> initial = MathUtils.indexToPermutation(
+						index, length
+					);
+					WirelengthCalculator calculator = new WirelengthCalculator(
+						dimension, initial
+					);
+					return calculator.calculateMinimumWirelength();
+				}).reduce((v1, v2) -> Math.min(v1, v2));
+				System.out.println("Minimum: " + minimum);
+			}
+			ctx.close();
+		} catch (Exception e) {
+			if (e instanceof HypersparkException) {
+				e.printStackTrace();
+			} else {
+				new HypersparkException(e).printStackTrace();
+			}
+			System.exit(1);
+		}
+	}
+}
+\end{lstlisting}
+
+\clearpage
+\section{WirelengthCalculator.java}
+\label{Section A.2}
+
+\begin{lstlisting}[language = Java]
+package me.chaosdefinition.hyperspark.core;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import me.chaosdefinition.hyperspark.common.HypersparkException;
+
+/**
+ * The main class of hyperspark.
+ *
+ * @author Chaos Shen
+ */
+public class WirelengthCalculator {
+
+	private int dimension;
+	private int vertices;
+	private List<Integer> initial;
+	private int minWirelength;
+	private List<List<Integer>> minMappings;
+
+	private boolean verbose = false;
+
+	/**
+	 * Determines if two vertices have an edge between them.
+	 *
+	 * @param v1
+	 *            the integer representation of a vertex
+	 * @param v2
+	 *            the same as {@code v1}
+	 * @return {@code true} if the two vertices have an edge between them,
+	 *         otherwise {@code false}
+	 */
+	public static boolean hasEdge(int v1, int v2) {
+		/*
+		 * An egde exists if only one bit differs, so we do this check by
+		 * determing if their xor sum is a power of two.
+		 */
+		return (v1 ^ v2) != 0 && ((v1 ^ v2) & ((v1 ^ v2) - 1)) == 0;
+	}
+
+	/**
+	 * Returns the known minimum wirelength of circular mappings of
+	 * hypercube of specified dimension, which typically is the
+	 * wirelength of the graycode mapping.
+	 *
+	 * @param dimension
+	 *            the dimension of the hypercube
+	 * @return the known minimum circular wirelength
+	 */
+	public static int knownMinimumWirelength(int dimension) {
+		if (dimension < 0) {
+			throw new HypersparkException(
+				"Illegal value of dimension: " + dimension
+			);
+		} else if (dimension < 2) {
+			return dimension;
+		} else {
+			return 3 * (1 << ((dimension << 1) - 3)) - (1 << (dimension - 1));
+		}
+	}
+
+	/**
+	 * Constructs a {@link WirelengthCalculator} for hypercube of specified
+	 * dimension.
+	 *
+	 * @param dimension
+	 *            the dimension of the hypercube
+	 */
+	public WirelengthCalculator(int dimension) {
+		this(dimension, null);
+	}
+
+	/**
+	 * Constructs a {@link WirelengthCalculator} for hypercube of specified
+	 * dimension with a given initial list to start with.
+	 *
+	 * @param dimension
+	 *            the dimension of the hypercube
+	 * @param initial
+	 *            the initial list to start with
+	 */
+	public WirelengthCalculator(int dimension, List<Integer> initial) {
+		this.dimension = dimension;
+		this.vertices = 1 << dimension;
+		if (initial != null) {
+			/* check duplication of each entry */
+			boolean[] presence = new boolean[initial.size()];
+			for (int i : initial) {
+				if (i >= 0 && i < initial.size()) {
+					presence[i] = true;
+				}
+			}
+			for (boolean b : presence) {
+				if (!b) {
+					throw new HypersparkException(
+						"Illegal value in initial list!"
+					);
+				}
+			}
+			this.initial = new ArrayList<>(initial);
+		} else {
+			/* [0, 1, 2] will produce all permutations without symmetry */
+			this.initial = new ArrayList<>(Arrays.asList(0, 1, 2));
+		}
+
+		this.minWirelength = knownMinimumWirelength(dimension);
+	}
+
+	/**
+	 * Calculates the minimum circular wirelength on all mappings under the
+	 * initial list.
+	 *
+	 * @return the minimum circular wirelength
+	 */
+	public int calculateMinimumWirelength() {
+		backtrack(this.initial, this.initial.size());
+		return this.minWirelength;
+	}
+
+	/**
+	 * Finds all the mappings of minimum circular wirelength under the
+	 * initial list.
+	 *
+	 * @return a list of minimum mappings
+	 */
+	public List<List<Integer>> findMinimumMappings() {
+		this.minMappings = new ArrayList<>();
+		if (!this.verbose) {
+			setVerbose(true);
+			backtrack(this.initial, this.initial.size());
+			setVerbose(false);
+		} else {
+			backtrack(this.initial, this.initial.size());
+		}
+		return this.minMappings;
+	}
+
+	/**
+	 * Calculates the complete circular wirelength of a list.
+	 *
+	 * @param list
+	 *            a list (an initial segment or a complete mapping of
+	 *            hypercube)
+	 * @return the complete circular wirelength
+	 */
+	public int calculateWirelength(List<Integer> list) {
+		return calculateWirelength(list, 0, list.size());
+	}
+
+	/**
+	 * Calculates the partial circular wirelength of a list.
+	 *
+	 * @param list
+	 *            a list (an initial segment or a complete mapping of
+	 *            hypercube)
+	 * @param start
+	 *            the starting position in the list
+	 * @param end
+	 *            the ending position in the list
+	 * @return the partial circular wirelength, or -1 when partial
+	 *         wirelength is already larger than the current minimum
+	 */
+	public int calculateWirelength(List<Integer> list, int start, int end) {
+		int wirelength = 0;
+
+		for (int i = start; i < end; ++i) {
+			for (int j = i + 1; j < end; ++j) {
+				if (hasEdge(list.get(i), list.get(j))) {
+					if ((j - i) * 2 > this.vertices) {
+						wirelength += this.vertices - (j - i);
+					} else {
+						wirelength += j - i;
+					}
+					if (wirelength > this.minWirelength) {
+						return -1;
+					}
+				}
+			}
+		}
+
+		return wirelength;
+	}
+
+	/**
+	 * Performs backtracking to generate all the mappings under the
+	 * initial list.
+	 *
+	 * @param list
+	 *            a list (an initial segment or a complete mapping of
+	 *            hypercube)
+	 * @param element
+	 *            next element to add to the list
+	 */
+	private void backtrack(List<Integer> list, int element) {
+		if (element >= this.vertices) {
+			this.minWirelength = calculateWirelength(list);
+			if (this.verbose) {
+				this.minMappings.add(new ArrayList<>(list));
+			}
+		} else {
+			for (int i = 1; i <= list.size(); ++i) {
+				list.add(i, element);
+				if (calculateWirelength(list) != -1) {
+					backtrack(list, element + 1);
+				}
+				list.remove(i);
+			}
+		}
+	}
+
+	/* getters and setters */
+	public int getDimension() {
+		return dimension;
+	}
+
+	public int getVertices() {
+		return vertices;
+	}
+
+	public List<Integer> getInitial() {
+		return initial;
+	}
+
+	public int getMinWirelength() {
+		return minWirelength;
+	}
+
+	public boolean isVerbose() {
+		return verbose;
+	}
+
+	public void setVerbose(boolean verbose) {
+		this.verbose = verbose;
+	}
+}
+\end{lstlisting}
+
+\clearpage
+\section{MathUtils.java}
+\label{Section A.3}
+
+\begin{lstlisting}[language = Java]
+package me.chaosdefinition.hyperspark.util;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import me.chaosdefinition.hyperspark.common.HypersparkException;
+
+/**
+ * Relevant mathematical utilities.
+ *
+ * @author Chaos Shen
+ */
+public class MathUtils {
+
+	/**
+	 * Generates the factorial of a given integer.
+	 *
+	 * @param n
+	 *            an integer
+	 * @return its factorial
+	 */
+	public static int factorial(int n) {
+		final int[] factorials = {
+			1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800, 39916800,
+			479001600
+		};
+
+		if (n >= factorials.length) {
+			throw new HypersparkException("Factorial of " + n + "too large!");
+		}
+
+		return factorials[n];
+	}
+
+	/**
+	 * Converts an integer to a permutation of given length without
+	 * rotation and flip symmetries.
+	 *
+	 * @param index
+	 *            an integer ranging from 0 to ((n - 1)! / 2 - 1)
+	 * @param length
+	 *            the length of the target permutation
+	 * @return the target permutation
+	 */
+	public static List<Integer> indexToPermutation(int index, int length) {
+		List<Integer> code = new ArrayList<>(Arrays.asList(0, 1, 2));
+		int[] position = new int[length];
+
+		for (int i = length - 1; i >= 3; --i) {
+			/* 0 is always fixed, so we need to shift others each by 1 */
+			position[i] = index % i + 1;
+			index /= i;
+		}
+		for (int i = 3; i < length; ++i) {
+			code.add(position[i], i);
+		}
+
+		return code;
+	}
+
+	/**
+	 * Generates the lexicographic code of given length.
+	 *
+	 * @param length
+	 *            the length of the code
+	 * @return the lexicographic code
+	 */
+	public static List<Integer> lexicode(int length) {
+		List<Integer> code = new ArrayList<>(length);
+		for (int i = 0; i < length; ++i) {
+			code.add(i);
+		}
+		return code;
+	}
+}
+\end{lstlisting}
+
+\appendix{Matlab 画图程序核心源代码}
+\label{Appendix B}
+
+\section{main.m}
+\label{Section B.1}
+
+\begin{lstlisting}[language = Matlab]
+axis equal;
+hold on;
+
+% open data file
+[file, path] = uigetfile('*');
+if file == 0
+	quit;
+end
+fileID = fopen(strcat(path, file));
+
+while 1
+	% read a line, each line representing a result
+	line = fgetl(fileID);
+	if line == -1
+		break;
+	end
+	data = sscanf(line, '%*c%d')';
+	total = size(data, 2);
+	cla;
+
+	% draw a basic inner circle
+	innerTheta = 0 : pi / 10000 : 2 * pi;
+	innerX = 1 * sin(innerTheta);
+	innerY = 1 * cos(innerTheta);
+	plot(innerX, innerY, 'k');
+
+	% draw the marks
+	markTheta = 0 : 2 * pi / total : 2 * pi;
+	markX = [];
+	markY = [];
+	for j2 = 1 : total
+		markX = [1, 0.9, 0.8] * sin(markTheta(j2));
+		markY = [1, 0.9, 0.8] * cos(markTheta(j2));
+		plot(markX([1, 2]), markY([1, 2]), 'k');
+		text(markX(3), markY(3), num2str(data(j2)));
+	end
+
+	% draw the outside arcs
+	counters = zeros(1, total);
+	heights = zeros(1, total);
+	colors = ['r', 'g', 'b', 'm', 'y', 'c'];
+	for i = 0 : log2(total) - 1
+		for j = 1 : total / 2
+			for k = 1 : total
+				if j == 8 && k > 7
+					continue;
+				end
+				j2 = mod(k + j - 1, total) + 1;
+				if hasEdge(data(k), data(j2)) && ...
+						bitxor(data(k), data(j2)) == 2^i
+					[counters, heights] = drawArc(counters, heights, ...
+							k, j2, total, ...
+							colors(i + 1));
+				end
+			end
+		end
+	end
+
+	% listen to keyboard to choose the next action
+	while 1
+		try
+			if waitforbuttonpress
+				action = get(gcf, 'CurrentCharacter');
+			end
+		catch
+			action = 'q';
+		end
+		switch action
+		case 'n'
+			break;
+		case 'q'
+			fclose(fileID);
+			quit;
+		end
+	end
+end
+
+fclose(fileID);
+quit;
+\end{lstlisting}
+
+\clearpage
+\section{drawArc.m}
+\label{Section B.2}
+
+\begin{lstlisting}[language = Matlab]
+%% drawArc: draw an arc
+function [counters, heights] = drawArc(counters, heights, i1, i2, ...
+		total, color)
+	maximum = 0;
+
+	if i1 > i2
+		i2 = i2 + total;
+	end
+	for i = i1 : i2 - 1
+		index = mod(i - 1, total) + 1;
+		if heights(index) > maximum
+			maximum = heights(index);
+		end
+	end
+	maximum = maximum + 1;
+	for i = i1 : i2 - 1
+		index = mod(i - 1, total) + 1;
+		heights(index) = maximum;
+		counters(index) = counters(index) + 1;
+	end
+
+	radius = 1 + maximum * 0.05;
+	delta = pi / 80;
+	degree = 2 * pi / total;
+	theta = (i1 - 1) * degree + delta : pi / 1000 : (i2 - 1) * degree - delta;
+	arcX = radius * sin(theta);
+	arcY = radius * cos(theta);
+	plot(arcX, arcY, color);
+\end{lstlisting}
+
+\clearpage
+\section{hasEdge.m}
+\label{Section B.3}
+
+\begin{lstlisting}[language = Matlab]
+%% hasEdge: determine if two vertices have an edge between them
+function [v] = hasEdge(a, b)
+	xorSum = bitxor(a, b);
+	v = xorSum ~= 0 & bitand(xorSum, xorSum - 1) == 0;
+	return;
+\end{lstlisting}
