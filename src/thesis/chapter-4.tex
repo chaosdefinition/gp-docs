@@ -114,7 +114,7 @@ $start$ 和 $end$ 则表示本次调用所需要交换的数的位置范围。
 \end{algorithmic}
 \end{algorithm}
 
-该算法对排列中的每一对顶点编号判断这两个顶点是否有边相连，若有则更新线长。
+该算法根据排列中的每一对顶点的值判断这两个顶点是否有边相连，若有则更新线长。
 其中我们用到了算法 HasEdge，其核心则是判断两个数的按位异或值是否为 $2$ 的幂，
 见算法 \ref{Algorithm 4.3}（该技巧来源于 Linux 内核源代码）。
 
@@ -122,7 +122,7 @@ $start$ 和 $end$ 则表示本次调用所需要交换的数的位置范围。
 \caption{HasEdge}
 \label{Algorithm 4.3}
 \begin{algorithmic}[1]
-	\Require{$v_1, v_2$} \Comment{两个顶点的编号}
+	\Require{$v_1, v_2$} \Comment{$Q_d$ 中两个顶点的十进制表示形式}
 	\Ensure{\True{} or \False{}} \Comment{是否有边相连}
 
 	\State{Let $xorSum = v_1$ \BitXor{} $v_2$;}
