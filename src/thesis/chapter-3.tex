@@ -228,10 +228,142 @@ E(2^{d − 1}) − E(k) > E(t) − E(t − (2^{d − 1} − k))
 		\end{align*}
 \end{proof}
 
-\section{Guu 的研究与缺陷}
+\section{派生网络}
 \label{Section 3.2}
 
-待撰写。
+从超立方体到链嵌入的线长问题可以通过 EIP 得到解决，那么从超立方体到环的嵌入呢？
+1997 年，Ching-Jung Guu 在她的博士学位论文 \cite{Guu.1997} 中
+宣称从超立方体到环嵌入的线长问题已经得到了解决。
+她通过创建派生网络这一概念将该问题转化为了 EIP，
+并得出了格雷码嵌入有最小的环形线长这一结论。
+
+下面我们给出派生网络及其一系列附加概念的定义，
+再简要概述如何利用派生网络将从超立方体到环嵌入的线长问题转化为 EIP，
+最后我们简述 Guu 的证明思路，并援引 Jason Erbele 等人的文章 \cite{Erbele.2003}，
+这篇文章指出了 Guu 的证明过程中的错误。
+
+\subsection{定义}
+\label{Subsection 3.2.1}
+
+一个\emph{派生网络}（Derived Network）是一个定义在 $Q_d$ 上的顶点加权图
+$D = (V_D, E_D, \partial_D)$，其中 $V_D$ 由 $V_{Q_d}$ 的所有基数为 $2^{d - 1}$ 的子集构成。
+对于 $e \in E_D$ 和 $V, W \in V_D$，$\partial_D(e) = \{V, W\}$ 当且仅当 $V \Delta W = 2$，
+即 $|V \cap W| = 2^{d - 1} - 1$。
+对于 $D$ 中的顶点 $V \in V_D$，它的权重为 $|\Theta(V)|$。
+
+一条派生网络中的路径
+$\mathcal{P} = (\mathcal{P}_1, \mathcal{P}_2, \dots, \mathcal{P}_{2^{d - 1}}, \mathcal{P}_{2^{d - 1} + 1})$
+是 $D$ 中的一条长为 $2^{d - 1}$ 的路径，
+我们用 $2^{d - 1} + 1$ 个 $V_D$ 中的顶点（即 $\mathcal{P}_i$）来表示，
+其中相邻两个顶点之间都有边相连。
+Guu 将 $\mathcal{P}$ 设计为对应一个编号方式 $\eta_\mathcal{P} \colon V_{Q_d} \rightarrow V_{C_n}$，
+其中
+\begin{align*}
+\eta_\mathcal{P}(\mathcal{P}_1 - \mathcal{P}_2) & = 0, & \quad
+\eta_\mathcal{P}(\mathcal{P}_2 - \mathcal{P}_1) & = 2^{d - 1}, \\
+\eta_\mathcal{P}(\mathcal{P}_2 - \mathcal{P}_3) & = 1, & \quad
+\eta_\mathcal{P}(\mathcal{P}_3 - \mathcal{P}_2) & = 2^{d - 1} + 1, \\
+						& \cdots & \quad & \cdots \\
+\eta_\mathcal{P}(\mathcal{P}_{2^{d - 1} - 1} - \mathcal{P}_{2^{d - 1}}) & = 2^{d - 1} - 2, & \quad
+\eta_\mathcal{P}(\mathcal{P}_{2^{d - 1}} - \mathcal{P}_{2^{d - 1} - 1}) & = 2^d - 2, \\
+\eta_\mathcal{P}(\mathcal{P}_{2^{d - 1}} - \mathcal{P}_{2^{d - 1} + 1}) & = 2^{d - 1} - 1, & \quad
+\eta_\mathcal{P}(\mathcal{P}_{2^{d - 1} + 1} - \mathcal{P}_{2^{d - 1}}) & = 2^d - 1
+\end{align*}
+这样一来，我们便有
+\begin{align*}
+	      \mathcal{P}_1 & = \eta_\mathcal{P}^{-1}(\{0, 1, \dots, 2^{d - 1} - 1\}), \\
+	      \mathcal{P}_2 & = \eta_\mathcal{P}^{-1}(\{1, 2, \dots, 2^{d - 1}\}), \\
+	      \mathcal{P}_3 & = \eta_\mathcal{P}^{-1}(\{2, 3, \dots, 2^{d - 1} + 1\}), \\
+			    & \cdots \\
+\mathcal{P}_{2^{d - 1} - 1} & = \eta_\mathcal{P}^{-1}(\{2^{d - 1} - 2, 2^{d - 1} - 1, \dots, 2^d - 3\}), \\
+    \mathcal{P}_{2^{d - 1}} & = \eta_\mathcal{P}^{-1}(\{2^{d - 1} - 1, 2^{d - 1}, \dots, 2^d - 2\}), \\
+\mathcal{P}_{2^{d - 1} + 1} & = \eta_\mathcal{P}^{-1}(\{2^{d - 1}, 2^{d - 1} + 1, \dots, 2^d - 1\})
+\end{align*}
+我们注意到 $\mathcal{P}_{2^{d - 1} + 1}$ 是 $\mathcal{P}_1$ 在 $V_{Q_d}$ 中的补集，
+因此我们也将 $\mathcal{P}_{2^{d - 1} + 1}$ 标记为 $\mathcal{P}_1^C$。
+
+给定任意的 $S \subseteq V_{Q_d}$，
+考虑 $Q_d$ 的所有 $d - 1$ 阶子立方，
+我们一共有 $2 d$ 个这样的子立方，并将它们标记为 $H_i$，
+那么我们定义 $S$ 的\emph{类型}（Type）为
+\begin{equation*}
+Type(S) = \min_{1 \le i \le 2 d} |S \cap H_i|
+\end{equation*}
+路径 $\mathcal{P}$ 的\emph{类型序列}（Type Sequence）则为
+\begin{equation*}
+T(\mathcal{P}) = \left(Type(\mathcal{P}_1), Type(\mathcal{P}_2), \dots, Type(\mathcal{P}_{2^{d - 1}}), Type(\mathcal{P}_1^C)\right)
+\end{equation*}
+注意 $Type(S) \in \{0, 1, \dots, 2^{d - 2}\}$。
+Guu 把 $Type(S)$ 在 $0$ 和 $2^{d - 3}$ 之间的子集 $S$ 称为\emph{小集}（Small），
+把其余的称为\emph{大集}（Big）。
+
+\subsection{派生网络到 EIP}
+\label{Subsection 3.2.2}
+
+首先我们给出一个等式
+\begin{equation*}
+wl(Q_d, C_n, \eta) = \sum_{i = 0}^{2^{d - 1} - 1}
+|\Theta(\eta^{-1}(i, i + 1, \dots, i + (2^{d - 1} - 1)))|
+\end{equation*}
+该等式的证明类似于第 \ref{Subsection 3.1.2} 小节中线长问题到 EIP 的转化，
+只不过目标图从 $P_n$ 变为了 $C_n$。
+
+根据上一小节中路径 $\mathcal{P}$ 的定义，我们有
+\begin{align*}
+wl(Q_d, C_n, \eta_\mathcal{P}) & = \sum_{i = 0}^{2^{d - 1} - 1}
+				   |\Theta(\eta_\mathcal{P}^{-1}(i, i + 1, \dots, i + (2^{d - 1} - 1)))| \\
+			       & = \sum_{i = 1}^{2^{d - 1}} |\Theta(\mathcal{P}_i)|
+\end{align*}
+即派生网络中的一条路径所对应的编号方式的线长等于该路径中所有顶点
+（不包含 $\mathcal{P}_1^C$）的权重之和。
+因此从超立方体到环嵌入的线长问题就是寻找派生网络中有最小权重之和的路径，
+从而该问题被转化为了 EIP。
+
+\subsection{证明与缺陷}
+\label{Subsection 3.2.3}
+
+通过派生网络把线长问题转化为 EIP 后，
+Guu 对格雷码编号方式有最小的环形线长这一结论进行了证明。
+
+首先，令 $\mathcal{P}_\mathcal{G}$ 表示格雷码编号方式在派生网络中对应的路径，
+Guu 计算了 $\mathcal{P}_\mathcal{G}$ 的类型序列
+\begin{equation*}
+T(\mathcal{P}_\mathcal{G}) = (0, 1, \dots, 2^{d - 3}, 2^{d - 3} - 1, \dots, 0, 1, \dots, 2^{d - 3}, 2^{d - 3} - 1, \dots, 0)
+\end{equation*}
+她发现 $\mathcal{P}_\mathcal{G}$ 中每一个顶点都是小集，
+并且一共有两个类型为 $2^{d - 3}$，三个类型为 $0$，四个类型为 $i$（$0 < i <2^{d - 3}$）。
+
+然后，令 $\theta(d, k)$ 表示 $Q_d$ 上 EIP 的解，即
+\begin{equation*}
+\theta(d, k) = \min_{\substack{
+	S \subseteq V_{Q_d} \\
+	|S| = k
+}} |\Theta(S)|
+\end{equation*}
+她利用 Harper 的结论推导出：对于任意的 $V \in V_D$ 且 $Type(V) = t \le 2^{d - 3}$（即 $V$ 为小集），
+\begin{equation*}
+|\Theta(V)| \ge 2 \theta(d - 1, t) + (2^{d - 1} - 2 t)
+\end{equation*}
+并指出 $\mathcal{P}_\mathcal{G}$ 中的每一个顶点都达到了这个下界。
+
+接下来，她对派生网络中的任意路径 $\mathcal{P}$ 构造了一系列变换，
+并说明只要证明了对于任意的 $V \in V_D$ 且 $Type(V) = t \ge 2^{d - 3}$（即 $V$ 为大集），
+\begin{equation}
+\label{Inequality 3-1}
+|\Theta(V)| \ge \frac{3}{4} \cdot 2^d
+\end{equation}
+就能利用这一系列变换证明
+\begin{equation*}
+wl(Q_d, C_n, \eta_\mathcal{P}) \ge wl(Q_d, C_n, \mathcal{G})
+\end{equation*}
+从而证明格雷码编号方式是最优的。
+
+Guu 的论文的余下篇幅都是在证明不等式 (\ref{Inequality 3-1}) 的成立。
+然而，Jason Erbele 等人在 \cite{Erbele.2003} 中指出了她的证明过程中的错误：
+在她证明该不等式的最后一步，
+存在 $S_1 \cup S_2 = S$ 和 $S_1 \cap S_2 \neq \emptyset$，
+她却将 $S_1$ 和 $S_2$ 误以为是 $S$ 的划分，
+因而利用了 $|S_1| + |S_2| = |S|$ 这一错误的结论用以完成证明。
 
 \section{边拥塞与分区引理}
 \label{Section 3.3}
