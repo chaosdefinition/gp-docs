@@ -365,7 +365,58 @@ Guu 的论文的余下篇幅都是在证明不等式 (\ref{Inequality 3-1}) 的�
 她却将 $S_1$ 和 $S_2$ 误以为是 $S$ 的划分，
 因而利用了 $|S_1| + |S_2| = |S|$ 这一错误的结论用以完成证明。
 
-\section{边拥塞与分区引理}
+\section{边拥塞与划分引理}
 \label{Section 3.3}
 
-待撰写。
+在图嵌入领域，Paul Manuel 等人提出了另一种用于线长问题的方法，
+并且他们用该方法成功地解决了从超立方体到网格的嵌入的线长问题 \cite{Manuel.2009}。
+下面我们就简要介绍他们的研究。
+
+给定图 $G$、$H$ 和双射函数 $\eta \colon V_G \rightarrow V_H$，
+对于边 $e \in E_H$，我们定义
+\begin{equation*}
+EC_\eta(G, H, e) = \{\{v, w\} \in E_G \colon e \in P(\eta(v), \eta(w))\}
+\end{equation*}
+并称之为 $e$ 的\emph{边拥塞}（Edge Congestion）。
+相应地，我们则把 $|EC_\eta(G, H, e)|$ 称为 $e$ 的边拥塞度。
+而在 $\eta$ 下从 $G$ 到 $H$ 的边拥塞度为
+\begin{equation*}
+|EC_\eta(G, H)| = \max_{e \in E_H} |EC_\eta(G, H, e)|
+\end{equation*}
+为简洁起见，后文中我们都将用 $EC_\eta(e)$ 来表示 $EC_\eta(G, H, e)$。
+注意若有 $E \subseteq E_H$，则 $EC_\eta(E) = \bigcup_{e \in E} EC_\eta(e)$。
+
+下面两个引理在 \cite{Manuel.2009} 中已被证明。
+注意 $H$ 中的一个边集被认为是一个边割集，
+当从 $H$ 中去掉这些边时会导致 $H$ 不连通。
+
+\begin{lemma}[拥塞引理]
+\label{Lemma 3.3}
+令图 $G = (V_G, E_G, \partial_G)$ 是一个 $\delta$ 度正则图，
+$\eta$ 是从图 $G$ 到图 $H$ 的一个嵌入。
+令 $S$ 是 $H$ 的一个边割集，
+并且去掉 $S$ 会将 $H$ 分割成 $H_1$ 和 $H_2$ 这两个部分。
+令 $G_1 = \eta^{-1}(H_1)$，$G_2 = \eta^{-1}(H_2)$。
+另外，$S$ 还需满足下列条件：
+\begin{enumerate}[(i)]
+\item 对于 $i \in \{1, 2\}$ 和每一条边 $\{v, w\} \in E_{G_i}$，$P(v, w)$ 不在 $S$ 中有边；
+\item 对于每一条边 $\{v, w\}$ 满足 $v \in G_1$ 和 $w \in G_2$，$P(v, w)$ 在 $S$ 中只有一条边；
+\item $G_1$ 和 $G_2$ 都是立方集。
+\end{enumerate}
+那么 $|EC_\eta(S)|$ 是最小的，
+即对于所有从 $G$ 到 $H$ 的嵌入 $\eta'$，都有 $|EC_\eta(S)| \le |EC_{\eta'}(S)|$。
+\end{lemma}
+
+\begin{lemma}[划分引理]
+\label{Lemma 3.4}
+令 $\eta$ 是从 $G$ 到 $H$ 的一个嵌入。
+若存在 $\{S_1, S_2, \dots, S_p\}$ 是 $E_H$ 的一个划分，
+其中每一个 $S_i$ 都是 $H$ 的一个边割集，那么
+\begin{equation*}
+wl(G, H) = wl(G, H, \eta) = \sum_{i = 1}^p |EC_\eta(S_i)|
+\end{equation*}
+\end{lemma}
+
+引理 \ref{Lemma 3.4} 为图嵌入领域中的线长问题提供了一种新的解决思路。
+然而它并不适用于从超立方体到环嵌入的线长问题，
+因为我们找不到 $E_{C_n}$ 的一个这样的划分。
