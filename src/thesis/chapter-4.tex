@@ -377,7 +377,7 @@ wl(Q_d, C_n, \eta) = wl(Q_d, C_n, \eta \cdot \sigma)
 	\State{Let $minimum = 3 \cdot 2^{2 d - 3} - 2^{d - 1}$;}
 	\State{Let $S = \emptyset$;}
 	\State{GenerateIndices$(length)$;} \Comment{生成和并行化索引序列，见算法 \ref{Algorithm 4.5}}
-	\ForAll{index \In{} \textbf{parallel}}
+	\ForAll{$index$ \In{} \textbf{parallel}}
 		\State{Let $\{L_i\}_{i = 1}^{length} =$ RestoreIndexToPermutation$(index, length)$;} \Comment{见算法 \ref{Algorithm 4.6}}
 		\State{GeneratePermutationsByInsertion$(length, L)$;} \Comment{见算法 \ref{Algorithm 4.7}}
 	\EndFor
@@ -386,4 +386,4 @@ wl(Q_d, C_n, \eta) = wl(Q_d, C_n, \eta \cdot \sigma)
 \end{algorithm}
 
 上述算法均为 Hyperspark 实现时所用算法。
-Hyperspark 的核心源代码参见附录 A。
+Hyperspark 的核心源代码参见附录 \hyperref[Appendix A]{A}。
