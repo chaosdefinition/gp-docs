@@ -387,7 +387,7 @@ EC_\eta(G, H, e) = \{\{v, w\} \in E_G \colon e \in P(\eta(v), \eta(w))\}
 注意若有 $E \subseteq E_H$，则 $EC_\eta(E) = \bigcup_{e \in E} EC_\eta(e)$。
 
 下面两个引理在 \cite{Manuel.2009} 中已被证明。
-注意 $H$ 中的一个边集被认为是一个边割集，
+注意 $H$ 中的一个边集被认为是一个\emph{边割集}（Edge Cut），
 当从 $H$ 中去掉这些边时会导致 $H$ 不连通。
 
 \begin{lemma}[拥塞引理]
@@ -401,7 +401,7 @@ $\eta$ 是从图 $G$ 到图 $H$ 的一个嵌入。
 \begin{enumerate}[(i)]
 \item 对于 $i \in \{1, 2\}$ 和每一条边 $\{v, w\} \in E_{G_i}$，$P(v, w)$ 不在 $S$ 中有边；
 \item 对于每一条边 $\{v, w\}$ 满足 $v \in G_1$ 和 $w \in G_2$，$P(v, w)$ 在 $S$ 中只有一条边；
-\item $G_1$ 和 $G_2$ 都是立方集。
+\item $G_1$ 是最优的，即对于任意 $V \subseteq V_G$ 且 $|V| = |V_{G_1}|$，$|E(V_{G_1})| \le |E(V)|$。
 \end{enumerate}
 那么 $|EC_\eta(S)|$ 是最小的，
 即对于所有从 $G$ 到 $H$ 的嵌入 $\eta'$，都有 $|EC_\eta(S)| \le |EC_{\eta'}(S)|$。

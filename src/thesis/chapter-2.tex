@@ -61,10 +61,10 @@ $C_4$ 的图表见图 \ref{Figure 2-3}。
 其中 $v$ 可视为 $0$，$w$ 可视为 $n - 1$，$|P(v, w)| = n$。
 从 $v$ 到 $w$ 的\emph{距离}（Distance）$d_G(v, w)$ 是从 $v$ 到 $w$ 的最短路径的长度。
 
-\section{线长和割宽}
+\section{线长问题}
 \label{Section 2.2}
 
-有了上述关于图的基本概念的定义，我们便可以来定义线长和割宽等一系列概念了。
+有了上述关于图的基本概念的定义，我们便可以来定义线长等一系列概念了。
 
 给定图 $G = (V_G, E_G, \partial_G)$、
 图 $H = (V_H, E_H, \partial_H)$ 和单射函数 $\eta \colon V_G \rightarrow V_H$，
@@ -80,20 +80,8 @@ wl(G, H, \eta) = \sum_{\substack{
 \begin{equation*}
 wl(G, H) = \min_{\eta} wl(G, H, \eta)
 \end{equation*}
-从 $G$ 到 $H$ 的线长问题即寻找 $wl(G, H)$ 和能达到最小线长的单射函数 $\eta$。
-
-与线长的定义类似，给定图 $G$、$H$ 和单射函数 $\eta$，
-在 $\eta$ 下从 $G$ 到 $H$ 的\emph{割宽}（Cutwidth）为
-\begin{equation*}
-cw(G, H, \eta) = \max_{i \in V_H} |\{\{v, w\} \in E_G \colon \\
-i \in P(\eta(v), \eta(w)), i \neq \eta(w)\}|
-\end{equation*}
-即穿过 $H$ 中的顶点的 $G$ 中边数的最大值。
-从 $G$ 到 $H$ 的割宽为
-\begin{equation*}
-cw(G, H) = \min_{\eta} cw(G, H, \eta)
-\end{equation*}
-从 $G$ 到 $H$ 的割宽问题即寻找 $cw(G, H)$ 和能达到最小割宽的单射函数 $\eta$。
+从 $G$ 到 $H$ 的\emph{线长问题}（Wirelength Problem）
+即寻找 $wl(G, H)$ 和能达到最小线长的单射函数 $\eta$。
 
 本文所研究的问题为从超立方体到环嵌入的线长问题，
 即对 $\forall d > 2$，寻找 $wl(Q_d, C_{2^d})$ 和能达到最小线长的双射函数 $\eta$。
@@ -118,7 +106,7 @@ $V$、$E$、$\partial$ 等符号都特指超立方体的相应元素。
 	\item 首先我们有 $Q_1$ 上的格雷码编号方式
 		$\mathcal{G} \colon V_{Q_1} \rightarrow V_{C_2}$ 为
 		\begin{equation*}
-		\mathcal{G}(0) = 0 \qquad \mathcal{G}(1) = 1
+		\mathcal{G}(0) = 0, \qquad \mathcal{G}(1) = 1
 		\end{equation*}
 	\item 如果给定了 $Q_d$ 上的格雷码编号方式
 		$\mathcal{G} \colon V_{Q_d} \rightarrow V_{C_{2^d}}$（$d \ge 1$），
@@ -132,20 +120,29 @@ $V$、$E$、$\partial$ 等符号都特指超立方体的相应元素。
 		这样我们便得到了 $Q_{d + 1}$ 上的格雷码编号方式了。
 \end{enumerate}
 值得注意的是，格雷码编号方式有一个显著的特点：
-$C_{2^d}$ 中任意两个相邻的顶点在 $Q_d$ 中都有边相连。
+$C_{2^d}$ 中任意两个相邻的顶点对应在 $Q_d$ 中都有边相连。
 
 \section{立方集}
 \label{Section 2.4}
 
 一个 $d$ 阶立方的 $c$ 阶\emph{子立方}（Subcube）是 $Q_d$ 的子图，
 导出自一个包含所有在 $d − c$ 个坐标下有相同（固定）值的顶点的集合。
+例如，图 \ref{Figure 2-1} 所展示的 $Q_3$ 有 $8$ 个 $2$ 阶子立方（对应立方体有 $8$ 个面）
+和 $12$ 个 $1$ 阶子立方（对应立方体有 $12$ 条边）。
 
 一个 $d$ 阶立方的 $c$ 阶子立方的\emph{邻居}（Neighbor）
 是在 $d − c$ 个固定坐标下有正好一个坐标不同的任意 $c$ 阶子立方。
+我们再以图 \ref{Figure 2-1} 所展示的 $Q_3$ 为例，
+对于 $Q_3$ 中的每一个 $2$ 阶子立方，
+它的邻居是可以与它一起构成 $Q_3$ 的任意 $2$ 阶子立方，
+因此 $Q_3$ 中的每一个 $2$ 阶子立方都只有 $1$ 个邻居；
+而对于 $Q_3$ 中的每一个 $1$ 阶子立方，
+它的邻居是可以与它一起构成一个 $2$ 阶子立方的任意 $1$ 阶子立方，
+因此 $Q_3$ 中的每一个 $1$ 阶子立方都有 $2$ 个邻居。
 
 $Q_d$ 中如果 $S \subseteq V$ 是一个互不相交的不同阶子立方的并集，
 并且其中每个 $c_i$ 阶子立方都满足：
 对于其他所有 $c_j$ 阶子立方（$c_j > c_i$），
 该 $c_i$ 阶子立方处在该 $c_j$ 阶子立方的一个邻居中，
-那么 $S$ 就被称为立方集（Cubal Set）。
+那么 $S$ 就被称为\emph{立方集}（Cubal Set）或\emph{复合集}（Composite Set）。
 关于立方集更详细的介绍，请参考 \cite{Harper.2004}。
