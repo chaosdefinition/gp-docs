@@ -65,8 +65,8 @@ public class App {
 				 * exactly what we want. Save them to the output directory.
 				 */
 				indices.flatMap(index -> {
-					List<Integer> initial = MathUtils.indexToPermutation(index,
-						length
+					List<Integer> initial = MathUtils.indexToPermutation(
+						index, length
 					);
 					WirelengthCalculator calculator = new WirelengthCalculator(
 						dimension, initial
@@ -501,7 +501,8 @@ while 1
 	% listen to keyboard to choose the next action
 	while 1
 		try
-			if waitforbuttonpress
+			action = waitforbuttonpress;
+			if action
 				action = get(gcf, 'CurrentCharacter');
 			end
 		catch
