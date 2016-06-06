@@ -366,7 +366,8 @@
   \else
     \@restonecolfalse
   \fi
-   {\chapter*{\contentsname}} % add ToC to bookmark
+   % {\chapter*{\contentsname}} % add ToC to bookmark
+   {\@toclinefalse\chapter*{\contentsname}}
   \@starttoc{toc}%
   \if@restonecol
     \twocolumn
@@ -877,11 +878,23 @@
 
 \renewcommand*{\listofalgorithms}{%
     \@namedef{l@algorithm}{\@dottedtocline{1}{1.5em}{2.3em}}%
-    \chapter*{\listalgorithmname}%
+    % \chapter*{\listalgorithmname}%
+    {\@toclinefalse\chapter*{\listalgorithmname}} % remove it from ToC
     \begingroup\setlength{\parskip}{\z@}%
       \@starttoc{\@nameuse{ext@algorithm}}%
     \endgroup
   }
+}
+
+% redefine listoffigures to remove it from ToC
+\renewcommand*{\listoffigures}{%
+  {\@toclinefalse\chapter*{\listfigurename}}
+  \@starttoc{lof}%
+}
+
+% macro for abstracts
+\def\abstract#1{
+  {\@toclinefalse\chapter*{#1}}
 }
 
 % 为内容加边框的环境，from lshort，modified by ideal
