@@ -227,7 +227,7 @@ MapReduce 最初来自于 Jeff Dean 的一篇论文 \cite{Dean.2004}，
 	\State{Let $\{p_i\}_{i = 1}^{length} = 0, 0, \dots, 0$;}
 	\For{$i$ \In{} $length - 1, length - 2, \dots, 3$}
 		\State{Let $p_{i + 1} = 2 + index \pmod i$;} \Comment{$0$ 的位置总是固定在 1，因此加 2}
-		\State{Let $index = \lfloor index / i \rfloor$;}
+		\State{Let $index = \lfloor \frac{index}{i} \rfloor$;}
 	\EndFor
 	\For{$i$ \In{} $3, 4, \dots, length - 1$}
 		\State{Insert $i$ into $L$ at position $p_{i + 1}$;}

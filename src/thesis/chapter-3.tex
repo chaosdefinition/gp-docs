@@ -303,7 +303,7 @@ Guu 把 $Type(S)$ 在 $0$ 和 $2^{d - 3}$ 之间的子集 $S$ 称为\emph{小集
 首先我们给出一个等式
 \begin{equation}
 wl(Q_d, C_n, \eta) = \sum_{i = 0}^{2^{d - 1} - 1}
-|\Theta(\eta^{-1}(i, i + 1, \dots, i + (2^{d - 1} - 1)))|
+|\Theta(\eta^{-1}(\{i, i + 1, \dots, i + (2^{d - 1} - 1)\}))|
 \end{equation}
 该等式的证明类似于第 \ref{Subsection 3.1.2} 小节中线长问题到 EIP 的转化，
 只不过目标图从 $P_n$ 变为了 $C_n$。
@@ -311,7 +311,7 @@ wl(Q_d, C_n, \eta) = \sum_{i = 0}^{2^{d - 1} - 1}
 根据上一小节中路径 $\mathcal{P}$ 的定义，我们有
 \begin{align}
 wl(Q_d, C_n, \eta_\mathcal{P}) & = \sum_{i = 0}^{2^{d - 1} - 1}
-				   |\Theta(\eta_\mathcal{P}^{-1}(i, i + 1, \dots, i + (2^{d - 1} - 1)))| \\
+				   |\Theta(\eta_\mathcal{P}^{-1}(\{i, i + 1, \dots, i + (2^{d - 1} - 1)\}))| \\
 			       & = \sum_{i = 1}^{2^{d - 1}} |\Theta(\mathcal{P}_i)|
 \end{align}
 即派生网络中的一条路径所对应的编号方式的线长等于该路径中所有顶点
