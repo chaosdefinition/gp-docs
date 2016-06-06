@@ -137,9 +137,9 @@ $start$ 和 $end$ 则表示本次调用所需要交换的数的位置范围。
 因此我们得到一个完整的算法 CalculateMinimumWirelength，见算法 \ref{Algorithm 4.4}。
 注意这里我们用了一个已知的事实，
 即格雷码编号方式 $\mathcal{G}$ 的线长为
-\begin{equation*}
+\begin{equation}
 wl(Q_d, C_n, \mathcal{G}) = 3 \cdot 2^{2 d - 3} - 2^{d - 1}
-\end{equation*}
+\end{equation}
 并且我们假设它是最小的。
 
 \begin{algorithm}[h!]
@@ -257,13 +257,13 @@ Reduce 过程可被理解为主节点向各个从节点收集任务的输出，�
 很显然，$\mathcal{S}$ 是一个 $n$ 元对称群。
 
 令 $\sigma_r \in \mathcal{S}$ 表示 $\mathcal{S}$ 中的一个置换，满足
-\begin{equation*}
+\begin{equation}
 \sigma_r(i) = (i + 1) \bmod n, i \in V_{C_n}
-\end{equation*}
+\end{equation}
 则由 $\sigma_r$ 我们可以生成一个 $\mathcal{S}$ 的子集
-\begin{equation*}
+\begin{equation}
 \mathcal{S}_r = \left\{\sigma_r, \sigma_r^2, \sigma_r^3, \dots\right\}
-\end{equation*}
+\end{equation}
 我们称之为\emph{旋转对称}（Rotational Symmetry）。
 $\sigma_r$ 的示意图见图 \ref{Figure 4-1}。
 
@@ -275,13 +275,13 @@ $\sigma_r$ 的示意图见图 \ref{Figure 4-1}。
 \end{figure}
 
 再令 $\sigma_f \in \mathcal{S}$ 表示 $\mathcal{S}$ 中的一个置换，满足
-\begin{equation*}
+\begin{equation}
 \sigma_f(i) = 2^d - 1 - i, i \in V_{C_n}
-\end{equation*}
+\end{equation}
 则由 $\sigma_r$ 和 $\sigma_f$ 我们可以生成另一个 $\mathcal{S}$ 的子集
-\begin{equation*}
+\begin{equation}
 \mathcal{S}_f = \left\{\sigma_r \cdot \sigma_f, \sigma_r^2 \cdot \sigma_f, \sigma_r^3 \cdot \sigma_f, \dots\right\}
-\end{equation*}
+\end{equation}
 我们称之为\emph{翻转对称}（Flipping Symmetry）。
 $\sigma_f$ 的示意图见图 \ref{Figure 4-2}。
 注意 $|\mathcal{S}_r| = |\mathcal{S}_f| = n = 2^d$，
@@ -296,9 +296,9 @@ $\sigma_f$ 的示意图见图 \ref{Figure 4-2}。
 
 我们断言，对于任意的编号方式 $\eta \colon V_{Q_d} \rightarrow V_{C_n}$
 和任意的置换 $\sigma \in \mathcal{S}_r \cup \mathcal{S}_f$，
-\begin{equation*}
+\begin{equation}
 wl(Q_d, C_n, \eta) = wl(Q_d, C_n, \eta \cdot \sigma)
-\end{equation*}
+\end{equation}
 
 有了上述这个结论，我们提出了一个新的生成全排列的算法 GeneratePermutationsByInsertion，
 见算法 \ref{Algorithm 4.7}。

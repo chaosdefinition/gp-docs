@@ -69,17 +69,17 @@ $C_4$ 的示意图见图 \ref{Figure 2-3}。
 给定图 $G = (V_G, E_G, \partial_G)$、
 图 $H = (V_H, E_H, \partial_H)$ 和单射函数 $\eta \colon V_G \rightarrow V_H$，
 其中 $|V_G| \le |V_H|$，那么在 $\eta$ 下从 $G$ 到 $H$ 的\emph{线长}（Wirelength）为
-\begin{equation*}
+\begin{equation}
 wl(G, H, \eta) = \sum_{\substack{
 	e \in E_G \\
 	\partial_G(e) = \{v, w\}
 }} d_H(\eta(v), \eta(w))
-\end{equation*}
+\end{equation}
 即 $G$ 中所有的边在 $\eta$ 下嵌入到 $H$ 后的距离之和。
 从 $G$ 到 $H$ 的线长为
-\begin{equation*}
+\begin{equation}
 wl(G, H) = \min_{\eta} wl(G, H, \eta)
-\end{equation*}
+\end{equation}
 从 $G$ 到 $H$ 的\emph{线长问题}（Wirelength Problem）
 即寻找 $wl(G, H)$ 和能达到最小线长的单射函数 $\eta$。
 
@@ -105,9 +105,9 @@ $V$、$E$、$\partial$ 等符号都特指超立方体的相应元素。
 \begin{enumerate}[(1)]
 	\item 首先我们有 $Q_1$ 上的格雷码编号方式
 		$\mathcal{G} \colon V_{Q_1} \rightarrow V_{C_2}$ 为
-		\begin{equation*}
+		\begin{equation}
 		\mathcal{G}(0) = 0, \qquad \mathcal{G}(1) = 1
-		\end{equation*}
+		\end{equation}
 	\item 如果给定了 $Q_d$ 上的格雷码编号方式
 		$\mathcal{G} \colon V_{Q_d} \rightarrow V_{C_{2^d}}$（$d \ge 1$），
 		那么我们给 $Q_d$ 的每一个顶点添加一个坐标前缀 $0$ 和一个相邻的顶点。

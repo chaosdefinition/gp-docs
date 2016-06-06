@@ -20,41 +20,41 @@
 \label{Subsection 3.1.1}
 
 对于任意的图 $G$ 和 $S \subseteq V_G$，令
-\begin{equation*}
+\begin{equation}
 \Theta(S) = \{e \in E_G \colon \partial_G(e) = \{v, w\}, v \in S, w \notin S\}
-\end{equation*}
+\end{equation}
 并称之为 $S$ 的\emph{边界}（Edge-boundary）。
 那么对于一个给定的图 $G$ 和自然数 $k$，
 \emph{边等周问题}（Edge-Isoperimetric Problem, EIP）
 是对于所有的 $S \subseteq V_G$ 并且 $|S| = k$，寻找
-\begin{equation*}
+\begin{equation}
 \min_{|S| = k} |\Theta(S)|
-\end{equation*}
+\end{equation}
 和能达到该最小值的子集 $S$。
 
 为了便于下文叙述，我们在这里定义一个与 EIP 类似的问题，
 并给出其在 $Q_d$ 下与 EIP 的关系。
 
 对于任意的图 $G$ 和 $S \subseteq V_G$，令
-\begin{equation*}
+\begin{equation}
 E(S) = \{e \in E_G \colon \partial_G(e) = \{v, w\}, v \in S, w \in S\}
-\end{equation*}
+\end{equation}
 并称之为 $S$ 的\emph{导出边集}（Induced Edges）。
 对于一个给定的图 $G$ 和自然数 $k$，
 \emph{导出边问题}（Induced Edge Problem）
 是对于所有的 $S \subseteq V_G$ 并且 $|S| = k$，寻找
-\begin{equation*}
+\begin{equation}
 \max_{|S| = k} |E(S)|
-\end{equation*}
+\end{equation}
 和能达到该最大值的子集 $S$。
 
 \begin{lemma}
 \label{Lemma 3.1}
 如果图 $G = (V_G, E_G, \partial_G)$ 是一个 $\delta$ 度正则图，
 那么对于 $\forall S \subseteq V_G$，都有
-\begin{equation*}
+\begin{equation}
 |\Theta(S)| + 2 |E(S)| = \delta |S|
-\end{equation*}
+\end{equation}
 \end{lemma}
 
 \begin{proof}[证明]
@@ -71,7 +71,7 @@ $\min_{|S| = k} |\Theta(S)| = k d − 2 \max_{|S| = k} |E(S)|$。
 回想一下，
 对于给定的编号方式 $\eta \colon V_{Q_d} \rightarrow V_{P_n}$，
 在 $\eta$ 下从 $Q_d$ 到 $P_n$ 的线长 $wl(Q_d, P_n, \eta)$ 为
-\begin{equation*}
+\begin{equation}
 wl(Q_d, P_n, \eta) = \sum_{\substack{
 	e \in E \\
 	\partial(e) = {v, w}
@@ -79,26 +79,26 @@ wl(Q_d, P_n, \eta) = \sum_{\substack{
 	e \in E \\
 	\partial(e) = {v, w}
 }} |\eta(v) - \eta(w)|
-\end{equation*}
+\end{equation}
 而从 $Q_d$ 到 $P_n$ 的线长问题则是寻找
-\begin{equation*}
+\begin{equation}
 wl(Q_d, P_n) = \min_\eta wl(Q_d, P_n, \eta)
-\end{equation*}
+\end{equation}
 
 为了将从 $Q_d$ 到 $P_n$ 的线长问题转化为 $Q_d$ 上的 EIP，首先我们令
-\begin{equation*}
+\begin{equation}
 S_k(\eta) = \eta^{-1}(\{0, 1, \dots, k - 1\}) = \{v \in V \colon \eta(v) \le k\}
-\end{equation*}
+\end{equation}
 即编号方式 $\eta$ 下的前 $k$ 个顶点的集合。
 接下来，我们令
-\begin{equation*}
+\begin{equation}
 \chi(e, k) = \begin{cases}
 	1 & \text{如果}\ \partial(e) = \{v, w\}, \eta(v) \le k < \eta(w) \\
 	0 & \text{其他情况}
 \end{cases}
-\end{equation*}
+\end{equation}
 那么我们就有
-\begin{align*}
+\begin{align}
 wl(Q_d, P_n, \eta) & = \sum_{\substack{
 			       e \in E \\
 			       \partial(e) = \{v, w\}
@@ -106,14 +106,14 @@ wl(Q_d, P_n, \eta) & = \sum_{\substack{
 		     = \sum_{e \in E} \sum_{k = 0}^n \chi(e, k) \\
 		   & = \sum_{k = 0}^n \sum_{e \in E} \chi(e, k)
 		     = \sum_{k = 0}^n |\Theta(S_k(\eta))|
-\end{align*}
+\end{align}
 因此，
-\begin{align*}
+\begin{align}
 wl(Q_d, P_n) & = \min_{\eta} wl(Q_d, P_n, \eta) \\
 	     & = \min_{\eta} \sum_{k = 0}^n |\Theta(S_k(\eta))| \\
 	     & \ge \sum_{k = 0}^n \min_{\eta} |\Theta(S_k(\eta))|
 	       = \sum_{k = 0}^n \min_{|S| = k} |\Theta(S)|
-\end{align*}
+\end{align}
 根据该式，我们可以得到一个结论。
 
 \begin{theorem}
@@ -140,9 +140,9 @@ $S \subseteq V_{Q_d}$ 在基数为 $k$ 时有最大的 $|E(S)|$，当且仅当 $
 在定理 \ref{Theorem 3.2} 的证明过程中，
 Harper 对 $d$ 进行数学归纳，并用到了下面这个性质：
 如果 $2^{d - 1} \le k < 2^d$，那么
-\begin{equation*}
+\begin{equation}
 E(k + 1) - E(k) = E(k - 2^{d - 1} + 1) - E(k - 2^{d - 1}) + 1
-\end{equation*}
+\end{equation}
 其中 $E(k)$ 表示一个 $k$-立方集 $S$ 的导出边数 $|E(S)|$，
 因为 $|E(S)|$ 并非由 $d$ 决定，而仅仅由 $k = |S|$ 决定。
 
@@ -154,9 +154,9 @@ A. J. Bernstein 发表了一篇后续论文 \cite{Bernstein.1967}，
 \begin{lemma}
 \label{Lemma 3.2}
 对于 $\forall d$ 和 $\forall k, t > 0$ 使得 $k + t < 2^d$，都有
-\begin{equation*}
+\begin{equation}
 E(t) < E(k + t) − E(k) < E(2^d) − E(2^d − t)
-\end{equation*}
+\end{equation}
 \end{lemma}
 
 在引理 \ref{Lemma 3.2} 的证明过程中，Bernstein 对 $d$ 进行数学归纳，
@@ -170,9 +170,9 @@ E(t) < E(k + t) − E(k) < E(2^d) − E(2^d − t)
 然而我们发现第 3 种情况的证明依然存在纰漏：
 Bernstein 并未考虑 $t \ge 2^{d − 1}$ 的情况，
 即当 $k < 2^{d − 1} < k + t$ 时，
-\begin{equation*}
+\begin{equation}
 E(2^{d − 1}) − E(k) > E(t) − E(t − (2^{d − 1} − k))
-\end{equation*}
+\end{equation}
 仅对 $t < 2^{d - 1}$ 成立。
 下面我们给出经过补充的情况 3 的完整证明。
 
@@ -180,7 +180,7 @@ E(2^{d − 1}) − E(k) > E(t) − E(t − (2^{d − 1} − k))
 当 $k < 2^{d − 1} < k + t$ 时，
 \begin{enumerate}[(1)]
 	\item 如果 $t \ge 2^{d - 1}$，那么对于左边的不等式，我们有
-		\begin{align*}
+		\begin{align}
 		E(k + t) - E(k) & = \left[E(k + t) - E(2^{d - 1})\right] +
 				    \left[E(2^{d - 1}) - E(k)\right] \\
 				& = \left[E(k + t - 2^{d - 1}) + k + t - 2^{d - 1}\right] +
@@ -189,9 +189,9 @@ E(2^{d − 1}) − E(k) > E(t) − E(t − (2^{d − 1} − k))
 				    E(2^{d - 1}) + k + t - 2^{d - 1} \\
 				& > E(t - 2^{d - 1}) + E(2^{d - 1}) + t - 2^{d - 1} + k \\
 				& = E(t) + k > E(t)
-		\end{align*}
+		\end{align}
 		对于右边的不等式，我们有
-		\begin{align*}
+		\begin{align}
 		E(k + t) - E(k) & = \left[E(k + t) - E(2^{d - 1})\right] +
 				    \left[E(2^{d - 1}) - E(k)\right] \\
 				& = \left[E(k + t - 2^{d - 1}) + k + t - 2^{d - 1}\right] +
@@ -203,9 +203,9 @@ E(2^{d − 1}) − E(k) > E(t) − E(t − (2^{d − 1} − k))
 				& = 2 E(2^{d - 1}) + k + t - 2^{d - 1} - E(2^d - t) \\
 				& < 2 E(2^{d - 1}) + 2^{d - 1} - E(2^d - t) \\
 				& = E(2^d) - E(2^d - t)
-		\end{align*}
+		\end{align}
 	\item 相应地，如果 $t < 2^{d - 1}$，那么对于左边的不等式，我们有
-		\begin{align*}
+		\begin{align}
 		E(k + t) − E(k) & = \left[E(k + t) − E(2^{d − 1})\right] +
 				    \left[E(2^{d − 1}) - E(k)\right] \\
 				& = \left[E(k + t - 2^{d - 1}) + k + t - 2^{d - 1}\right] +
@@ -213,9 +213,9 @@ E(2^{d − 1}) − E(k) > E(t) − E(t − (2^{d − 1} − k))
 				& > E(k + t - 2^{d - 1}) +
 				    \left[E(t) − E(t − (2^{d − 1} − k))\right] \\
 				& = E(t)
-		\end{align*}
+		\end{align}
 		对于右边的不等式，我们有
-		\begin{align*}
+		\begin{align}
 		E(k + t) - E(k) & = \left[E(k + t) - E(2^{d - 1})\right] +
 				    \left[E(2^{d - 1}) - E(k)\right] \\
 				& = \left[E(k + t - 2^{d - 1}) + k + t - 2^{d - 1}\right] +
@@ -225,7 +225,7 @@ E(2^{d − 1}) − E(k) > E(t) − E(t − (2^{d − 1} − k))
 				& < E(2^{d - 1}) - E(2^{d - 1} - t) + t + k - 2^{d - 1} \\
 				& = E(2^d) - E(2^d - t) + k - 2^{d - 1} \\
 				& < E(2^d) - E(2^d - t)
-		\end{align*}
+		\end{align}
 \end{proof}
 
 \section{派生网络}
@@ -258,27 +258,27 @@ $\mathcal{P} = (\mathcal{P}_1, \mathcal{P}_2, \dots, \mathcal{P}_{2^{d - 1}}, \m
 其中相邻两个顶点之间都有边相连。
 Guu 将 $\mathcal{P}$ 设计为对应一个编号方式 $\eta_\mathcal{P} \colon V_{Q_d} \rightarrow V_{C_n}$，
 其中
-\begin{align*}
+\begin{align}
 \eta_\mathcal{P}(\mathcal{P}_1 - \mathcal{P}_2) & = 0, & \quad
 \eta_\mathcal{P}(\mathcal{P}_2 - \mathcal{P}_1) & = 2^{d - 1}, \\
 \eta_\mathcal{P}(\mathcal{P}_2 - \mathcal{P}_3) & = 1, & \quad
 \eta_\mathcal{P}(\mathcal{P}_3 - \mathcal{P}_2) & = 2^{d - 1} + 1, \\
-						& \cdots & \quad & \cdots \\
+						& \cdots & \quad & \cdots \notag \\
 \eta_\mathcal{P}(\mathcal{P}_{2^{d - 1} - 1} - \mathcal{P}_{2^{d - 1}}) & = 2^{d - 1} - 2, & \quad
 \eta_\mathcal{P}(\mathcal{P}_{2^{d - 1}} - \mathcal{P}_{2^{d - 1} - 1}) & = 2^d - 2, \\
 \eta_\mathcal{P}(\mathcal{P}_{2^{d - 1}} - \mathcal{P}_{2^{d - 1} + 1}) & = 2^{d - 1} - 1, & \quad
 \eta_\mathcal{P}(\mathcal{P}_{2^{d - 1} + 1} - \mathcal{P}_{2^{d - 1}}) & = 2^d - 1
-\end{align*}
+\end{align}
 这样一来，我们便有
-\begin{align*}
+\begin{align}
 	      \mathcal{P}_1 & = \eta_\mathcal{P}^{-1}(\{0, 1, \dots, 2^{d - 1} - 1\}), \\
 	      \mathcal{P}_2 & = \eta_\mathcal{P}^{-1}(\{1, 2, \dots, 2^{d - 1}\}), \\
 	      \mathcal{P}_3 & = \eta_\mathcal{P}^{-1}(\{2, 3, \dots, 2^{d - 1} + 1\}), \\
-			    & \cdots \\
+			    & \cdots \notag \\
 \mathcal{P}_{2^{d - 1} - 1} & = \eta_\mathcal{P}^{-1}(\{2^{d - 1} - 2, 2^{d - 1} - 1, \dots, 2^d - 3\}), \\
     \mathcal{P}_{2^{d - 1}} & = \eta_\mathcal{P}^{-1}(\{2^{d - 1} - 1, 2^{d - 1}, \dots, 2^d - 2\}), \\
 \mathcal{P}_{2^{d - 1} + 1} & = \eta_\mathcal{P}^{-1}(\{2^{d - 1}, 2^{d - 1} + 1, \dots, 2^d - 1\})
-\end{align*}
+\end{align}
 我们注意到 $\mathcal{P}_{2^{d - 1} + 1}$ 是 $\mathcal{P}_1$ 在 $V_{Q_d}$ 中的补集，
 因此我们也将 $\mathcal{P}_{2^{d - 1} + 1}$ 标记为 $\mathcal{P}_1^C$。
 
@@ -286,13 +286,13 @@ Guu 将 $\mathcal{P}$ 设计为对应一个编号方式 $\eta_\mathcal{P} \colon
 考虑 $Q_d$ 的所有 $d - 1$ 阶子立方，
 我们一共有 $2 d$ 个这样的子立方，并将它们标记为 $H_i$，
 那么我们定义 $S$ 的\emph{类型}（Type）为
-\begin{equation*}
+\begin{equation}
 Type(S) = \min_{1 \le i \le 2 d} |S \cap H_i|
-\end{equation*}
+\end{equation}
 路径 $\mathcal{P}$ 的\emph{类型序列}（Type Sequence）则为
-\begin{equation*}
+\begin{equation}
 T(\mathcal{P}) = \left(Type(\mathcal{P}_1), Type(\mathcal{P}_2), \dots, Type(\mathcal{P}_{2^{d - 1}}), Type(\mathcal{P}_1^C)\right)
-\end{equation*}
+\end{equation}
 注意 $Type(S) \in \{0, 1, \dots, 2^{d - 2}\}$。
 Guu 把 $Type(S)$ 在 $0$ 和 $2^{d - 3}$ 之间的子集 $S$ 称为\emph{小集}（Small），
 把其余的称为\emph{大集}（Big）。
@@ -301,19 +301,19 @@ Guu 把 $Type(S)$ 在 $0$ 和 $2^{d - 3}$ 之间的子集 $S$ 称为\emph{小集
 \label{Subsection 3.2.2}
 
 首先我们给出一个等式
-\begin{equation*}
+\begin{equation}
 wl(Q_d, C_n, \eta) = \sum_{i = 0}^{2^{d - 1} - 1}
 |\Theta(\eta^{-1}(i, i + 1, \dots, i + (2^{d - 1} - 1)))|
-\end{equation*}
+\end{equation}
 该等式的证明类似于第 \ref{Subsection 3.1.2} 小节中线长问题到 EIP 的转化，
 只不过目标图从 $P_n$ 变为了 $C_n$。
 
 根据上一小节中路径 $\mathcal{P}$ 的定义，我们有
-\begin{align*}
+\begin{align}
 wl(Q_d, C_n, \eta_\mathcal{P}) & = \sum_{i = 0}^{2^{d - 1} - 1}
 				   |\Theta(\eta_\mathcal{P}^{-1}(i, i + 1, \dots, i + (2^{d - 1} - 1)))| \\
 			       & = \sum_{i = 1}^{2^{d - 1}} |\Theta(\mathcal{P}_i)|
-\end{align*}
+\end{align}
 即派生网络中的一条路径所对应的编号方式的线长等于该路径中所有顶点
 （不包含 $\mathcal{P}_1^C$）的权重之和。
 因此从超立方体到环嵌入的线长问题就是寻找派生网络中有最小权重之和的路径，
@@ -327,23 +327,23 @@ Guu 对格雷码编号方式有最小的环形线长这一结论进行了证明�
 
 首先，令 $\mathcal{P}_\mathcal{G}$ 表示格雷码编号方式在派生网络中对应的路径，
 Guu 计算了 $\mathcal{P}_\mathcal{G}$ 的类型序列
-\begin{equation*}
+\begin{equation}
 T(\mathcal{P}_\mathcal{G}) = (0, 1, \dots, 2^{d - 3}, 2^{d - 3} - 1, \dots, 0, 1, \dots, 2^{d - 3}, 2^{d - 3} - 1, \dots, 0)
-\end{equation*}
+\end{equation}
 她发现 $\mathcal{P}_\mathcal{G}$ 中每一个顶点都是小集，
 并且一共有两个类型为 $2^{d - 3}$，三个类型为 $0$，四个类型为 $i$（$0 < i <2^{d - 3}$）。
 
 然后，令 $\theta(d, k)$ 表示 $Q_d$ 上 EIP 的解，即
-\begin{equation*}
+\begin{equation}
 \theta(d, k) = \min_{\substack{
 	S \subseteq V_{Q_d} \\
 	|S| = k
 }} |\Theta(S)|
-\end{equation*}
+\end{equation}
 她利用 Harper 的结论推导出：对于任意的 $V \in V_D$ 且 $Type(V) = t \le 2^{d - 3}$（即 $V$ 为小集），
-\begin{equation*}
+\begin{equation}
 |\Theta(V)| \ge 2 \theta(d - 1, t) + (2^{d - 1} - 2 t)
-\end{equation*}
+\end{equation}
 并指出 $\mathcal{P}_\mathcal{G}$ 中的每一个顶点都达到了这个下界。
 
 接下来，她对派生网络中的任意路径 $\mathcal{P}$ 构造了一系列变换，
@@ -353,9 +353,9 @@ T(\mathcal{P}_\mathcal{G}) = (0, 1, \dots, 2^{d - 3}, 2^{d - 3} - 1, \dots, 0, 1
 |\Theta(V)| \ge \frac{3}{4} \cdot 2^d
 \end{equation}
 就能利用这一系列变换证明
-\begin{equation*}
+\begin{equation}
 wl(Q_d, C_n, \eta_\mathcal{P}) \ge wl(Q_d, C_n, \mathcal{G})
-\end{equation*}
+\end{equation}
 从而证明格雷码编号方式是最优的。
 
 Guu 的论文的余下篇幅都是在证明不等式 (\ref{Inequality 3-1}) 的成立。
@@ -374,15 +374,15 @@ Guu 的论文的余下篇幅都是在证明不等式 (\ref{Inequality 3-1}) 的�
 
 给定图 $G$、$H$ 和双射函数 $\eta \colon V_G \rightarrow V_H$，
 对于边 $e \in E_H$，我们定义
-\begin{equation*}
+\begin{equation}
 EC_\eta(G, H, e) = \{\{v, w\} \in E_G \colon e \in P(\eta(v), \eta(w))\}
-\end{equation*}
+\end{equation}
 并称之为 $e$ 的\emph{边拥塞}（Edge Congestion）。
 相应地，我们则把 $|EC_\eta(G, H, e)|$ 称为 $e$ 的边拥塞度。
 而在 $\eta$ 下从 $G$ 到 $H$ 的边拥塞度为
-\begin{equation*}
+\begin{equation}
 |EC_\eta(G, H)| = \max_{e \in E_H} |EC_\eta(G, H, e)|
-\end{equation*}
+\end{equation}
 为简洁起见，后文中我们都将用 $EC_\eta(e)$ 来表示 $EC_\eta(G, H, e)$。
 注意若有 $E \subseteq E_H$，则 $EC_\eta(E) = \bigcup_{e \in E} EC_\eta(e)$。
 
@@ -412,9 +412,9 @@ $\eta$ 是从图 $G$ 到图 $H$ 的一个嵌入。
 令 $\eta$ 是从 $G$ 到 $H$ 的一个嵌入。
 若存在 $\{S_1, S_2, \dots, S_p\}$ 是 $E_H$ 的一个划分，
 其中每一个 $S_i$ 都是 $H$ 的一个边割集，那么
-\begin{equation*}
+\begin{equation}
 wl(G, H) = wl(G, H, \eta) = \sum_{i = 1}^p |EC_\eta(S_i)|
-\end{equation*}
+\end{equation}
 \end{lemma}
 
 引理 \ref{Lemma 3.4} 为图嵌入领域中的线长问题提供了一种新的解决思路。

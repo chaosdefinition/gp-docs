@@ -15,9 +15,9 @@
 因此下文中给出的所有结果都将以排列的形式展现出来。
 在这里我们以 $3$ 阶格雷码编号方式 $\mathcal{G} \colon V_{Q_3} \rightarrow V_{C_8}$ 为例，
 将 $\mathcal{G}$ 表示为
-\begin{equation*}
+\begin{equation}
 \mathcal{G} = [0, 1, 3, 2, 6, 7, 5, 4]
-\end{equation*}
+\end{equation}
 其中每一个数是 $Q_3$ 上每一个顶点的十进制表示形式。
 该排列表示 $Q_3$ 中的顶点 $000$（十进制表示为 $0$）映射到 $C_8$ 中的顶点 $0$（第一个位置）、
 $Q_3$ 中的顶点 $001$（十进制表示为 $1$）映射到 $C_8$ 中的顶点 $1$（第二个位置 ）、……、
@@ -41,9 +41,9 @@ $3$ 阶的情况下一共只有 $40,320$ 种编号方式，
 表示计算 $3$ 阶的情况，并设定初始排列的长度为 $3$。
 初始排列的长度决定了我们要将任务划分成多少份，即要把小任务交给多少个从节点进行计算，
 其对应关系为
-\begin{equation*}
+\begin{equation}
 length \rightarrow \frac{(length - 1)!}{2}
-\end{equation*}
+\end{equation}
 因为 $0, 1, 2$ 的不带重复的环形排列只有 $1$ 个，
 而要往一个 $0, 1, \dots, x - 1$ 的环形排列中插入 $x$ 则有 $x$ 个不带重复的位置可供插入。
 
@@ -127,9 +127,9 @@ $C_8$ 的顶点从圆上最顶端的位置起沿顺时针方向依次分布在�
 
 用更严格的形式来表示，对于 $\forall e \in E_{Q_d}$ 且 $\partial(e) = \{v, w\}$，
 我们令
-\begin{equation*}
+\begin{equation}
 t(e) = i,\ \text{其中}\ v_i \neq w_i, 1 \le i \le d
-\end{equation*}
+\end{equation}
 表示 $Q_d$ 中的边 $e$ 的类型。
 那么对于每一个最优编号方式 $\eta \colon V_{Q_3} \rightarrow V_{C_8}$，
 \begin{enumerate}[(1)]
